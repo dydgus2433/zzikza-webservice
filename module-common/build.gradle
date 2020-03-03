@@ -1,16 +1,12 @@
-plugins {
-    id 'java'
+bootJar {
+    enabled = false
 }
-
-group 'com.zzikza.springboot'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+jar {
+    enabled = true
 }
-
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile('org.projectlombok:lombok')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    runtime('com.h2database:h2')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
