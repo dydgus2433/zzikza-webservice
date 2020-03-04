@@ -35,4 +35,5 @@ public class BannerRepositoryTest {
         assertThat(banner.getTitle()).isEqualTo(title);
 
     }
+
 }

@@ -36,6 +36,6 @@ public class CustomPrefixTableSequnceGenerator  extends TableGenerator {
 
     @Override
     public Serializable generate(final SharedSessionContractImplementor session, final Object obj) {
-        return prefixKey + String.format(numberFormat, super.generate(session, obj));
+        return prefixKey + String.format(numberFormat, super. generate(session, obj));
     }
 }
