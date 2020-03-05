@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.studio;
 
 
+import com.zzikza.springboot.web.domain.enums.EDateStatus;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.product.ProductRepository;
 import com.zzikza.springboot.web.domain.user.User;
@@ -12,7 +13,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StudioRepositoryTest {
+
+    @PersistenceContext
+    private EntityManager em;
+
     @Autowired
     StudioRepository studioRepository;
 
@@ -45,17 +53,17 @@ public class StudioRepositoryTest {
 
     @Before
     public void before() {
-        studioBoardFileRepository.deleteAll();
-        studioBoardRepository.deleteAll();
-        studioRepository.deleteAll();
-        productRepository.deleteAll();
+
     }
 
     @After
     public void cleanup() {
-//        studioBoardFileRepository.deleteAll();
-//        studioBoardRepository.deleteAll();
-//        studioRepository.deleteAll();
+        studioBoardFileRepository.deleteAll();
+        studioBoardRepository.deleteAll();
+        studioRepository.deleteAll();
+        productRepository.deleteAll();
+        userRepository.deleteAll();
+        studioDetailRepository.deleteAll();
     }
 
     @Test
@@ -184,5 +192,107 @@ public class StudioRepositoryTest {
         //then
         assertThat(expectedQuestion.getContent()).isEqualTo("질문남깁니다.");
         assertThat(expectedQuestionReply.getContent()).isEqualTo("답변입니다.");
+    }
+
+    @Test
+    @Transactional
+    public void 키워드관계설정() {
+
+        //given
+        StudioDetail detail = StudioDetail.builder().studioDescription("얍얍").build();
+        em.persist(detail);
+        Studio studio = Studio.builder().studioId("tester1234").studioDetail(detail).build();
+        em.persist(studio);
+        Studio studioTest = Studio.builder().studioId("tester12345").studioDetail(detail).build();
+        em.persist(studioTest);
+        /*
+        sudo
+        키워드 여러개 만들고
+        스튜디오와 매핑
+        여러개 모두 있는지 확인
+        */
+        StudioKeyword keyword1 = StudioKeyword.builder().keywordName("기업사진").build();
+        StudioKeyword keyword2 = StudioKeyword.builder().keywordName("상품사진").build();
+        StudioKeyword keyword3 = StudioKeyword.builder().keywordName("전문작가").build();
+        StudioKeyword keyword4 = StudioKeyword.builder().keywordName("전문작가1").build();
+        em.persist(keyword1);
+        em.persist(keyword2);
+        em.persist(keyword3);
+        em.persist(keyword4);
+        StudioKeywordMap studioKeyword1 = StudioKeywordMap.builder().studioKeyword(keyword1).build();
+        StudioKeywordMap studioKeyword2 = StudioKeywordMap.builder().studioKeyword(keyword2).build();
+        StudioKeywordMap studioKeyword3 = StudioKeywordMap.builder().studioKeyword(keyword3).build();
+        StudioKeywordMap studioKeyword4 = StudioKeywordMap.builder().studioKeyword(keyword4).build();
+
+        studio.addStudioKeywordMap(studioKeyword1);
+        studio.addStudioKeywordMap(studioKeyword2);
+        studio.addStudioKeywordMap(studioKeyword3);
+
+        studioTest.addStudioKeywordMap(studioKeyword1);
+        studioTest.addStudioKeywordMap(studioKeyword2);
+        studioTest.addStudioKeywordMap(studioKeyword3);
+        studioTest.addStudioKeywordMap(studioKeyword4);
+
+        em.persist(studioKeyword1);
+        em.persist(studioKeyword2);
+        em.persist(studioKeyword3);
+        em.persist(studioKeyword4);
+        //when
+        //String query = "select m from Member m inner join m.team t where t.name = :teamName";
+//        Query query = em.createNativeQuery("select * from tb_stdo a , tb_keyword_map b where a.stdo_seq = :stdo_seq", Studio.class);
+        Studio studio1 =studioRepository.findById(studio.getId()).orElseThrow(()->new IllegalArgumentException("스튜디오"));
+        Studio studioTest1 =studioRepository.findById(studioTest.getId()).orElseThrow(()->new IllegalArgumentException("스튜디오"));
+        //then
+        assertThat(studio1.getStudioKeywordMaps().size()).isEqualTo(3);
+        assertThat(studioTest1.getStudioKeywordMaps().size()).isEqualTo(4);
+
+
+        em.clear();
+    }
+
+    @Test
+    @Transactional
+    public void 휴일추가() {
+
+        //given
+        StudioDetail detail = StudioDetail.builder().studioDescription("얍얍").build();
+        em.persist(detail);
+        Studio studio = Studio.builder().studioId("tester1234").studioDetail(detail).build();
+
+        //when
+        StudioHoliday studioHoliday = StudioHoliday.builder().dateCode(EDateStatus.DAY).dateValue("2019-07-19").build();
+        StudioHoliday studioHolidayWeek = StudioHoliday.builder().dateCode(EDateStatus.WEEK).dateValue("1").build();
+        StudioHoliday studioHolidayWeek1 = StudioHoliday.builder().dateCode(EDateStatus.WEEK).dateValue("1").build();
+//        em.persist(studioHoliday);
+//        em.persist(studioHolidayWeek);
+//        em.persist(studioHolidayWeek1);
+        studio.addStudioHoliday(studioHoliday);
+        studio.addStudioHoliday(studioHolidayWeek);
+        studio.addStudioHoliday(studioHolidayWeek1);
+        em.persist(studio);
+        //then
+        Studio studio1 =studioRepository.findById(studio.getId()).orElseThrow(()->new IllegalArgumentException("스튜디오"));
+        List<StudioHoliday> holidays = studio1.getStudioHolidays();
+        assertThat(studio1.getStudioHolidays().size()).isEqualTo(2);
+    }
+
+    @Test
+    public void 스튜디오_유저_상품댓글() {
+
+        /*
+        //현재 시스템에도 아직 스튜디오 대댓글 미구현
+        스튜디오 - 상품 - 유저댓글 - 스튜디오 대댓글
+                       - 스튜디오 댓글
+        스튜디오가 상품등록
+        유저가 상품후기
+        스튜디오가 답글
+        유저가 또다시 상품
+
+         */
+        //given
+
+        //when
+
+        //then
     }
 }

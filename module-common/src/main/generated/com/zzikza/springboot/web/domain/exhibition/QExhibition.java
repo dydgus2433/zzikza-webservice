@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -20,6 +21,8 @@ public class QExhibition extends EntityPathBase<Exhibition> {
     public static final QExhibition exhibition = new QExhibition("exhibition");
 
     public final StringPath id = createString("id");
+
+    public final ListPath<com.zzikza.springboot.web.domain.sale.Sale, com.zzikza.springboot.web.domain.sale.QSale> sales = this.<com.zzikza.springboot.web.domain.sale.Sale, com.zzikza.springboot.web.domain.sale.QSale>createList("sales", com.zzikza.springboot.web.domain.sale.Sale.class, com.zzikza.springboot.web.domain.sale.QSale.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 

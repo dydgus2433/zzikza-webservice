@@ -24,6 +24,10 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath id = createString("id");
 
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
+
+    public final NumberPath<Integer> salePrice = createNumber("salePrice", Integer.class);
+
     public final com.zzikza.springboot.web.domain.studio.QStudio studio;
 
     public final StringPath title = createString("title");
