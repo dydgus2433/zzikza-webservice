@@ -30,6 +30,10 @@ public class Studio {
     @Column(name = "STDO_ID", unique = true)
     String studioId;
 
+//    TODO : keyword Enum으로 해보자
+//    @Enumerated(EnumType.STRING)
+//    Enum<EStudioKeyword> keywords;
+
     @OneToOne
     @JoinColumn(name = "STDO_DTL_ID", nullable = false)
     StudioDetail studioDetail;
