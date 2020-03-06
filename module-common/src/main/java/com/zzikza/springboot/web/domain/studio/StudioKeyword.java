@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.studio;
 
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "tb_stdo_keyword")
-public class StudioKeyword {
+public class StudioKeyword  extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_KEYWORD_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")

@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.exhibition;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sale.Sale;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "tb_exh")
-public class Exhibition {
+public class Exhibition  extends BaseTimeEntity {
     @Id
     @Column(name = "EXH_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -30,5 +31,9 @@ public class Exhibition {
     @Builder
     public Exhibition(String title) {
         this.title = title;
+    }
+
+    public void addSale(Sale sale){
+        this.sales.add(sale);
     }
 }

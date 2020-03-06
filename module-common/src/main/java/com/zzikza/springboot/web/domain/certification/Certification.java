@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.certification;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.enums.ECertificationStatus;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_crtf")
-public class Certification {
+public class Certification  extends BaseTimeEntity {
     @Id
     @Column(name = "CRTF_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")

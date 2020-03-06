@@ -1,5 +1,7 @@
 package com.zzikza.springboot.web.domain.user;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
+import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_user_req_fl")
-public class UserRequestFile {
+public class UserRequestFile  extends FileAttribute {
 
     @Id
     @Column(name = "REQ_FL_ID")

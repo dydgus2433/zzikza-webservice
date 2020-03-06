@@ -22,7 +22,29 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public static final QReservation reservation = new QReservation("reservation");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    public final com.zzikza.springboot.web.domain.pay.QPayment payment;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final StringPath scheduleName = createString("scheduleName");
 
@@ -48,6 +70,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public QReservation(Class<? extends Reservation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.payment = inits.isInitialized("payment") ? new com.zzikza.springboot.web.domain.pay.QPayment(forProperty("payment"), inits.get("payment")) : null;
         this.studio = inits.isInitialized("studio") ? new com.zzikza.springboot.web.domain.studio.QStudio(forProperty("studio"), inits.get("studio")) : null;
         this.user = inits.isInitialized("user") ? new com.zzikza.springboot.web.domain.user.QUser(forProperty("user")) : null;
     }

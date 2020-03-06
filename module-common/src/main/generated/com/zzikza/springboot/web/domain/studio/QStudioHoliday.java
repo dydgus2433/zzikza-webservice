@@ -22,11 +22,31 @@ public class QStudioHoliday extends EntityPathBase<StudioHoliday> {
 
     public static final QStudioHoliday studioHoliday = new QStudioHoliday("studioHoliday");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
     public final EnumPath<com.zzikza.springboot.web.domain.enums.EDateStatus> dateCode = createEnum("dateCode", com.zzikza.springboot.web.domain.enums.EDateStatus.class);
 
     public final StringPath dateValue = createString("dateValue");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final QStudio studio;
 

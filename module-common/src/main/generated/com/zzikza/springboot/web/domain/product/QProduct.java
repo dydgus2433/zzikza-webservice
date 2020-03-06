@@ -22,11 +22,29 @@ public class QProduct extends EntityPathBase<Product> {
 
     public static final QProduct product = new QProduct("product");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
-    public final NumberPath<Integer> salePrice = createNumber("salePrice", Integer.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final com.zzikza.springboot.web.domain.studio.QStudio studio;
 

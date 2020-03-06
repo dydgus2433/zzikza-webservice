@@ -1,6 +1,7 @@
-package com.zzikza.springboot.web.domain.studio;
+package com.zzikza.springboot.web.domain.banner;
 
 import com.zzikza.springboot.web.domain.FileAttribute;
+import com.zzikza.springboot.web.domain.enums.EFileStatus;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,41 +12,38 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "tb_stdo_fl")
-public class StudioFile extends FileAttribute {
+@Entity(name = "tb_adv_fl")
+public class BannerFile extends FileAttribute {
     @Id
-    @Column(name = "STDO_FL_ID")
+    @Column(name = "ADV_FL_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
             @org.hibernate.annotations.Parameter(name = "segment_column_name", value = "name"),
-            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_stdo_fl"),
-            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "STF"),
+            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_adv_fl"),
+            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "TAF"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-    @Column
-    String fileName;
 
     @ManyToOne
-    @JoinColumn(name = "STDO_SEQ")
-    Studio studio;
+    @JoinColumn(name = "ADV_ID")
+    Banner banner;
 
     @Builder
-    public StudioFile(String fileName, Studio studio) {
+    public BannerFile(String fileName, String fileSourceName, int fileSize, String fileExt, String filePath, String fileThumbPath, int fileOrder, EFileStatus fileStatus) {
         this.fileName = fileName;
-        this.studio = studio;
+        this.fileSourceName = fileSourceName;
+        this.fileSize = fileSize;
+        this.fileExt = fileExt;
+        this.filePath = filePath;
+        this.fileThumbPath = fileThumbPath;
+        this.fileOrder = fileOrder;
+        this.fileStatus = fileStatus;
     }
 
-    public void setStudio(Studio studio) {
-        this.studio = studio;
-        //기존 스튜디오와 관계 제거
-        if(this.studio != null){
-            this.studio.getStudioFiles().remove(this);
-        }
 
-        studio.getStudioFiles().add(this);
-        this.studio = studio;
+    public void setBanner(Banner banner) {
+        this.banner = banner;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.sale;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.exhibition.Exhibition;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.user.User;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_sale")
-public class Sale {
+public class Sale extends BaseTimeEntity {
     @Id
     @Column(name = "SALE_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -29,13 +30,17 @@ public class Sale {
     @Column
     String saleName;
 
+    @Column
+    Integer salePrice;
+
     @ManyToOne
     @JoinColumn(name = "EXH_ID")
     Exhibition exhibition;
 
     @Builder
-    public Sale(String saleName, Exhibition exhibition) {
+    public Sale(String saleName, Integer salePrice, Exhibition exhibition) {
         this.saleName = saleName;
+        this.salePrice = salePrice;
         this.exhibition = exhibition;
     }
 }

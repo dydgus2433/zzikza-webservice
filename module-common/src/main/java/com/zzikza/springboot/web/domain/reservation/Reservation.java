@@ -1,5 +1,7 @@
 package com.zzikza.springboot.web.domain.reservation;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
+import com.zzikza.springboot.web.domain.pay.Payment;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.user.User;
@@ -13,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_rsrv")
-public class Reservation {
+public class Reservation  extends BaseTimeEntity {
     @Id
     @Column(name = "RSRV_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -37,9 +39,15 @@ public class Reservation {
     @JoinColumn(name = "STDO_SEQ")
     Studio studio;
 
+    @OneToOne
+    @JoinColumn(name = "PAY_ID", nullable = true)
+//    @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    Payment payment;
+
     @Builder
-    public Reservation(String scheduleName) {
+    public Reservation(String scheduleName, Payment payment) {
         this.scheduleName = scheduleName;
+        this.payment = payment;
     }
 
     public void setUser(User user) {
@@ -48,5 +56,9 @@ public class Reservation {
 
     public void setStudio(Studio studio) {
         this.studio = studio;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

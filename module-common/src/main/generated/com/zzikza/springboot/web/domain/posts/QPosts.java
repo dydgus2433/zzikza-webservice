@@ -28,13 +28,22 @@ public class QPosts extends EntityPathBase<Posts> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
 
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final StringPath title = createString("title");
 

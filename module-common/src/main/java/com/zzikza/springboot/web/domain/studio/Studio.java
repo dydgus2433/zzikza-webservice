@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.pay.Payment;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_stdo")
-public class Studio {
+public class Studio  extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_SEQ")
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
@@ -59,8 +60,8 @@ public class Studio {
     @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Payment> payments = new ArrayList<>();
+//    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<Payment> payments = new ArrayList<>();
 
 
     @Builder
@@ -73,6 +74,13 @@ public class Studio {
         this.studioBoards.add(studioBoard);
         if (studioBoard.getStudio() != this) {
             studioBoard.setStudio(this);
+        }
+    }
+
+    public void addStudioFile(StudioFile studioFile) {
+        this.studioFiles.add(studioFile);
+        if (studioFile.getStudio() != this) {
+            studioFile.setStudio(this);
         }
     }
 
@@ -118,10 +126,10 @@ public class Studio {
         }
     }
 
-    public void addPayment(Payment payment) {
-        this.payments.add(payment);
-        if (payment.getStudio() != this) {
-            payment.setStudio(this);
-        }
-    }
+//    public void addPayment(Payment payment) {
+//        this.payments.add(payment);
+//        if (payment.getStudio() != this) {
+//            payment.setStudio(this);
+//        }
+//    }
 }

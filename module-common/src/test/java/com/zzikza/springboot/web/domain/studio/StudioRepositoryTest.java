@@ -58,12 +58,12 @@ public class StudioRepositoryTest {
 
     @After
     public void cleanup() {
-        studioBoardFileRepository.deleteAll();
-        studioBoardRepository.deleteAll();
-        studioRepository.deleteAll();
-        productRepository.deleteAll();
-        userRepository.deleteAll();
-        studioDetailRepository.deleteAll();
+//        studioBoardFileRepository.deleteAll();
+//        studioBoardRepository.deleteAll();
+//        studioRepository.deleteAll();
+//        productRepository.deleteAll();
+//        userRepository.deleteAll();
+//        studioDetailRepository.deleteAll();
     }
 
     @Test
@@ -92,7 +92,6 @@ public class StudioRepositoryTest {
 
         String studioId = "test";
         Studio studio = Studio.builder().studioId(studioId).studioDetail(detail).build();
-
         StudioBoard studioBoard = StudioBoard.builder().title("board").build();
         studio.addStudioBoard(studioBoard);
         StudioBoardFile studioBoardFile = StudioBoardFile.builder().fileName("file").build();
@@ -113,6 +112,45 @@ public class StudioRepositoryTest {
         //then
         assertThat(expectStudioBoards.getTitle()).isEqualTo(studioBoard.getTitle());
         assertThat(expectedStudioBoardFiles.getFileName()).isEqualTo(studioBoardFile.getFileName());
+    }
+
+
+    @Test
+    @Transactional
+    public void 스튜디오_글쓰기_디테일포함_파일업로드() {
+
+        //given
+
+        StudioDetail detail = StudioDetail.builder().studioDescription("설명").build();
+        em.persist(detail);
+
+        String studioId = "test";
+        Studio studio = Studio.builder().studioId(studioId).studioDetail(detail).build();
+        StudioBoard studioBoard = StudioBoard.builder().title("board").build();
+        studio.addStudioBoard(studioBoard);
+        StudioFile studioFile = StudioFile.builder().fileName("file").build();
+        studio.addStudioFile(studioFile);
+        StudioBoardFile studioBoardFile = StudioBoardFile.builder().fileName("file").build();
+        studioBoard.addStudioBoardFile(studioBoardFile);
+
+        em.persist(studio);
+        em.persist(studioBoard);
+        em.persist(studioFile);
+        em.persist(studioBoardFile);
+        em.flush();
+        em.clear();
+
+        //when
+        String id = studio.getId();
+        Studio expectStudio = studioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("저장한 값이 아닙니다"));
+
+
+        StudioBoard expectStudioBoards = studioBoardRepository.findById(studioBoard.getId()).orElseThrow(() -> new IllegalArgumentException("저장한 값이 아닙니다"));
+        StudioBoardFile expectedStudioBoardFiles = studioBoardFileRepository.findById(studioBoardFile.getId()).orElseThrow(() -> new IllegalArgumentException("저장한 값이 아닙니다"));
+        //then
+        assertThat(expectStudioBoards.getTitle()).isEqualTo(studioBoard.getTitle());
+        assertThat(expectedStudioBoardFiles.getFileName()).isEqualTo(studioBoardFile.getFileName());
+        assertThat(expectStudio.getStudioFiles().get(0).getFileName()).isEqualTo(studioFile.getFileName());
     }
 
     @Test

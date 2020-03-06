@@ -22,11 +22,29 @@ public class QStudio extends EntityPathBase<Studio> {
 
     public static final QStudio studio = new QStudio("studio");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
 
-    public final ListPath<com.zzikza.springboot.web.domain.pay.Payment, com.zzikza.springboot.web.domain.pay.QPayment> payments = this.<com.zzikza.springboot.web.domain.pay.Payment, com.zzikza.springboot.web.domain.pay.QPayment>createList("payments", com.zzikza.springboot.web.domain.pay.Payment.class, com.zzikza.springboot.web.domain.pay.QPayment.class, PathInits.DIRECT2);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
 
     public final ListPath<com.zzikza.springboot.web.domain.product.Product, com.zzikza.springboot.web.domain.product.QProduct> products = this.<com.zzikza.springboot.web.domain.product.Product, com.zzikza.springboot.web.domain.product.QProduct>createList("products", com.zzikza.springboot.web.domain.product.Product.class, com.zzikza.springboot.web.domain.product.QProduct.class, PathInits.DIRECT2);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final ListPath<com.zzikza.springboot.web.domain.reservation.Reservation, com.zzikza.springboot.web.domain.reservation.QReservation> reservations = this.<com.zzikza.springboot.web.domain.reservation.Reservation, com.zzikza.springboot.web.domain.reservation.QReservation>createList("reservations", com.zzikza.springboot.web.domain.reservation.Reservation.class, com.zzikza.springboot.web.domain.reservation.QReservation.class, PathInits.DIRECT2);
 

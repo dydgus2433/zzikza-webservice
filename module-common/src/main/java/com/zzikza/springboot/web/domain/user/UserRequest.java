@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.user;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_user_req")
-public class UserRequest {
+public class UserRequest  extends BaseTimeEntity {
 
     @Id
     @Column(name = "REQ_ID")

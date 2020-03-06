@@ -1,5 +1,7 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.FileAttribute;
+import com.zzikza.springboot.web.domain.enums.EFileStatus;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_stdo_brd_fl")
-public class StudioBoardFile {
+public class StudioBoardFile extends FileAttribute {
     @Id
     @Column(name = "STDO_BRD_FL_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -36,6 +38,17 @@ public class StudioBoardFile {
         this.studioBoard = studioBoard;
     }
 
+    @Builder
+    public StudioBoardFile(String fileName, String fileSourceName, int fileSize, String fileExt, String filePath, String fileThumbPath, int fileOrder, EFileStatus fileStatus) {
+        this.fileName = fileName;
+        this.fileSourceName = fileSourceName;
+        this.fileSize = fileSize;
+        this.fileExt = fileExt;
+        this.filePath = filePath;
+        this.fileThumbPath = fileThumbPath;
+        this.fileOrder = fileOrder;
+        this.fileStatus = fileStatus;
+    }
     public void setStudioBoard(StudioBoard studioBoard) {
         this.studioBoard = studioBoard;
         //기존 스튜디오와 관계 제거
@@ -46,4 +59,6 @@ public class StudioBoardFile {
         this.studioBoard = studioBoard;
         studioBoard.getStudioBoardFiles().add(this);
     }
+
+
 }

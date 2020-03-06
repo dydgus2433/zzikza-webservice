@@ -1,4 +1,4 @@
-package com.zzikza.springboot.web.domain.studio;
+package com.zzikza.springboot.web.domain.banner;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -11,18 +11,20 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QStudioFile is a Querydsl query type for StudioFile
+ * QBannerMobileFile is a Querydsl query type for BannerMobileFile
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QStudioFile extends EntityPathBase<StudioFile> {
+public class QBannerMobileFile extends EntityPathBase<BannerMobileFile> {
 
-    private static final long serialVersionUID = -1392701039L;
+    private static final long serialVersionUID = 636368083L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QStudioFile studioFile = new QStudioFile("studioFile");
+    public static final QBannerMobileFile bannerMobileFile = new QBannerMobileFile("bannerMobileFile");
 
     public final com.zzikza.springboot.web.domain.QFileAttribute _super = new com.zzikza.springboot.web.domain.QFileAttribute(this);
+
+    public final QBanner banner;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
@@ -33,7 +35,8 @@ public class QStudioFile extends EntityPathBase<StudioFile> {
     //inherited
     public final StringPath fileExt = _super.fileExt;
 
-    public final StringPath fileName = createString("fileName");
+    //inherited
+    public final StringPath fileName = _super.fileName;
 
     //inherited
     public final NumberPath<Integer> fileOrder = _super.fileOrder;
@@ -67,27 +70,25 @@ public class QStudioFile extends EntityPathBase<StudioFile> {
     //inherited
     public final StringPath registedId = _super.registedId;
 
-    public final QStudio studio;
-
-    public QStudioFile(String variable) {
-        this(StudioFile.class, forVariable(variable), INITS);
+    public QBannerMobileFile(String variable) {
+        this(BannerMobileFile.class, forVariable(variable), INITS);
     }
 
-    public QStudioFile(Path<? extends StudioFile> path) {
+    public QBannerMobileFile(Path<? extends BannerMobileFile> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QStudioFile(PathMetadata metadata) {
+    public QBannerMobileFile(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QStudioFile(PathMetadata metadata, PathInits inits) {
-        this(StudioFile.class, metadata, inits);
+    public QBannerMobileFile(PathMetadata metadata, PathInits inits) {
+        this(BannerMobileFile.class, metadata, inits);
     }
 
-    public QStudioFile(Class<? extends StudioFile> type, PathMetadata metadata, PathInits inits) {
+    public QBannerMobileFile(Class<? extends BannerMobileFile> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.studio = inits.isInitialized("studio") ? new QStudio(forProperty("studio"), inits.get("studio")) : null;
+        this.banner = inits.isInitialized("banner") ? new QBanner(forProperty("banner")) : null;
     }
 
 }

@@ -22,11 +22,29 @@ public class QFinalPaymentPrice extends EntityPathBase<FinalPaymentPrice> {
 
     public static final QFinalPaymentPrice finalPaymentPrice = new QFinalPaymentPrice("finalPaymentPrice");
 
-    public final com.zzikza.springboot.web.domain.exhibition.QExhibition exhibition;
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
 
     public final StringPath id = createString("id");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
     public final com.zzikza.springboot.web.domain.product.QProduct product;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final com.zzikza.springboot.web.domain.sale.QSale sale;
 
@@ -48,7 +66,6 @@ public class QFinalPaymentPrice extends EntityPathBase<FinalPaymentPrice> {
 
     public QFinalPaymentPrice(Class<? extends FinalPaymentPrice> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.exhibition = inits.isInitialized("exhibition") ? new com.zzikza.springboot.web.domain.exhibition.QExhibition(forProperty("exhibition")) : null;
         this.product = inits.isInitialized("product") ? new com.zzikza.springboot.web.domain.product.QProduct(forProperty("product"), inits.get("product")) : null;
         this.sale = inits.isInitialized("sale") ? new com.zzikza.springboot.web.domain.sale.QSale(forProperty("sale"), inits.get("sale")) : null;
     }

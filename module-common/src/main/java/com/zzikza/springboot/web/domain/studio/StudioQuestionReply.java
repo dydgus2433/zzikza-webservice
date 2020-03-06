@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_stdo_qstn_repl")
-public class StudioQuestionReply {
+public class StudioQuestionReply  extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_QSTN_REPL_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")

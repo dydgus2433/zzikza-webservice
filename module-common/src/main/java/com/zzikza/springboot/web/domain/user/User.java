@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.user;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.pay.Payment;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_user")
-public class User {
+public class User  extends BaseTimeEntity {
     @Id
     @Column(name = "USER_SEQ")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -44,8 +45,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Payment> payments = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    List<Payment> payments = new ArrayList<>();
 
 
     @Builder
@@ -74,10 +75,10 @@ public class User {
         }
     }
 
-    public void addPayment(Payment payment) {
-        this.payments.add(payment);
-        if(payment.getUser() != this){
-            payment.setUser(this);
-        }
-    }
+//    public void addPayment(Payment payment) {
+//        this.payments.add(payment);
+//        if(payment.getUser() != this){
+//            payment.setUser(this);
+//        }
+//    }
 }

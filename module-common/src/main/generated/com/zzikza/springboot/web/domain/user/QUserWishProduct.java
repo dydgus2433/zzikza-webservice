@@ -22,9 +22,29 @@ public class QUserWishProduct extends EntityPathBase<UserWishProduct> {
 
     public static final QUserWishProduct userWishProduct = new QUserWishProduct("userWishProduct");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
     public final com.zzikza.springboot.web.domain.product.QProduct product;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final QUser user;
 

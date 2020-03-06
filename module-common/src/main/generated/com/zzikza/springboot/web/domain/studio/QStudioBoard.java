@@ -22,13 +22,37 @@ public class QStudioBoard extends EntityPathBase<StudioBoard> {
 
     public static final QStudioBoard studioBoard = new QStudioBoard("studioBoard");
 
+    public final com.zzikza.springboot.web.domain.QBoardAttribute _super = new com.zzikza.springboot.web.domain.QBoardAttribute(this);
+
+    //inherited
+    public final StringPath content = _super.content;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final QStudio studio;
 
     public final ListPath<StudioBoardFile, QStudioBoardFile> studioBoardFiles = this.<StudioBoardFile, QStudioBoardFile>createList("studioBoardFiles", StudioBoardFile.class, QStudioBoardFile.class, PathInits.DIRECT2);
 
-    public final StringPath title = createString("title");
+    //inherited
+    public final StringPath title = _super.title;
 
     public QStudioBoard(String variable) {
         this(StudioBoard.class, forVariable(variable), INITS);

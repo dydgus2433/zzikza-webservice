@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_stdo_dtl")
-public class StudioDetail {
+public class StudioDetail  extends BaseTimeEntity {
 
     @Id
     @Column(name = "STDO_DTL_ID")

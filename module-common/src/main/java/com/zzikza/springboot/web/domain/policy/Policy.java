@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.policy;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_term")
-public class Policy {
+public class Policy  extends BaseTimeEntity {
     @Id
     @Column(name = "TRM_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")

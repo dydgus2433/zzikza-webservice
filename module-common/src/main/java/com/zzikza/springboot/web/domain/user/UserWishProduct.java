@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.user;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity(name = "tb_wish")
-public class UserWishProduct {
+public class UserWishProduct  extends BaseTimeEntity {
 
     @Id
     @Column(name = "WSH_ID")

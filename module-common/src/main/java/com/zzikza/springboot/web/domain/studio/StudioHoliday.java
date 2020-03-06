@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.enums.EDateStatus;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_stdo_holi")
-public class StudioHoliday {
+public class StudioHoliday  extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_HOLI_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")

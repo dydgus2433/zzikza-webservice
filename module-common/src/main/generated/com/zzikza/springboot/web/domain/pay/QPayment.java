@@ -28,10 +28,6 @@ public class QPayment extends EntityPathBase<Payment> {
 
     public final StringPath name = createString("name");
 
-    public final com.zzikza.springboot.web.domain.studio.QStudio studio;
-
-    public final com.zzikza.springboot.web.domain.user.QUser user;
-
     public QPayment(String variable) {
         this(Payment.class, forVariable(variable), INITS);
     }
@@ -51,8 +47,6 @@ public class QPayment extends EntityPathBase<Payment> {
     public QPayment(Class<? extends Payment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.finalPaymentPrice = inits.isInitialized("finalPaymentPrice") ? new QFinalPaymentPrice(forProperty("finalPaymentPrice"), inits.get("finalPaymentPrice")) : null;
-        this.studio = inits.isInitialized("studio") ? new com.zzikza.springboot.web.domain.studio.QStudio(forProperty("studio"), inits.get("studio")) : null;
-        this.user = inits.isInitialized("user") ? new com.zzikza.springboot.web.domain.user.QUser(forProperty("user")) : null;
     }
 
 }

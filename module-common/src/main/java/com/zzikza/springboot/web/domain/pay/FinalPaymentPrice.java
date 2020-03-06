@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.pay;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.exhibition.Exhibition;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.sale.Sale;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_final_pay")
-public class FinalPaymentPrice {
+public class FinalPaymentPrice  extends BaseTimeEntity {
     @Id
     @Column(name = "FNL_PAY_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -32,24 +33,22 @@ public class FinalPaymentPrice {
     Product product;
 
     @OneToOne
-    @JoinColumn(name = "EXH_ID", nullable = true)
-    Exhibition exhibition;
-
-    @OneToOne
     @JoinColumn(name = "SALE_ID", nullable = true)
     Sale sale;
 
     @Builder
-    public FinalPaymentPrice(Product product, Exhibition exhibition, Sale sale) {
+    public FinalPaymentPrice(Product product, Sale sale) {
         this.product = product;
-        this.exhibition = exhibition;
         this.sale = sale;
     }
 
     public int getFinalPrice() {
-
         int price = product.getPrice();
-
-        return product.getPrice();
+        if(this.sale != null){
+            if(price > this.sale.getSalePrice()){
+                price = this.sale.getSalePrice();
+            }
+        }
+        return price;
     }
 }

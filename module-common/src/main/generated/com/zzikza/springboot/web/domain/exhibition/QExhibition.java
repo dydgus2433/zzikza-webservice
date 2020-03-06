@@ -20,7 +20,27 @@ public class QExhibition extends EntityPathBase<Exhibition> {
 
     public static final QExhibition exhibition = new QExhibition("exhibition");
 
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final ListPath<com.zzikza.springboot.web.domain.sale.Sale, com.zzikza.springboot.web.domain.sale.QSale> sales = this.<com.zzikza.springboot.web.domain.sale.Sale, com.zzikza.springboot.web.domain.sale.QSale>createList("sales", com.zzikza.springboot.web.domain.sale.Sale.class, com.zzikza.springboot.web.domain.sale.QSale.class, PathInits.DIRECT2);
 

@@ -22,9 +22,50 @@ public class QStudioBoardFile extends EntityPathBase<StudioBoardFile> {
 
     public static final QStudioBoardFile studioBoardFile = new QStudioBoardFile("studioBoardFile");
 
+    public final com.zzikza.springboot.web.domain.QFileAttribute _super = new com.zzikza.springboot.web.domain.QFileAttribute(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
+    //inherited
+    public final StringPath fileExt = _super.fileExt;
+
     public final StringPath fileName = createString("fileName");
 
+    //inherited
+    public final NumberPath<Integer> fileOrder = _super.fileOrder;
+
+    //inherited
+    public final StringPath filePath = _super.filePath;
+
+    //inherited
+    public final NumberPath<Integer> fileSize = _super.fileSize;
+
+    //inherited
+    public final StringPath fileSourceName = _super.fileSourceName;
+
+    //inherited
+    public final EnumPath<com.zzikza.springboot.web.domain.enums.EFileStatus> fileStatus = _super.fileStatus;
+
+    //inherited
+    public final StringPath fileThumbPath = _super.fileThumbPath;
+
     public final StringPath id = createString("id");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
 
     public final QStudioBoard studioBoard;
 

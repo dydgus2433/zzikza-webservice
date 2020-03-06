@@ -19,6 +19,30 @@ public class QBoardAttribute extends EntityPathBase<BoardAttribute> {
 
     public static final QBoardAttribute boardAttribute = new QBoardAttribute("boardAttribute");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
+    public final StringPath content = createString("content");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
+
+    //inherited
+    public final StringPath deletedId = _super.deletedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    //inherited
+    public final StringPath modifiedId = _super.modifiedId;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
+
+    //inherited
+    public final StringPath registedId = _super.registedId;
+
+    public final StringPath title = createString("title");
+
     public QBoardAttribute(String variable) {
         super(BoardAttribute.class, forVariable(variable));
     }

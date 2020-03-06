@@ -1,5 +1,7 @@
 package com.zzikza.springboot.web.domain.pay;
 
+import com.zzikza.springboot.web.domain.reservation.Reservation;
+import com.zzikza.springboot.web.domain.sale.Sale;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioDetail;
@@ -30,13 +32,13 @@ public class Payment {
     @Column
     String name;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_SEQ")
-    User user;
-
-    @ManyToOne
-    @JoinColumn(name = "STDO_SEQ")
-    Studio studio;
+//    @ManyToOne
+//    @JoinColumn(name = "USER_SEQ")
+//    User user;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "STDO_SEQ")
+//    Studio studio;
 
     @OneToOne
     @JoinColumn(name = "FNL_PAY_ID", nullable = false)
@@ -48,27 +50,7 @@ public class Payment {
         this.finalPaymentPrice = finalPaymentPrice;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setStudio(Studio studio) {
-        this.studio = studio;
-    }
-
-    public int getPrice(){
-        int price = finalPaymentPrice.getProduct().getPrice();
-        if(price > finalPaymentPrice.getProduct().getSalePrice()){
-            price = finalPaymentPrice.getProduct().getSalePrice();
-        }
-        return price;
-    }
-
-    public int getFinalPrice(){
-        int price = finalPaymentPrice.getProduct().getPrice();
-        //TODO : EXH / SALE 최종적용 시켜(모두가 사용할 수 있게)
-        finalPaymentPrice.getExhibition();
-        finalPaymentPrice.getSale();
-        return price;
+    public int getRealPrice(){
+        return finalPaymentPrice.getFinalPrice();
     }
 }

@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BoardAttribute;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.*;
 import org.hibernate.annotations.GeneratorType;
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity(name = "tb_stdo_brd")
-public class StudioBoard {
+public class StudioBoard extends BoardAttribute {
     @Id
     @Column(name = "STDO_BRD_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -24,7 +25,6 @@ public class StudioBoard {
             @org.hibernate.annotations.Parameter(name = "prefix_key", value = "SBI"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-    String title;
     @ManyToOne
     @JoinColumn(name = "STDO_SEQ")
     Studio studio;
