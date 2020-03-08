@@ -1,0 +1,89 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+{{>layout/header}}
+<div class="container">
+    {{>layout/left-panel}}
+    <!-- 본문자리 -->
+
+
+    <!-- left_area -->
+    <div class="left_content_area">
+        <div class="left_content_head">
+            <h2 class="sub_tit">게시판</h2>
+        </div>
+        <div class="inner">
+            <ul class="tabs">
+                {{#commonCodes}}
+                    <li><a href="/board/{{commCd}}">
+                        {{commCdNm}}
+                    </a></li>
+                {{/commonCodes}}
+            </ul>
+            <div class="box_area full">
+                <h3 class="sub_stit">{{commCdNm}}</h3>
+                <!--					<c:if test="${commonCode.commCd eq 'qna'}">-->
+                <!--					<div class="btn_area top_right">-->
+                <!--						<button type="button" class="btn_form" id="btnQna">질문하기</button>-->
+                <!--					</div>-->
+                <!--					</c:if>-->
+                <table class="tCont list">
+                    <caption>공지사항 목록입니다</caption>
+                    <colgroup>
+                        <col class="td04">
+                        <col style="">
+                        <col class="td02">
+                        <col class="td03">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#list}}
+                        <tr seq='{{brdId}}' cate='{{brdCateCd}}' >
+                            <td>{{brdId}}</td>
+                            <td class="textL">
+                                <a href="javascript:void(0);">]{{title }}</a>
+                            </td>
+                            <td>{{regId }}</td>
+                            <td>
+                                {{regDt}}
+                            </td>
+                        </tr>
+                    {{/list}}
+                    </tbody>
+                </table>
+                <!-- 페이징 -->
+                {{>layout/paging}}
+                <!-- 페이징 -->
+            </div>
+        </div>
+    </div>
+    <!--// left_area -->
+    <script src="/js/board/boardList.js"></script>
+    <script>
+var brdCateCd = "{{brdCateCd}}";
+var contextPath = "/";
+function fn_paging(index){
+	location.href=contextPath + '/board/'+brdCateCd+'?nowPage='+index;
+}
+</script>
+
+    <!-- 본문자리 -->
+</div>
+
+
+<!-- popup -->
+<div id="popup"></div>
+<!--// popup -->
+</body>
+</html>

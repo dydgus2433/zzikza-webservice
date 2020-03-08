@@ -33,6 +33,12 @@ public class Studio  extends BaseTimeEntity {
     @Column(name = "STDO_ID", unique = true)
     String studioId;
 
+    @Column(name = "PW")
+    String password;
+
+    @Column(name = "AC_STAT_CD")
+    String accountStatus;
+
     @OneToOne
     @JoinColumn(name = "STDO_DTL_ID", nullable = false)
     StudioDetail studioDetail;
@@ -65,10 +71,14 @@ public class Studio  extends BaseTimeEntity {
 
 
     @Builder
-    public Studio(String studioId, StudioDetail studioDetail) {
+    public Studio(String studioId, String password, String accountStatus, StudioDetail studioDetail) {
         this.studioId = studioId;
+        this.password = password;
+        this.accountStatus = accountStatus;
         this.studioDetail = studioDetail;
     }
+
+
 
     public void addStudioBoard(StudioBoard studioBoard) {
         this.studioBoards.add(studioBoard);

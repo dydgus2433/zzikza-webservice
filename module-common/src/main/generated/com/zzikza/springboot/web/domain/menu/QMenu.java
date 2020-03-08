@@ -36,11 +36,15 @@ public class QMenu extends EntityPathBase<Menu> {
 
     public final ListPath<Menu, QMenu> menus = this.<Menu, QMenu>createList("menus", Menu.class, QMenu.class, PathInits.DIRECT2);
 
+    public final StringPath menuUrl = createString("menuUrl");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     //inherited
     public final StringPath modifiedId = _super.modifiedId;
+
+    public final NumberPath<Integer> ord = createNumber("ord", Integer.class);
 
     public final QMenu parentMenu;
 
@@ -49,6 +53,8 @@ public class QMenu extends EntityPathBase<Menu> {
 
     //inherited
     public final StringPath registedId = _super.registedId;
+
+    public final EnumPath<com.zzikza.springboot.web.domain.enums.ETableStatus> useStatus = createEnum("useStatus", com.zzikza.springboot.web.domain.enums.ETableStatus.class);
 
     public QMenu(String variable) {
         this(Menu.class, forVariable(variable), INITS);

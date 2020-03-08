@@ -9,5 +9,5 @@ application-real-db.properties
 
 /**/*.jsp
 /templates/**/*.jsp
-left_panel.jsp
-/module-studio/src/main/resources/templates/board/boardList.jsp
+/**/templates/**/*.jsp
+/module-studio/src/main/resources/templates/**/**.jsp

@@ -1,0 +1,266 @@
+
+/*  'sofia', 'slabo', 'roboto', 'inconsolata', 'ubuntu', 'Nanum-Brush-Script' */
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Nanum+Gothic|Roboto|Slabo+27px|Ubuntu|Nanum+Brush+Script:400&display=swap');
+
+.ql-snow .ql-picker.ql-size .ql-picker-label::before, .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+	 content: '15px';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="10px"]::before {
+    content: '10px';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="11px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="11px"]::before {
+    content: '11px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="12px"]::before {
+    content: '12px';
+}
+
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="15px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="15px"]::before {
+    content: '15px';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="18px"]::before {
+    content: '18px';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before
+, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+    content: '20px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="32px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before
+, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
+    content: '32px';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="40px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label.ql-active[data-value="40px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="40px"]::before
+, .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="40px"]::before {
+    content: '40px';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="sofia"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="sofia"]::before {
+	content : 'sofia';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="slabo"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="slabo"]::before {
+	content : 'slabo';
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="roboto"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before {
+	content : 'roboto';
+}
+
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="inconsolata"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="inconsolata"]::before {
+	content : 'inconsolata';
+}
+
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Nanum-Brush-Script"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Nanum-Brush-Script"]::before {
+	content : 'Nanum-Brush-Script';
+}
+
+
+
+/* Set content font-families */
+.ql-font-sofia {
+  font-family: "Sofia";
+}
+.ql-font-slabo {
+  font-family: "Slabo";
+}
+
+.ql-font-roboto {
+  font-family: "Roboto";
+}
+
+
+.ql-font-ubuntu {
+  font-family: "Ubuntu";
+}
+
+
+.ql-font-inconsolata {
+  font-family: "Inconsolata";
+}
+
+
+.ql-font-Nanum-Brush-Script {
+  font-family: "Nanum Brush Script";
+}
+
+.ql-font-Nanum-Pen-Script {
+  font-family: "Nanum Pen Script";
+}
+
+/* custom font css*/
+
+.ql-font-munche_gung_jungja {
+  font-family: "munche_gung_jungja";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="munche_gung_jungja"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="munche_gung_jungja"]::before {
+	content : 'munche_gung_jungja';
+    font-family: "munche_gung_jungja";
+}
+
+/* Black Han Sans */
+
+.ql-font-Black_Han_Sans {
+  font-family: "Black Han Sans";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Black_Han_Sans"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Black_Han_Sans"]::before {
+  content : 'Black_Han_Sans';
+  font-family: "Black Han Sans";
+}
+
+
+/* Gaegu */
+
+.ql-font-Gaegu {
+  font-family: "Gaegu";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Gaegu"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Gaegu"]::before {
+	content : 'Gaegu';
+  font-family: "Gaegu";
+}
+
+
+/* Single_Day */
+
+.ql-font-Single_Day {
+  font-family: "Single Day";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Single_Day"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Single_Day"]::before {
+	content : 'Single_Day';
+  font-family: "Single Day";
+}
+
+
+/* Black And White Picture */
+
+.ql-font-Black_And_White_Picture {
+  font-family: "Black And White Picture";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Black_And_White_Picture"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Black_And_White_Picture"]::before {
+	content : 'Black_And_White_Picture';
+	font-family: "Black And White Picture";
+}
+
+
+/* Hi Melody */
+
+.ql-font-Hi_Melody {
+  font-family: "Hi Melody";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Hi_Melody"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Hi_Melody"]::before {
+	content : 'Hi_Melody';
+	font-family: "Hi Melody";
+}
+
+
+/* Gamja Flower */
+
+.ql-font-Gamja_Flower {
+  font-family: "Gamja Flower";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Gamja_Flower"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Gamja_Flower"]::before {
+	content : 'Gamja_Flower';
+  font-family: "Gamja Flower";
+}
+
+
+/* Cute Font */
+
+.ql-font-Cute_Font {
+  font-family: "Cute Font";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Cute_Font"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Cute_Font"]::before {
+	content : 'Cute_Font';
+  font-family: "Cute Font";
+}
+
+
+/* East Sea Dokdo */
+
+.ql-font-East_Sea_Dokdo {
+  font-family: "East Sea Dokdo";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="East_Sea_Dokdo"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="East_Sea_Dokdo"]::before {
+	content : 'East_Sea_Dokdo';
+  font-family: "East Sea Dokdo";
+}
+
+
+/* Sunflower */
+
+.ql-font-Sunflower {
+  font-family: "Sunflower";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Sunflower"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Sunflower"]::before {
+	content : 'Sunflower';
+  font-family: "Sunflower";
+}
+
+
+/* Jua */
+
+.ql-font-Jua {
+  font-family: "Jua";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Jua"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Jua"]::before {
+	content : 'Jua';
+  font-family: "Jua";
+}
+
+
+/* Dokdo */
+
+.ql-font-Dokdo {
+  font-family: "Dokdo";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Dokdo"]::before, .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Dokdo"]::before {
+	content : 'Dokdo';
+  font-family: "Dokdo";
+}
+
+.ql-editor{
+	padding: 12px 15px 0px 15px;
+}
+
+.ql-color .ql-picker-options [data-value=color-picker] {
+  background: none !important;
+  width: 100% !important;
+  height: 20px !important;
+  text-align: center;
+}
+.ql-color .ql-picker-options [data-value=color-picker]:before {
+  content: 'Custom Color';
+}
+.ql-color .ql-picker-options [data-value=color-picker]:hover {
+  border-color: transparent !important;
+}

@@ -24,6 +24,8 @@ public class QStudio extends EntityPathBase<Studio> {
 
     public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
 
+    public final StringPath accountStatus = createString("accountStatus");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
 
@@ -37,6 +39,8 @@ public class QStudio extends EntityPathBase<Studio> {
 
     //inherited
     public final StringPath modifiedId = _super.modifiedId;
+
+    public final StringPath password = createString("password");
 
     public final ListPath<com.zzikza.springboot.web.domain.product.Product, com.zzikza.springboot.web.domain.product.QProduct> products = this.<com.zzikza.springboot.web.domain.product.Product, com.zzikza.springboot.web.domain.product.QProduct>createList("products", com.zzikza.springboot.web.domain.product.Product.class, com.zzikza.springboot.web.domain.product.QProduct.class, PathInits.DIRECT2);
 

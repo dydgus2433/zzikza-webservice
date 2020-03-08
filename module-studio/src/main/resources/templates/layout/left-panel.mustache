@@ -1,0 +1,24 @@
+ <!-- snb_area -->
+<div id="snb">
+	<button type="button" class="all_close">닫기</button>
+	<div class="snb_menu_area">
+		<ul class="snb_menu">
+			<li class="snb_logout"><a href="/logout?returl=/"  target="_parent">로그아웃</a></li>
+            {{#menuList}}
+                <li>
+                    <a href="#">{{menuNm}}</a>
+                    <ul class="snb_menu_s" >
+<!--                    <c:if test="${!fn:startsWith(path, item.menuUrl)}">style='display:none'</c:if>-->
+                        {{#menus}}
+                        <li class="fa  {{menuIcon}}">
+                        <a class="active" href="{{menuUrl}}">{{menuNm}}</a>
+                        </li>
+                        {{/menus}}
+                    </ul>
+                </li>
+
+            {{/menuList}}
+		</ul>
+	</div>
+</div>
+<!--// snb_area -->

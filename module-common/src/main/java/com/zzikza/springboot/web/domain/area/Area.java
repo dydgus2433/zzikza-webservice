@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.area;
 
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,5 +23,9 @@ public class Area {
     @Column(name = "GUGUN")
     String gugun;
 
-
+    @Builder
+    public Area(String sido, String gugun) {
+        this.sido = sido;
+        this.gugun = gugun;
+    }
 }

@@ -2,6 +2,8 @@ package com.zzikza.springboot.web;
 
 import com.zzikza.springboot.web.domain.posts.Posts;
 import com.zzikza.springboot.web.domain.posts.PostsRepository;
+import com.zzikza.springboot.web.dto.PostsSaveRequestDto;
+import com.zzikza.springboot.web.dto.PostsUpdateRequestDto;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

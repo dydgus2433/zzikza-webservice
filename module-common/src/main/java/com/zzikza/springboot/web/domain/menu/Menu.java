@@ -1,6 +1,8 @@
 package com.zzikza.springboot.web.domain.menu;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
+import com.zzikza.springboot.web.domain.enums.EShowStatus;
+import com.zzikza.springboot.web.domain.enums.ETableStatus;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +31,16 @@ public class Menu  extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = "prefix_key", value = "MN"),
             @Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-
+    @Column(name = "MENU_NM")
     String menuName;
+    @Column(name = "MENU_URL")
+    String menuUrl;
+    @Column(name = "ORD")
+    int ord;
 
+    @Column(name = "USE_YN")
+    @Enumerated(EnumType.STRING)
+    ETableStatus useStatus;
 
     @ManyToOne
     @JoinColumn(name = "PARENT_MENU_ID")
@@ -40,7 +50,7 @@ public class Menu  extends BaseTimeEntity {
         this.parentMenu = parentMenu;
     }
 
-    @OneToMany(mappedBy = "parentMenu", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentMenu", fetch = FetchType.EAGER)
     List<Menu> menus = new ArrayList<>();
 
     @Builder
@@ -55,9 +65,10 @@ public class Menu  extends BaseTimeEntity {
     }
 
     public List<Menu> getMenus() {
-        if(menus.isEmpty()){
-            throw new IllegalArgumentException("서브메뉴가 없습니다.");
-        }
+//        if(menus.isEmpty()){
+////            throw new IllegalArgumentException("서브메뉴가 없습니다.");
+//            return menus.;
+//        }
         return menus;
     }
 }
