@@ -5,3 +5,9 @@ application-real-db.properties
 # Project exclude paths
 /build/
 /build/classes/java/main/
+
+
+/**/*.jsp
+/templates/**/*.jsp
+left_panel.jsp
+/module-studio/src/main/resources/templates/board/boardList.jsp
