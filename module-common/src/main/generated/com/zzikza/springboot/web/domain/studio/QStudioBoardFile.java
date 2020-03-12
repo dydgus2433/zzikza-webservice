@@ -22,7 +22,7 @@ public class QStudioBoardFile extends EntityPathBase<StudioBoardFile> {
 
     public static final QStudioBoardFile studioBoardFile = new QStudioBoardFile("studioBoardFile");
 
-    public final com.zzikza.springboot.web.domain.QFileAttribute _super = new com.zzikza.springboot.web.domain.QFileAttribute(this);
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
@@ -30,28 +30,7 @@ public class QStudioBoardFile extends EntityPathBase<StudioBoardFile> {
     //inherited
     public final StringPath deletedId = _super.deletedId;
 
-    //inherited
-    public final StringPath fileExt = _super.fileExt;
-
-    public final StringPath fileName = createString("fileName");
-
-    //inherited
-    public final NumberPath<Integer> fileOrder = _super.fileOrder;
-
-    //inherited
-    public final StringPath filePath = _super.filePath;
-
-    //inherited
-    public final NumberPath<Integer> fileSize = _super.fileSize;
-
-    //inherited
-    public final StringPath fileSourceName = _super.fileSourceName;
-
-    //inherited
-    public final EnumPath<com.zzikza.springboot.web.domain.enums.EFileStatus> fileStatus = _super.fileStatus;
-
-    //inherited
-    public final StringPath fileThumbPath = _super.fileThumbPath;
+    public final com.zzikza.springboot.web.domain.QFileAttribute file;
 
     public final StringPath id = createString("id");
 
@@ -87,6 +66,7 @@ public class QStudioBoardFile extends EntityPathBase<StudioBoardFile> {
 
     public QStudioBoardFile(Class<? extends StudioBoardFile> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.file = inits.isInitialized("file") ? new com.zzikza.springboot.web.domain.QFileAttribute(forProperty("file")) : null;
         this.studioBoard = inits.isInitialized("studioBoard") ? new QStudioBoard(forProperty("studioBoard"), inits.get("studioBoard")) : null;
     }
 

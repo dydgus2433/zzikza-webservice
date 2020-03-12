@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_user_req_fl")
-public class UserRequestFile  extends FileAttribute {
+public class UserRequestFile  extends BaseTimeEntity {
 
     @Id
     @Column(name = "REQ_FL_ID")
@@ -27,8 +27,13 @@ public class UserRequestFile  extends FileAttribute {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
 
-    @Column(name = "FL_NM")
-    String fileName;
+
+    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride(name = "TITLE", column = @Column(name = "")),
+//            @AttributeOverride(name = "CONTENT", column = @Column(name = ""))
+//    })
+    private FileAttribute file;
 
     @ManyToOne
     @JoinColumn(name = "REQ_ID")
@@ -36,7 +41,7 @@ public class UserRequestFile  extends FileAttribute {
 
     @Builder
     public UserRequestFile(String fileName) {
-        this.fileName = fileName;
+        this.file.fileName = fileName;
     }
 
     public void setUserRequest(UserRequest userRequest) {

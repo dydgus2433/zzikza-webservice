@@ -12,34 +12,14 @@ import com.querydsl.core.types.Path;
 /**
  * QBoardAttribute is a Querydsl query type for BoardAttribute
  */
-@Generated("com.querydsl.codegen.SupertypeSerializer")
-public class QBoardAttribute extends EntityPathBase<BoardAttribute> {
+@Generated("com.querydsl.codegen.EmbeddableSerializer")
+public class QBoardAttribute extends BeanPath<BoardAttribute> {
 
     private static final long serialVersionUID = 1805435375L;
 
     public static final QBoardAttribute boardAttribute = new QBoardAttribute("boardAttribute");
 
-    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
-
     public final StringPath content = createString("content");
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
-
-    //inherited
-    public final StringPath deletedId = _super.deletedId;
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
-
-    //inherited
-    public final StringPath modifiedId = _super.modifiedId;
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> registedDate = _super.registedDate;
-
-    //inherited
-    public final StringPath registedId = _super.registedId;
 
     public final StringPath title = createString("title");
 

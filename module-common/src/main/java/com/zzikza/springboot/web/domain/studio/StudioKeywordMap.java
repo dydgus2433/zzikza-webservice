@@ -4,11 +4,13 @@ import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor
 @Entity(name = "tb_stdo_keyword_map")
 public class StudioKeywordMap  extends BaseTimeEntity {
     @Id

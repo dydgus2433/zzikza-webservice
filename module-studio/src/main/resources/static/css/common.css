@@ -1,33 +1,35 @@
-body{
-	color: #607d8b;
+body {
+    color: #607d8b;
 }
 
-select{
-	color: #607d8b;
+select {
+    color: #607d8b;
 }
 
-.page-title h1{
-	font-weight: 600;
+.page-title h1 {
+    font-weight: 600;
 }
-.table-stats table td{
-	color: #607d8b;
+
+.table-stats table td {
+    color: #607d8b;
 }
 
 /* .nav .navbar-nav{ */
 /* 	font-size: smaller; */
 /* } */
 
-.datagrid-header tr{
-	
+.datagrid-header tr {
+
 }
-.datagrid-body tr{
-	cursor: pointer;
+
+.datagrid-body tr {
+    cursor: pointer;
 }
 
 .navbar .navbar-nav li > a {
-	font: smaller;	
+    font: smaller;
 }
 
-div.clearfix{
-	min-height: calc(937px - 146px);
+div.clearfix {
+    min-height: calc(937px - 146px);
 }

@@ -58,18 +58,14 @@ public class BannerRepositoryTest {
 
         BannerFile bannerFile = BannerFile.builder().fileName("파일명1").filePath("/test/").build();
         banner.addBannerFile(bannerFile);
-
         BannerMobileFile bannerMobileFile = BannerMobileFile.builder().fileName("파일명2").filePath("/test/").build();
         banner.addBannerMobileFile(bannerMobileFile);
 
         em.flush();
         em.clear();
 
-        //when
-        List<Banner> bannerList = bannerRepository.findAll();
-
         //then
-        Banner expectedBanner = bannerList.get(0);
+        Banner expectedBanner = bannerRepository.findById(banner.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오 아이디가 없습니다. "));
         assertThat(expectedBanner.getBannerFiles().get(0).getFileName()).isEqualTo("파일명1");
         assertThat(expectedBanner.getBannerMobileFiles().get(0).getFileName()).isEqualTo("파일명2");
     }
@@ -103,11 +99,10 @@ public class BannerRepositoryTest {
         em.clear();
 
         //when
-        List<Banner> bannerList = bannerRepository.findAll();
 
 
         //then
-        Banner expectedBanner = bannerList.get(0);
+        Banner expectedBanner = bannerRepository.findById(banner.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오 아이디가 없습니다. "));
         assertThat(expectedBanner.getBannerFiles().size()).isEqualTo(0);
         assertThat(expectedBanner.getBannerMobileFiles().get(0).getFileName()).isEqualTo("파일명2");
     }

@@ -64,6 +64,8 @@ public class QStudio extends EntityPathBase<Studio> {
 
     public final ListPath<StudioKeywordMap, QStudioKeywordMap> studioKeywordMaps = this.<StudioKeywordMap, QStudioKeywordMap>createList("studioKeywordMaps", StudioKeywordMap.class, QStudioKeywordMap.class, PathInits.DIRECT2);
 
+    public final StringPath studioName = createString("studioName");
+
     public final ListPath<StudioQuestion, QStudioQuestion> studioQuestions = this.<StudioQuestion, QStudioQuestion>createList("studioQuestions", StudioQuestion.class, QStudioQuestion.class, PathInits.DIRECT2);
 
     public QStudio(String variable) {

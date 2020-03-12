@@ -22,10 +22,11 @@ public class QStudioBoard extends EntityPathBase<StudioBoard> {
 
     public static final QStudioBoard studioBoard = new QStudioBoard("studioBoard");
 
-    public final com.zzikza.springboot.web.domain.QBoardAttribute _super = new com.zzikza.springboot.web.domain.QBoardAttribute(this);
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
 
-    //inherited
-    public final StringPath content = _super.content;
+    public final com.zzikza.springboot.web.domain.QBoardAttribute board;
+
+    public final EnumPath<com.zzikza.springboot.web.domain.enums.EBoardCategory> boardCategoryCode = createEnum("boardCategoryCode", com.zzikza.springboot.web.domain.enums.EBoardCategory.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> deleteDate = _super.deleteDate;
@@ -51,9 +52,6 @@ public class QStudioBoard extends EntityPathBase<StudioBoard> {
 
     public final ListPath<StudioBoardFile, QStudioBoardFile> studioBoardFiles = this.<StudioBoardFile, QStudioBoardFile>createList("studioBoardFiles", StudioBoardFile.class, QStudioBoardFile.class, PathInits.DIRECT2);
 
-    //inherited
-    public final StringPath title = _super.title;
-
     public QStudioBoard(String variable) {
         this(StudioBoard.class, forVariable(variable), INITS);
     }
@@ -72,6 +70,7 @@ public class QStudioBoard extends EntityPathBase<StudioBoard> {
 
     public QStudioBoard(Class<? extends StudioBoard> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.board = inits.isInitialized("board") ? new com.zzikza.springboot.web.domain.QBoardAttribute(forProperty("board")) : null;
         this.studio = inits.isInitialized("studio") ? new QStudio(forProperty("studio"), inits.get("studio")) : null;
     }
 

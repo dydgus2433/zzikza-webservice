@@ -10,11 +10,14 @@ import java.util.stream.Collectors;
 public class MenusListResponseDto {
     private String id;
     private String menuName;
+    private String menuUrl;
+    private boolean isStartsWisthUrl = false;
     private List<MenusListResponseDto> childrenMenus;
 
     public MenusListResponseDto(Menu entity){
         this.id = entity.getId();
         this.menuName = entity.getMenuName();
+        this.menuUrl = entity.getMenuUrl();
         this.childrenMenus = entity.getMenus().stream().map(MenusListResponseDto::new)
                 .collect(Collectors.toList());;
     }

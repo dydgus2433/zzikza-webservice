@@ -1,0 +1,88 @@
+        {{tot-page}}<!-- 조회 개수 -->
+        {{total-count}}<!-- 조회 개수 -->
+        {{now-page}}<!-- 현재 페이지 -->
+        {{page-size}}<!-- 페이징 넘버 개수 10-->
+        {{page-per-once}}<!-- 한화면에 출력할 목록 개수 10-->
+{{last-page-no}}
+<!--    ((totCount - 1) / pagePerOnce) + 1-->
+    {{page-offset}}
+<!--    ( (nowPage-1) / pageSize)-->
+    {{start-no}}
+<!--    pageOffset*pageSize +1-->
+    {{end-no}}
+<!--    pageOffset*pageSize + pageSize-->
+
+
+<!--  if(  endNo > lastPageNo )-->
+<!--    endNo = lastPageNo-->
+
+<!--    prevPage = 0-->
+<!--    nextPage = 0-->
+
+<!--    if( nowPage > 1)-->
+<!--    prevPage = nowPage-1-->
+
+<!--    if(nowPage < lastPageNo)-->
+<!--    nextPage = nowPage +1-->
+<script type="text/javascript">
+	function fn_movePage(pageNo) {
+		eval("{{paging-fnc}}" + "(" + pageNo +");");
+	}
+</script>
+
+{{#is-exist-total-count}}
+					<div class="tPages">
+						<ul class="pages">
+                            {{#is-prev-empty}}
+									<li class="prev">
+										<a href="javascript:void(0);"><img src="/images/common/prev02.png" alt="이전페이지로 이동"></a>
+									</li>
+									<li class="prev">
+										<a href="javascript:void(0);"><img src="/images/common/prev.png" alt="이전페이지로 이동"></a>
+									</li>
+                            {{/is-prev-empty}}
+                            {{^is-prev-empty}}
+									<li class="prev">
+										<a href="javascript:fn_movePage('1');"><img src="/images/common/prev02.png" alt="이전페이지로 이동"></a>
+									</li>
+									<li class="prev">
+										<a href="javascript:fn_movePage('{{prev-page }}');"><img src="/images/common/prev.png" alt="이전페이지로 이동"></a>
+									</li>
+                            {{/is-prev-empty}}
+
+                            <!--
+
+                            -->
+                            {{#pageList}}
+                                {{#now-active}}
+                                    <li class="active">
+                                        <a href="javascript:void('0');"><span>{{idx }}</span></a>
+                                    </li>
+                                {{/now-active}}
+                                {{^now-active}}
+                                    <li>
+                                        <a href="javascript:fn_movePage('{{idx }}');">{{idx }}</a>
+                                    </li>
+                                {{/now-active}}
+
+                            {{/pageList}}
+
+                            {{#is-next-empty}}
+                                <li class="next">
+                                    <a href="javascript:void(0);"><img src="/images/common/next.png" alt="다음페이지로 이동"></a>
+                                </li>
+                                <li class="next">
+                                    <a href="javascript:void(0);"><img src="/images/common/next02.png" alt="다음페이지로 이동"></a>
+                                </li>
+                            {{/is-next-empty}}
+                            {{^is-next-empty}}
+                                <li class="next">
+                                    <a href="javascript:fn_movePage('{{nextPage }}');"><img src="/images/common/next.png" alt="다음페이지로 이동"></a>
+                                </li>
+                                <li class="next">
+                                    <a href="javascript:fn_movePage('{{lastPageNo }}');"><img src="/images/common/next02.png" alt="다음페이지로 이동"></a>
+                                </li>
+                            {{/is-next-empty}}
+						</ul>
+					</div>
+{{/is-exist-total-count}}

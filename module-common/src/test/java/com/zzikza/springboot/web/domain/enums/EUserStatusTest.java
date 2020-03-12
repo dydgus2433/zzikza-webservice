@@ -15,8 +15,8 @@ public class EUserStatusTest {
 
         //given
         List<EnumModel> enumModels = new ArrayList<>();
-        enumModels.add(EUserStatus.삭제);
-        enumModels.add(EUserStatus.정상);
+        enumModels.add(EUserStatus.N);
+        enumModels.add(EUserStatus.Y);
         //when
 
         //then

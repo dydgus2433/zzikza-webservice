@@ -1,20 +1,18 @@
 package com.zzikza.springboot.web.domain;
 
-import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Embeddable;
 
 @Getter
-@MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
-public class BoardAttribute extends BaseTimeEntity{
+@Setter
+@Embeddable
+public class BoardAttribute {
 
-    @Column
+    @Column(name = "TITLE")
     protected String title;
-    @Column
+    @Column(name = "CONTENT" ,columnDefinition="TEXT" )
     protected String content;
 }

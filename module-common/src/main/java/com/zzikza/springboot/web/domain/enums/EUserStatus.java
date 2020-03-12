@@ -1,8 +1,8 @@
 package com.zzikza.springboot.web.domain.enums;
 
 public enum EUserStatus implements EnumModel{
-    삭제("N"),
-    정상("Y");
+    N("삭제"),
+    Y("정상");
     String value;
     EUserStatus(String value) {
         this.value = value;

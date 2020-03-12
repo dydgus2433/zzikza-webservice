@@ -9,11 +9,13 @@ import lombok.NoArgsConstructor;
 public class StudioResponseDto {
     private String id;
     private String studioId;
+    public String studioName;
     private String accountStatus;
 
     public StudioResponseDto(Studio entity){
         this.id = entity.getId();
         this.studioId = entity.getStudioId();
         this.accountStatus = entity.getAccountStatus();
+        this.studioName = entity.getStudioName();
     }
 }

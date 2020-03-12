@@ -22,7 +22,7 @@ public class MenuServiceTest {
 
         //given
         //when
-        List<MenusListResponseDto> menuList = menuService.findAllDepth1();
+        List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNull();
         int count = 0;
 		for (MenusListResponseDto menu : menuList) {
 

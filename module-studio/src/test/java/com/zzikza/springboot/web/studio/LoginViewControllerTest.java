@@ -52,8 +52,7 @@ public class LoginViewControllerTest {
     }
 
     @Test
-    public void findPasswordPage() {
-
+    public void 비밀번호찾기_페이지() {
         //given
         String body = this.restTemplate.getForObject("/findPassword", String.class);
         //then
@@ -61,8 +60,7 @@ public class LoginViewControllerTest {
     }
 
     @Test
-    public void findIdPage() {
-
+    public void 아이디찾기_페이지() {
         //given
         String body = this.restTemplate.getForObject("/findId", String.class);
         //then

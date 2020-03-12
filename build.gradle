@@ -13,6 +13,9 @@ buildscript {
         classpath "io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE"
         classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}"
     }
+
+
+
 }
 
 allprojects {
@@ -47,6 +50,13 @@ subprojects {
             }
         }
     }
+
+    dependencyManagement {
+        imports {
+            mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.228'
+        }
+    }
+
     dependencies {
         testCompile group: 'junit', name: 'junit', version: '4.12'
     }

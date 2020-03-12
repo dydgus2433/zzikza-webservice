@@ -3,5 +3,4 @@ include 'module-api'
 include 'module-studio'
 include 'module-client'
 include 'module-common'
-include 'module-common'
 

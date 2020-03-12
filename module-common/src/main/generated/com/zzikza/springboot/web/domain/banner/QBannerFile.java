@@ -22,7 +22,7 @@ public class QBannerFile extends EntityPathBase<BannerFile> {
 
     public static final QBannerFile bannerFile = new QBannerFile("bannerFile");
 
-    public final com.zzikza.springboot.web.domain.QFileAttribute _super = new com.zzikza.springboot.web.domain.QFileAttribute(this);
+    public final com.zzikza.springboot.web.domain.QBaseTimeEntity _super = new com.zzikza.springboot.web.domain.QBaseTimeEntity(this);
 
     public final QBanner banner;
 
@@ -32,29 +32,7 @@ public class QBannerFile extends EntityPathBase<BannerFile> {
     //inherited
     public final StringPath deletedId = _super.deletedId;
 
-    //inherited
-    public final StringPath fileExt = _super.fileExt;
-
-    //inherited
-    public final StringPath fileName = _super.fileName;
-
-    //inherited
-    public final NumberPath<Integer> fileOrder = _super.fileOrder;
-
-    //inherited
-    public final StringPath filePath = _super.filePath;
-
-    //inherited
-    public final NumberPath<Integer> fileSize = _super.fileSize;
-
-    //inherited
-    public final StringPath fileSourceName = _super.fileSourceName;
-
-    //inherited
-    public final EnumPath<com.zzikza.springboot.web.domain.enums.EFileStatus> fileStatus = _super.fileStatus;
-
-    //inherited
-    public final StringPath fileThumbPath = _super.fileThumbPath;
+    public final com.zzikza.springboot.web.domain.QFileAttribute file;
 
     public final StringPath id = createString("id");
 
@@ -89,6 +67,7 @@ public class QBannerFile extends EntityPathBase<BannerFile> {
     public QBannerFile(Class<? extends BannerFile> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.banner = inits.isInitialized("banner") ? new QBanner(forProperty("banner")) : null;
+        this.file = inits.isInitialized("file") ? new com.zzikza.springboot.web.domain.QFileAttribute(forProperty("file")) : null;
     }
 
 }

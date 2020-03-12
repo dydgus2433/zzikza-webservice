@@ -33,6 +33,9 @@ public class Studio  extends BaseTimeEntity {
     @Column(name = "STDO_ID", unique = true)
     String studioId;
 
+    @Column(name = "STDO_NM", unique = true)
+    String studioName;
+
     @Column(name = "PW")
     String password;
 
@@ -40,10 +43,11 @@ public class Studio  extends BaseTimeEntity {
     String accountStatus;
 
     @OneToOne
-    @JoinColumn(name = "STDO_DTL_ID", nullable = false)
+//    @JoinColumn(name = "STDO_DTL_ID", nullable = false)
+    @JoinColumn(name = "STDO_DTL_ID")
     StudioDetail studioDetail;
 
-    @OneToMany(mappedBy = "studio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<StudioKeywordMap> studioKeywordMaps = new ArrayList<>();
 
     @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -71,9 +75,10 @@ public class Studio  extends BaseTimeEntity {
 
 
     @Builder
-    public Studio(String studioId, String password, String accountStatus, StudioDetail studioDetail) {
+    public Studio(String studioId, String password,String studioName, String accountStatus, StudioDetail studioDetail) {
         this.studioId = studioId;
         this.password = password;
+        this.studioName = studioName;
         this.accountStatus = accountStatus;
         this.studioDetail = studioDetail;
     }

@@ -1,0 +1,56 @@
+<script type="text/javascript">
+	function fn_movePage(pageNo) {
+		eval("{{paging-fnc}}" + "(" + pageNo +");");
+	}
+</script>
+{{#is-paging}}
+					<div class="tPages">
+						<ul class="pages">
+                            {{#is-fisrt}}
+									<li class="prev">
+										<a href="javascript:void(0);"><img src="/images/common/prev02.png" alt="이전페이지로 이동"></a>
+									</li>
+									<li class="prev">
+										<a href="javascript:void(0);"><img src="/images/common/prev.png" alt="이전페이지로 이동"></a>
+									</li>
+                            {{/is-fisrt}}
+                            {{^is-fisrt}}
+									<li class="prev">
+										<a href="javascript:fn_movePage('1');"><img src="/images/common/prev02.png" alt="이전페이지로 이동"></a>
+									</li>
+									<li class="prev">
+										<a href="javascript:fn_movePage('{{prev-page }}');"><img src="/images/common/prev.png" alt="이전페이지로 이동"></a>
+									</li>
+                            {{/is-fisrt}}
+                            {{#pageList}}
+                                {{#now-active}}
+                                    <li class="active">
+                                        <a href="javascript:void('0');"><span>{{idx }}</span></a>
+                                    </li>
+                                {{/now-active}}
+                                {{^now-active}}
+                                    <li>
+                                        <a href="javascript:fn_movePage('{{idx }}');">{{idx }}</a>
+                                    </li>
+                                {{/now-active}}
+                            {{/pageList}}
+                            {{#has-next}}
+                                <li class="next">
+                                    <a href="javascript:fn_movePage('{{next-page }}');"><img src="/images/common/next.png" alt="다음페이지로 이동"></a>
+                                </li>
+                                <li class="next">
+                                    <a href="javascript:fn_movePage('{{last-page-no }}');"><img src="/images/common/next02.png" alt="다음페이지로 이동"></a>
+                                </li>
+                            {{/has-next}}
+                            {{^has-next}}
+                                <li class="next">
+                                    <a href="javascript:void(0);"><img src="/images/common/next.png" alt="다음페이지로 이동"></a>
+                                </li>
+                                <li class="next">
+                                    <a href="javascript:void(0);"><img src="/images/common/next02.png" alt="다음페이지로 이동"></a>
+                                </li>
+                            {{/has-next}}
+
+						</ul>
+					</div>
+{{/is-paging}}

@@ -1,19 +1,23 @@
 package com.zzikza.springboot.web.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
+@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseTimeEntity {
+public abstract class BaseTimeEntity {
 
     @Column(name = "REG_ID")
     protected  String registedId;
@@ -23,17 +27,22 @@ public class BaseTimeEntity {
     protected String deletedId;
 
     @CreatedDate
-    @Column(name = "REG_DT")
+    @Column(name = "REG_DT", updatable = false)
     private LocalDateTime registedDate;
+
 
     @LastModifiedDate
     @Column(name = "MOD_DT")
     private LocalDateTime modifiedDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(name = "DEL_DT")
     protected LocalDateTime deleteDate;
 
-    public void setRegistedId(String registedId) {
-        this.registedId = registedId;
+    public String getCreatedDate(){
+        if(registedDate == null){
+            return "";
+        }
+        return registedDate.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm"));
     }
 }

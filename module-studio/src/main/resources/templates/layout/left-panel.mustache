@@ -3,22 +3,45 @@
 	<button type="button" class="all_close">닫기</button>
 	<div class="snb_menu_area">
 		<ul class="snb_menu">
+            {{#sessionVo}}
 			<li class="snb_logout"><a href="/logout?returl=/"  target="_parent">로그아웃</a></li>
             {{#menuList}}
                 <li>
-                    <a href="#">{{menuNm}}</a>
-                    <ul class="snb_menu_s" >
+                    <a href="#">{{menuName}}</a>
+                    <ul class="snb_menu_s" url="{{menuUrl}}" style='display:none'>
 <!--                    <c:if test="${!fn:startsWith(path, item.menuUrl)}">style='display:none'</c:if>-->
-                        {{#menus}}
-                        <li class="fa  {{menuIcon}}">
-                        <a class="active" href="{{menuUrl}}">{{menuNm}}</a>
+                        {{#childrenMenus}}
+                        <li class="fa  {{!menuIcon}}">
+                        <a class="snb_menu_depth2 " href="{{menuUrl}}">{{menuName}}</a>
                         </li>
-                        {{/menus}}
+                        {{/childrenMenus}}
                     </ul>
                 </li>
 
             {{/menuList}}
+            {{/sessionVo}}
 		</ul>
 	</div>
 </div>
 <!--// snb_area -->
+ <script>
+     let path = location.pathname; // uri
+     // ul.snb_menu_s 의 attr이 url인것과 비요
+     let arr = document.querySelectorAll("ul.snb_menu_s");
+     for(let i =0; i < arr.length; i++){
+         let url = arr[i].getAttribute("url");
+         let isStartsWith = path.startsWith(url);
+         if(isStartsWith){
+             arr[i].setAttribute("style", "display:block;");
+             let subArr = arr[i].querySelectorAll("a.snb_menu_depth2");
+             for(let j =0; j < subArr.length; j++){
+                 let href = subArr[j].getAttribute("href");
+                 if(href === path){
+                     subArr[j].classList.add("active");
+                     break;
+                 }
+             }
+
+         }
+     }
+ </script>

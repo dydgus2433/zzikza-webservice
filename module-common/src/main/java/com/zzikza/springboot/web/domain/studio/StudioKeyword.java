@@ -4,11 +4,14 @@ package com.zzikza.springboot.web.domain.studio;
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
-
+@Getter
+@NoArgsConstructor
 @Entity(name = "tb_stdo_keyword")
 public class StudioKeyword  extends BaseTimeEntity {
     @Id

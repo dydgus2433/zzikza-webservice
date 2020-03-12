@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.domain.studio;
 
+import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_stdo_fl")
-public class StudioFile extends FileAttribute {
+public class StudioFile extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_FL_ID")
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
@@ -24,8 +25,13 @@ public class StudioFile extends FileAttribute {
             @org.hibernate.annotations.Parameter(name = "prefix_key", value = "STF"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-    @Column
-    String fileName;
+
+    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride(name = "TITLE", column = @Column(name = "")),
+//            @AttributeOverride(name = "CONTENT", column = @Column(name = ""))
+//    })
+    private FileAttribute file;
 
     @ManyToOne
     @JoinColumn(name = "STDO_SEQ")
@@ -33,7 +39,7 @@ public class StudioFile extends FileAttribute {
 
     @Builder
     public StudioFile(String fileName, Studio studio) {
-        this.fileName = fileName;
+        this.file.fileName = fileName;
         this.studio = studio;
     }
 
@@ -48,4 +54,7 @@ public class StudioFile extends FileAttribute {
         this.studio = studio;
     }
 
+    public String getFileName() {
+        return this.file.getFileName();
+    }
 }

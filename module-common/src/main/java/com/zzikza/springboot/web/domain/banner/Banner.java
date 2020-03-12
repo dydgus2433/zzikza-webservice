@@ -49,7 +49,7 @@ public class Banner extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "SHOW_STAT_CD")
-    EShowStatus showStatus;
+    public EShowStatus showStatus;
 
     @OneToMany(mappedBy = "banner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<BannerFile> bannerFiles = new ArrayList<>();
