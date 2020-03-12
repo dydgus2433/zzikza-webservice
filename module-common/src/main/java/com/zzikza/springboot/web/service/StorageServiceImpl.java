@@ -6,8 +6,10 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.zzikza.springboot.web.domain.FileAttribute;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +27,8 @@ import java.util.stream.Stream;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-    private static final int NOT_FOUND = -1;
     public static final char EXTENSION_SEPARATOR = '.';
+    private static final int NOT_FOUND = -1;
     /**
      * The Unix separator character.
      */
@@ -54,6 +56,15 @@ public class StorageServiceImpl implements StorageService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
+    public static int indexOfLastSeparator(final String filename) {
+        if (filename == null) {
+            return NOT_FOUND;
+        }
+        final int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
+        final int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
+        return Math.max(lastUnixPos, lastWindowsPos);
+    }
+
     @PostConstruct
     public void setS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
@@ -62,7 +73,6 @@ public class StorageServiceImpl implements StorageService {
                 .withRegion(this.region)
                 .build();
     }
-
 
     @Override
     public void init() {
@@ -113,16 +123,19 @@ public class StorageServiceImpl implements StorageService {
             */
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
-            s3Client.putObject(new PutObjectRequest(bucket, FILE_PATH + randomName, file.getInputStream(), objectMetadata));
+            PutObjectResult putObjectResult = s3Client.putObject(
+                    new PutObjectRequest(bucket, FILE_PATH + randomName, file.getInputStream(), objectMetadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead)
+            );
         } catch (AmazonClientException | IOException e) {
-          throw e;
+            throw e;
         }
         FileAttribute fileAttribute = new FileAttribute();
         fileAttribute.setFileName(randomName);
         fileAttribute.setFileExt(ext);
-        fileAttribute.setFileSourceName(fileName);
-        fileAttribute.setFileName(fileName);
-        fileAttribute.setFilePath(FILE_PATH);
+        fileAttribute.setFileSourceName(file.getOriginalFilename());
+        fileAttribute.setFilePath(s3Client.getUrl(bucket, FILE_PATH + randomName).toString());
+        fileAttribute.setFileSize(file.getSize());
         return fileAttribute;
     }
 
@@ -137,6 +150,7 @@ public class StorageServiceImpl implements StorageService {
             return filename.substring(index + 1);
         }
     }
+
     public int indexOfExtension(final String filename) {
         if (filename == null) {
             return NOT_FOUND;
@@ -144,13 +158,5 @@ public class StorageServiceImpl implements StorageService {
         final int extensionPos = filename.lastIndexOf(EXTENSION_SEPARATOR);
         final int lastSeparator = indexOfLastSeparator(filename);
         return lastSeparator > extensionPos ? NOT_FOUND : extensionPos;
-    }
-    public static int indexOfLastSeparator(final String filename) {
-        if (filename == null) {
-            return NOT_FOUND;
-        }
-        final int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
-        final int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
-        return Math.max(lastUnixPos, lastWindowsPos);
     }
 }

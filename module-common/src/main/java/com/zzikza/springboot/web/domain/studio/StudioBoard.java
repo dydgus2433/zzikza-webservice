@@ -13,6 +13,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity(name = "tb_stdo_brd")
 public class StudioBoard extends BaseTimeEntity {
     @Id

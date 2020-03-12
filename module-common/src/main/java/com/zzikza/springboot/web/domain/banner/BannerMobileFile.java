@@ -39,7 +39,7 @@ public class BannerMobileFile extends BaseTimeEntity {
     Banner banner;
 
     @Builder
-    public BannerMobileFile(String fileName, String fileSourceName, int fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
+    public BannerMobileFile(String fileName, String fileSourceName, Long fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
         FileAttribute fileAttribute = new FileAttribute();
         fileAttribute.fileName = fileName;
         fileAttribute.fileSourceName = fileSourceName;

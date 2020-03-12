@@ -1,4 +1,4 @@
-package com.zzikza.springboot.web.domain.banner;
+package com.zzikza.springboot.web.domain.editor;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.FileAttribute;
@@ -13,33 +13,26 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "tb_adv_fl")
-public class BannerFile extends BaseTimeEntity {
+@Entity
+@Table(name = "tb_edit_fl")
+public class EditorFile extends BaseTimeEntity {
+
     @Id
-    @Column(name = "ADV_FL_ID")
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
+    @Column(name = "EDIT_FL_ID")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
             @org.hibernate.annotations.Parameter(name = "segment_column_name", value = "name"),
-            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_adv_fl"),
-            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "TAF"),
+            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_edit_fl"),
+            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "EDT"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-
     @Embedded
-//    @AttributeOverrides({
-//            @AttributeOverride(name = "TITLE", column = @Column(name = "")),
-//            @AttributeOverride(name = "CONTENT", column = @Column(name = ""))
-//    })
     private FileAttribute file;
 
-    @ManyToOne
-    @JoinColumn(name = "ADV_ID")
-    Banner banner;
-
     @Builder
-    public BannerFile(String fileName, String fileSourceName, Long fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
+    public EditorFile(String fileName, String fileSourceName, Long fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
         FileAttribute fileAttribute = new FileAttribute();
         fileAttribute.fileName = fileName;
         fileAttribute.fileSourceName = fileSourceName;
@@ -51,11 +44,11 @@ public class BannerFile extends BaseTimeEntity {
         this.file = fileAttribute;
     }
 
-    public void setBanner(Banner banner) {
-        this.banner = banner;
-    }
-
     public String getFileName() {
         return this.file.getFileName();
+    }
+
+    public String getFilePath() {
+        return this.file.getFilePath();
     }
 }

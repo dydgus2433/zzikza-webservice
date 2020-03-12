@@ -46,7 +46,7 @@ public class StudioBoardFile extends BaseTimeEntity {
     }
 
     @Builder
-    public StudioBoardFile(String fileName, String fileSourceName, int fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
+    public StudioBoardFile(String fileName, String fileSourceName, Long fileSize, String fileExt, String filePath, int fileOrder, EFileStatus fileStatus) {
         this.file.fileName = fileName;
         this.file.fileSourceName = fileSourceName;
         this.file.fileSize = fileSize;

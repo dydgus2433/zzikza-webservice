@@ -27,17 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserRepositoryTest {
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired
     StudioRepository studioRepository;
-
     @Autowired
     UserRepository userRepository;
-
-
-
+    @PersistenceContext
+    private EntityManager em;
 
     @Test
     @Transactional
@@ -88,10 +83,10 @@ public class UserRepositoryTest {
         em.flush();
         em.clear();
         //when
-        Studio expected =  studioRepository.findById(studio.getId()).orElseThrow(IllegalAccessError::new);
+        Studio expected = studioRepository.findById(studio.getId()).orElseThrow(IllegalAccessError::new);
         //then
-        assertThat(userRepository.findById(user.getId()).orElseThrow(()->new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().size()).isEqualTo(1);
-        assertThat(userRepository.findById(user.getId()).orElseThrow(()->new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().get(0).getUserRequestProducts().get(0).getProduct()).isEqualTo(expected.getProducts().get(0));
+        assertThat(userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().size()).isEqualTo(1);
+        assertThat(userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().get(0).getUserRequestProducts().get(0).getProduct()).isEqualTo(expected.getProducts().get(0));
     }
 
     @Test
@@ -171,8 +166,8 @@ public class UserRepositoryTest {
         /*
         예약된 상품 등록 아 상품이 아니라 예약이 등록되는 거구나
          */
-        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
-        User expectedUser = userRepository.findById(user.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
+        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
+        User expectedUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
         //then
         assertThat(expectedStudio.getReservations().get(0)).isEqualTo(expectedUser.getReservations().get(0));
         assertThat(expectedStudio.getReservations().get(0).getPayment().getRealPrice()).isEqualTo(expectedUser.getReservations().get(0).getPayment().getRealPrice());
@@ -223,8 +218,8 @@ public class UserRepositoryTest {
         /*
         예약된 상품 등록 아 상품이 아니라 예약이 등록되는 거구나
          */
-        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
-        User expectedUser = userRepository.findById(user.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
+        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
+        User expectedUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
         //then
         assertThat(expectedStudio.getReservations().get(0)).isEqualTo(expectedUser.getReservations().get(0));
         assertThat(expectedStudio.getReservations().get(0).getPayment().getRealPrice()).isEqualTo(expectedUser.getReservations().get(0).getPayment().getRealPrice());
@@ -278,8 +273,8 @@ public class UserRepositoryTest {
         /*
         예약된 상품 등록 아 상품이 아니라 예약이 등록되는 거구나
          */
-        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
-        User expectedUser = userRepository.findById(user.getId()).orElseThrow(()-> new IllegalArgumentException("아이디X"));
+        Studio expectedStudio = studioRepository.findById(studio.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
+        User expectedUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디X"));
         //then
         assertThat(expectedStudio.getReservations().get(0)).isEqualTo(expectedUser.getReservations().get(0));
         assertThat(expectedStudio.getReservations().get(0).getPayment().getRealPrice()).isEqualTo(expectedUser.getReservations().get(0).getPayment().getRealPrice());

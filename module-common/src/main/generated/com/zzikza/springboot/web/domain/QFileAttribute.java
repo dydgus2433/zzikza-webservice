@@ -27,7 +27,7 @@ public class QFileAttribute extends BeanPath<FileAttribute> {
 
     public final StringPath filePath = createString("filePath");
 
-    public final NumberPath<Integer> fileSize = createNumber("fileSize", Integer.class);
+    public final NumberPath<Long> fileSize = createNumber("fileSize", Long.class);
 
     public final StringPath fileSourceName = createString("fileSourceName");
 

@@ -3,18 +3,21 @@ package com.zzikza.springboot.web.dto;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@Setter
 @Getter
 @NoArgsConstructor
-public class StudioResponseDto implements Serializable {
+public class StudioSessionDto implements Serializable {
     private String id;
     private String studioId;
     public String studioName;
     private String accountStatus;
 
-    public StudioResponseDto(Studio entity){
+
+    public StudioSessionDto(Studio entity){
         this.id = entity.getId();
         this.studioId = entity.getStudioId();
         this.accountStatus = entity.getAccountStatus();

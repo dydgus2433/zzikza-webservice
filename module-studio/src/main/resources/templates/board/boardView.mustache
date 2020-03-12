@@ -1,0 +1,111 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+{{>layout/header}}
+<div class="container">
+    {{>layout/left-panel}}
+    <!-- 본문자리 -->
+    <div class="left_content_area">
+        <div class="left_content_head">
+            <h2 class="sub_tit">게시판</h2>
+        </div>
+        <div class="inner">
+            <ul class="tabs">
+                {{#commonCodes}}
+                    <li><a href="/board/{{commCd}}"  {{#selected}}class='active'{{/selected}}>
+                        {{commCdNm}}
+                    </a></li>
+                {{/commonCodes}}
+            </ul>
+            <div class="box_area full">
+                <h3 class="sub_stit">{{#commonCode}}{{commCdNm}}{{/commonCode}}</h3>
+                <table class="tView">
+                    <caption>{{#commonCode}}{{commCdNm}}{{/commonCode}} 상세내용입니다</caption>
+                    <colgroup>
+                        <col style="width:100px">
+                        <col style="">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            {{#board}}
+                                {{title}}
+
+                                <p class="date">
+                                    {{createdDate}}
+                                </p>
+                            {{/board}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#files}}
+
+                        <tr>
+                            <td colspan="2" class="file">
+                                {{#file}}
+                                <p class="file_name">
+
+                                    <a href="/api/fileDownload?fileName={{fileName}}&originName={{fileSourceName}}">
+                                    {{fileSourceName}}
+                                    </a>
+
+                                </p>
+                                {{/file}}
+                            </td>
+
+                        </tr>
+
+                    {{/files}}
+
+                    <tr>
+                        <td colspan="2" >{{#board}}{{#content}}{{{content}}}{{/content}}{{/board}}</td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>이전글<i></i></th>
+                        {{#prev}}
+                            <td><a href="/board/{{brdCateCd}}/view/{{id}}">{{title }}</a></td>
+                        {{/prev}}
+                        {{^prev}}
+                            <td><a href="javascript:void(0);">이전글이 없습니다</a></td>
+                        {{/prev}}
+                    </tr>
+                    <tr>
+                        <th>다음글<i></i></th>
+                        {{#next}}
+                            <td><a href="/board/{{brdCateCd}}/view/{{id}}">{{title }}</a></td>
+                        {{/next}}
+                        {{^next}}
+                            <td><a href="javascript:void(0);">다음글이 없습니다</a></td>
+                        {{/next}}
+                    </tr>
+                    </tfoot>
+                </table>
+                <div class="btn_area right">
+                    <button type="button" class="btn_form" id="listBtn">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--// left_area -->
+    <script src="/js/board/boardView.js"></script>
+    <!-- 본문자리 -->
+    <script>
+
+        let brdCateCd = '{{brdCateCd}}';
+    </script>
+</div>
+
+
+<!-- popup -->
+<div id="popup"></div>
+<!--// popup -->
+</body>
+</html>

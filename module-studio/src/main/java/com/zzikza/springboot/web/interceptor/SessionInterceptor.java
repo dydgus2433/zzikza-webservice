@@ -1,6 +1,5 @@
 package com.zzikza.springboot.web.interceptor;
 
-import com.zzikza.springboot.web.dto.MenusListResponseDto;
 import com.zzikza.springboot.web.dto.StudioResponseDto;
 import com.zzikza.springboot.web.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class SessionInterceptor implements HandlerInterceptor {

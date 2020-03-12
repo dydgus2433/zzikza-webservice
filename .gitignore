@@ -12,7 +12,6 @@ application-real-path.properties
 /templates/**/*.jsp
 /**/templates/**/*.jsp
 /module-studio/src/main/resources/templates/**/**.jsp
-/module-common/src/main/resources/application-real-path.properties
 /module-common/src/main/generated/com/zzikza/springboot/web/domain/
 module-api/build/
 module-api/src/main/generated/

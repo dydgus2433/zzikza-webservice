@@ -29,15 +29,15 @@ function selectLocalImage() {
         $.ajax({
             type: 'post',
             enctype: 'multipart/form-data',
-            url: '/api/insertEditorImage',
+            url: '/api/editor-image',
             data: fd,
             processData: false,
             contentType: false,
-//				 beforeSend : function(xhr){
-//					 xhr.setRequestHeader($("#_csrf_header").val(), $("#_csrf").val());
-//				 },
         }).done(function (data) {
-            quill.insertEmbed(quill.getLength(), 'image',  '/img/editor/' + data.flNm);
+            if(data.success){
+                quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
+            }
+
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.error('FAIL REQUEST: ', textStatus);
             alert('처리중 오류가 발생하였습니다.');
