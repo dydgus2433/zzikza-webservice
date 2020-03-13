@@ -19,9 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -55,38 +53,23 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public Stream<Path> loadAll() {
-        return null;
-    }
-
-    @Override
-    public Path load(String filename) {
-        return null;
-    }
-
-    @Override
     public Resource loadAsResource(String filePath) throws IOException {
 
-        S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucket , FILE_PATH + filePath));
+        S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucket, FILE_PATH + filePath));
         S3ObjectInputStream s3ObjectInputStream = s3Object.getObjectContent();
 
-        byte[] bytes =  IOUtils.toByteArray(s3ObjectInputStream);
+        byte[] bytes = IOUtils.toByteArray(s3ObjectInputStream);
         Resource resource = new ByteArrayResource(bytes);
         return resource;
     }
 
     @Override
-    public void deleteAll() {
-
+    public void delete(String fileName) {
+        s3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 
     @Override
-    public FileAttribute fileUpload(MultipartFile file) throws IOException, AmazonClientException{
+    public FileAttribute fileUpload(MultipartFile file) throws IOException, AmazonClientException {
         FileAttribute fileAttribute = getMultipartFileToFileAttribute(file);
 
         String randomName = getRandomFileName(file);
@@ -110,10 +93,11 @@ public class StorageServiceImpl implements StorageService {
 
     /**
      * 확장자 포함된 파일 이름 반환
+     *
      * @param file
      * @return
      */
-    private String getRandomFileName(MultipartFile file){
+    private String getRandomFileName(MultipartFile file) {
         String uid = UUID.randomUUID().toString();
         String fileName = file.getOriginalFilename();
         String ext = FileNameUtil.getExtension(fileName);
@@ -127,7 +111,7 @@ public class StorageServiceImpl implements StorageService {
      * @param file
      * @return
      */
-    private FileAttribute getMultipartFileToFileAttribute(MultipartFile file){
+    private FileAttribute getMultipartFileToFileAttribute(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         String ext = FileNameUtil.getExtension(fileName);
         FileAttribute fileAttribute = new FileAttribute();
