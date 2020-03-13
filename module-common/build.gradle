@@ -5,8 +5,8 @@ jar {
     enabled = true
 }
 dependencies {
-    compile('com.querydsl:querydsl-apt')
-    compile('com.querydsl:querydsl-jpa')
+//    compile('com.querydsl:querydsl-apt')
+//    compile('com.querydsl:querydsl-jpa')
     compile('org.springframework:spring-webmvc')
     compile('org.projectlombok:lombok')
     compile('org.mariadb.jdbc:mariadb-java-client')

@@ -37,7 +37,7 @@ public class StudioService {
     }
 
     @Transactional
-    public StudioBoardResponseDto saveStudioBoardWithFiles(StudioBoardRequestDto studioBoardDto, MultipartRequest httpServletRequest) throws IOException, InterruptedException {
+    public StudioBoardResponseDto saveStudioBoardWithFiles(StudioBoardRequestDto studioBoardDto, MultipartRequest httpServletRequest) throws IOException {
         Studio studio = studioRepository.findById(studioBoardDto.getStudioSeq()).orElseThrow(() -> new IllegalArgumentException("권한이 없습니다."));
 
         StudioBoard studioBoard = studioBoardDto.toEntity();
@@ -53,8 +53,6 @@ public class StudioService {
                 studioBoardFileRepository.save(studioBoardFile);
             } catch (IOException e) {
                 throw new IOException("파일업로드에 실패했습니다.");
-            } catch (InterruptedException e) {
-                throw e;
             }
         }
         studioBoardRepository.save(studioBoard);

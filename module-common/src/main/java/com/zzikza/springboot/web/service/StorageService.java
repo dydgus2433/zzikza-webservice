@@ -1,8 +1,9 @@
 package com.zzikza.springboot.web.service;
+
 import com.zzikza.springboot.web.domain.FileAttribute;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -16,7 +17,7 @@ public interface StorageService {
 
     Path load(String filename);
 
-    Resource loadAsResource(String filename);
+    Resource loadAsResource(String filePath) throws IOException;
 
     void deleteAll();
 
