@@ -325,12 +325,15 @@ function fileUploadSetting() {
         },
 
         done: function (e, data) {
-            const id = "img_id_" + data.result.stdoDtlFlId;
+            // data.result.data.filePath;
+            // data.result.data.fileName
+
+            const id = "img_id_" + data.result.data.id;
             $("#sortable li:last").remove();
-            const html = "<li index=\"" + data.result.stdoDtlFlId + "\" id=\"" + id + "\">"
+            const html = "<li index=\"" + data.result.data.id + "\" id=\"" + id + "\">"
                 + "<div class=\"img_area\" >"
                 + "<button type=\"button\" class=\"btn_del_img\">삭제</button>"
-                + "<img src=\"" + "/img/thumb/" + data.result.flNm + "\" data-file='" + data.result.flSrcNm + "' onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
+                + "<img src=\"" + data.result.data.filePath + "\" data-file='" + data.result.data.fileName + "' onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
                 + "</div>"
                 + "<div class=\"text\">0</div>"
                 + "</li>";
@@ -340,9 +343,9 @@ function fileUploadSetting() {
         },
         progress: function (e, data) {
             // 검사하자
-            var index = data.originalFiles.indexOf(data.files[0]);
+            const index = data.originalFiles.indexOf(data.files[0]);
 
-            var id = "img_id_" + index;
+            const id = "img_id_" + index;
             if (indexes.indexOf(index) > -1) {
             } else {
                 indexes.push(index);

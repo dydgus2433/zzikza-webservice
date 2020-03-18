@@ -21,17 +21,12 @@ public class StudioService {
 
 
     private final StudioRepository studioRepository;
-
     private final StudioBoardRepository studioBoardRepository;
-
     private final StudioBoardFileRepository studioBoardFileRepository;
-
+    private final StudioFileRepository studioFileRepository;
     private final StudioHolidayRepository studioHolidayRepository;
-
     private final StudioKeywordRepository studioKeywordRepository;
-
     private final StudioKeywordMapRepository studioKeywordMapRepository;
-
     private final StorageServiceImpl storageService;
 
     public StudioResponseDto findByStudioIdAndPassword(StudioRequestDto params) {
@@ -147,6 +142,10 @@ public class StudioService {
         String[] iterator = keyword.split(",");
         List<StudioKeyword> addKeywords = studioKeywordRepository.findAllById(Arrays.asList(iterator));
         addKeywords.forEach((addKeyword) -> studio.addStudioKeywordMap(StudioKeywordMap.builder().studioKeyword(addKeyword).build()));
+    }
+
+    public void deleteStudioFileById(String index) {
+        studioFileRepository.deleteById(index);
     }
 
 //    @Transactional

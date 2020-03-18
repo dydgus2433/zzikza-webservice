@@ -29,6 +29,10 @@ public class FileResponseDto implements Comparable<FileResponseDto>{
         this.fileOrder = entity.getFile().getFileOrder();
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
     @Override
     public int compareTo(FileResponseDto o) {
         if(fileOrder != null){

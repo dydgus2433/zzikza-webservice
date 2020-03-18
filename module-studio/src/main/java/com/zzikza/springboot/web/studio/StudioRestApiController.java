@@ -4,7 +4,6 @@ package com.zzikza.springboot.web.studio;
 
 import com.zzikza.springboot.web.annotaion.LoginStudio;
 import com.zzikza.springboot.web.domain.enums.EBoardCategory;
-import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
 import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.result.CommonResult;
@@ -23,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -30,6 +31,8 @@ import java.net.URLEncoder;
 @RequiredArgsConstructor
 @RestController
 public class StudioRestApiController {
+
+
 
     private final ResponseService responseService;
 
@@ -151,7 +154,6 @@ public class StudioRestApiController {
         }
         studioService.saveFileOrders(studioResponseDto, index);
         return responseService.getSuccessResult();
-//        return responseService.getSingleResult(editorFileService.orderStudioFile(studioResponseDto, file));
     }
 
     //
@@ -168,7 +170,6 @@ public class StudioRestApiController {
     ) throws IllegalAccessException {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
-//            return responseService.getFailResult();
         }
         StudioDetailRequestDto studioDetailRequestDto = StudioDetailRequestDto.builder()
                 .studioDescription(stdoDsc)
@@ -179,20 +180,19 @@ public class StudioRestApiController {
                 .build();
         studioService.updateStudioDetail(studioResponseDto, studioDetailRequestDto);
         studioService.updateStudioKeyword(studioResponseDto, keyword);
-/*
-params = {LinkedHashMap@11153}  size = 9
- "stdoDsc" -> "dsadsad"
- "openDayStartTm" -> "10"
- "openDayEndTm" -> "18"
- "wkndStartTm" -> "10"
- "wkndDayEndTm" -> "18"
- "dateType" -> "W"
- "weekVal" -> "0"
- "dateVal" -> ""
- "keyword" -> "101"
- */
+        return responseService.getSuccessResult();
+    }
 
-
+    @DeleteMapping("/api/studio-file")
+    public CommonResult deleteStudioFile(
+            @RequestParam String index,
+            @RequestParam String flNm
+    ) {
+            //        index: indexStr, flNm: src
+        /*
+        파일 버킷에서 실제 삭제 해줘야함
+         */
+        studioService.deleteStudioFileById(index);
         return responseService.getSuccessResult();
     }
 }

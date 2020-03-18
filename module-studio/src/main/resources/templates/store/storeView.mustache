@@ -38,7 +38,8 @@
                                         <img src="/images/common/no_img.gif" alt="등록 이미지 없음">
                                     {{/fileName}}
                                     {{#fileName}}
-                                        <img src="/img/thumb/{{fileName}}"
+<!--                                        <img src="/img/thumb/{{!fileName}}"-->
+                                        <img src="{{filePath}}"
                                              onerror="this.src='/images/common/no_img.gif'">
                                     {{/fileName}}
                                 </div>

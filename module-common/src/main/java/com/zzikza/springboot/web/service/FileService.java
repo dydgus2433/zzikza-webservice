@@ -15,11 +15,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @RequiredArgsConstructor
 @Service
 public class FileService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final EditorFileRepository editorFileRepository;
     private final StudioFileRepository studioFileRepository;
@@ -37,7 +43,9 @@ public class FileService {
         return new FileResponseDto(editorFile);
     }
 
+    @Transactional
     public FileResponseDto saveStudioImageFile(StudioResponseDto studioResponseDto, MultipartFile file) throws IOException {
+
         /*
         스튜디오로
         파일들 찾고 사이즈 + 1을 fileOrder로 세팅해야함.
@@ -46,8 +54,9 @@ public class FileService {
         FileAttribute fileAttribute = storageService.fileUpload(file, "studio");
         fileAttribute.setFileOrder(studioFileRepository.findAllByStudio(studio).size()+1);
         StudioFile studioFileDto = new StudioFile(fileAttribute);
+        em.persist(studioFileDto);
         studio.addStudioFile(studioFileDto);
-
+        em.flush();
         return new FileResponseDto(studioFileDto);
     }
 
