@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -45,5 +46,20 @@ public class StudioKeywordMap  extends BaseTimeEntity {
 
     public void setStudioKeyword(StudioKeyword studioKeyword) {
         this.studioKeyword = studioKeyword;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudioKeywordMap that = (StudioKeywordMap) o;
+        return
+                Objects.equals(studio, that.studio) &&
+                Objects.equals(studioKeyword, that.studioKeyword);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(studio, studioKeyword);
     }
 }

@@ -79,7 +79,7 @@ public class BoardViewController {
         int firstIndexNotZero = 1;
         int nowPage = pageable.getPageNumber() + firstIndexNotZero;
 
-        model.addAttribute("is-paging", paging.getPageable().isPaged());
+        model.addAttribute("is-paging", paging.getTotalPages() > 0);
         model.addAttribute("is-fisrt", paging.isFirst());
         List<Map<String, Object>> pageList = new ArrayList<>();
         for (int i = paging.getPageable().first().getPageNumber() + firstIndexNotZero; i < paging.getTotalPages() + firstIndexNotZero; i++) {

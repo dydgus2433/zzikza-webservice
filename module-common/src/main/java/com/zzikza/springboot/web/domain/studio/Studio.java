@@ -13,7 +13,9 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -48,7 +50,7 @@ public class Studio  extends BaseTimeEntity {
     StudioDetail studioDetail;
 
     @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<StudioKeywordMap> studioKeywordMaps = new ArrayList<>();
+    Set<StudioKeywordMap> studioKeywordMaps = new HashSet<>();
 
     @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<StudioHoliday> studioHolidays = new ArrayList<>();
@@ -122,12 +124,14 @@ public class Studio  extends BaseTimeEntity {
     }
 
 
-    public void addStudioHoliday(StudioHoliday studioHoliday) {
+    public void addStudioHoliday(StudioHoliday studioHoliday) throws IllegalAccessException {
         boolean isContain = studioHolidays.stream().anyMatch(registedHoliday ->
                 registedHoliday.getDateCode().equals(studioHoliday.getDateCode())
                         && registedHoliday.getDateValue().equals(studioHoliday.getDateValue()));
         if (!isContain) {
             this.studioHolidays.add(studioHoliday);
+        }else{
+            throw new IllegalAccessException("이미 추가된 값입니다.");
         }
         if (studioHoliday.getStudio() != this) {
             studioHoliday.setStudio(this);
@@ -139,6 +143,11 @@ public class Studio  extends BaseTimeEntity {
         if (reservation.getStudio() != this) {
             reservation.setStudio(this);
         }
+    }
+
+    //키워드맵 전체삭제(초기화해버림)
+    public void removeAllStudioKeywordMaps() {
+        studioKeywordMaps = new HashSet<>();
     }
 
 //    public void addPayment(Payment payment) {

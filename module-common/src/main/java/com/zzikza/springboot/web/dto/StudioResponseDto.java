@@ -20,4 +20,12 @@ public class StudioResponseDto implements Serializable {
         this.accountStatus = entity.getAccountStatus();
         this.studioName = entity.getStudioName();
     }
+
+    public Studio toEntity(){
+        return Studio.builder()
+                .studioId(studioId)
+                .studioName(studioName)
+                .accountStatus(accountStatus)
+                .build();
+    }
 }

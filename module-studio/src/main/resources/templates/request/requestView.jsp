@@ -53,7 +53,7 @@
 								<tr>
 									<td colspan="2" class="file">
 										<c:forEach items="${files }" var="file">
-<%-- 											<p class="file_name"><a href="<c:url value='/api/fileDownload?fileName=${file.flNm}&originName=${file.flSrcNm}'/>"><c:out value="${file.flSrcNm}"></c:out></a></p> --%>
+<%-- 											<p class="file_name"><a href="<c:url value='/api/file-download?fileName=${file.flNm}&originName=${file.flSrcNm}'/>"><c:out value="${file.flSrcNm}"></c:out></a></p> --%>
 											<p class="file_name">
 											<img src="/img/${file.flNm}" onerror="this.src='/resources/images/common/no_img.gif'" style="width: 100%">
 											</p>

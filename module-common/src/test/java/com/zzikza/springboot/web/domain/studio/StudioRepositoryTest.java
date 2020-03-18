@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.studio;
 
 
+import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.enums.EDateStatus;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.product.ProductRepository;
@@ -128,7 +129,7 @@ public class StudioRepositoryTest {
         Studio studio = Studio.builder().studioId(studioId).studioDetail(detail).build();
         StudioBoard studioBoard = StudioBoard.builder().title("board").build();
         studio.addStudioBoard(studioBoard);
-        StudioFile studioFile = StudioFile.builder().fileName("file").build();
+        StudioFile studioFile = StudioFile.builder().fileAttribute(new FileAttribute()).build();
         studio.addStudioFile(studioFile);
         StudioBoardFile studioBoardFile = StudioBoardFile.builder().fileName("file").build();
         studioBoard.addStudioBoardFile(studioBoardFile);
@@ -290,7 +291,7 @@ public class StudioRepositoryTest {
 
     @Test
     @Transactional
-    public void 휴일추가() {
+    public void 휴일추가() throws IllegalAccessException {
 
         //given
         StudioDetail detail = StudioDetail.builder().studioDescription("얍얍").build();
@@ -298,9 +299,9 @@ public class StudioRepositoryTest {
         Studio studio = Studio.builder().studioId("tester1234").studioDetail(detail).build();
 
         //when
-        StudioHoliday studioHoliday = StudioHoliday.builder().dateCode(EDateStatus.DAY).dateValue("2019-07-19").build();
-        StudioHoliday studioHolidayWeek = StudioHoliday.builder().dateCode(EDateStatus.WEEK).dateValue("1").build();
-        StudioHoliday studioHolidayWeek1 = StudioHoliday.builder().dateCode(EDateStatus.WEEK).dateValue("1").build();
+        StudioHoliday studioHoliday = StudioHoliday.builder().dateCode(EDateStatus.D).dateValue("2019-07-19").build();
+        StudioHoliday studioHolidayWeek = StudioHoliday.builder().dateCode(EDateStatus.W).dateValue("1").build();
+        StudioHoliday studioHolidayWeek1 = StudioHoliday.builder().dateCode(EDateStatus.W).dateValue("1").build();
 //        em.persist(studioHoliday);
 //        em.persist(studioHolidayWeek);
 //        em.persist(studioHolidayWeek1);

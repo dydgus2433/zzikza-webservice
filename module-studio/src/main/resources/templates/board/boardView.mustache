@@ -32,29 +32,16 @@
                     </colgroup>
                     <thead>
                     <tr>
-                        <th colspan="2">
-                            {{#board}}
-                                {{title}}
-
-                                <p class="date">
-                                    {{createdDate}}
-                                </p>
-                            {{/board}}
-                        </th>
+                        <th colspan="2">{{#board}}{{title}}<p class="date">{{createdDate}}</p>{{/board}}</th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#files}}
-
                         <tr>
                             <td colspan="2" class="file">
                                 {{#file}}
                                 <p class="file_name">
-
-                                    <a href="/api/fileDownload?fileName={{fileName}}&originName={{fileSourceName}}">
-                                    {{fileSourceName}}
-                                    </a>
-
+                                    <a href="/api/file-download?fileName={{fileName}}&originName={{fileSourceName}}">{{fileSourceName}}</a>
                                 </p>
                                 {{/file}}
                             </td>

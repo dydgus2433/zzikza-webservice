@@ -2,6 +2,7 @@ package com.zzikza.springboot.web.domain.studio;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
+import com.zzikza.springboot.web.dto.StudioDetailRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,29 @@ public class StudioDetail  extends BaseTimeEntity {
     @Column(name = "STDO_DSC")
     String studioDescription;
 
+    @Column(name = "OPEN_DAY_STRT_TM", columnDefinition = "int(2) default 10")
+    int openTime;
+    @Column(name = "OPEN_DAY_END_TM", columnDefinition = "int(2) default 18")
+    int closeTime;
+    @Column(name = "WKND_STRT_TM", columnDefinition = "int(2) default 10")
+    int weekendOpenTime;
+    @Column(name = "WKND_END_TM", columnDefinition = "int(2) default 18" )
+    int weekendCloseTime;
+
     @Builder
-    public StudioDetail(String studioDescription) {
+    public StudioDetail(String studioDescription, int openTime, int closeTime, int weekendOpenTime, int weekendCloseTime) {
         this.studioDescription = studioDescription;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+        this.weekendOpenTime = weekendOpenTime;
+        this.weekendCloseTime = weekendCloseTime;
+    }
+
+    public void update(StudioDetailRequestDto requestDto) {
+        this.studioDescription = requestDto.getStudioDescription();
+        this.openTime = requestDto.getOpenTime();
+        this.closeTime = requestDto.getCloseTime();
+        this.weekendOpenTime = requestDto.getWeekendOpenTime();
+        this.weekendCloseTime = requestDto.getWeekendCloseTime();
     }
 }

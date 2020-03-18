@@ -39,8 +39,7 @@ function selectLocalImage() {
             }
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+            alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
         });

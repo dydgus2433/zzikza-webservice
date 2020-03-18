@@ -1,14 +1,15 @@
 package com.zzikza.springboot.web.studio;
 
 //import com.zzikza.springboot.web.annotaion.LoginStudio;
+
 import com.zzikza.springboot.web.annotaion.LoginStudio;
 import com.zzikza.springboot.web.domain.enums.EBoardCategory;
-import com.zzikza.springboot.web.dto.EditorFileResponseDto;
-import com.zzikza.springboot.web.dto.StudioBoardRequestDto;
-import com.zzikza.springboot.web.dto.StudioBoardResponseDto;
-import com.zzikza.springboot.web.dto.StudioResponseDto;
+import com.zzikza.springboot.web.domain.studio.Studio;
+import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
+import com.zzikza.springboot.web.dto.*;
+import com.zzikza.springboot.web.result.CommonResult;
 import com.zzikza.springboot.web.result.SingleResult;
-import com.zzikza.springboot.web.service.EditorFileService;
+import com.zzikza.springboot.web.service.FileService;
 import com.zzikza.springboot.web.service.ResponseService;
 import com.zzikza.springboot.web.service.StorageServiceImpl;
 import com.zzikza.springboot.web.service.StudioService;
@@ -18,10 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -37,9 +35,11 @@ public class StudioRestApiController {
 
     private final StudioService studioService;
 
-    private final EditorFileService editorFileService;
+    private final FileService editorFileService;
 
     private final StorageServiceImpl storageService;
+
+    private final StudioHolidayRepository studioHolidayRepository;
 
     @PostMapping(value = "/api/studio-board")
     public SingleResult<StudioBoardResponseDto> insertStudioBoard(
@@ -68,16 +68,16 @@ public class StudioRestApiController {
 
     @PostMapping(value = "/api/editor-image")
     @Transactional
-    public SingleResult<EditorFileResponseDto> insertEditorImage(
+    public SingleResult<FileResponseDto> insertEditorImage(
             @LoginStudio StudioResponseDto studioResponseDto,
             @RequestParam("image") MultipartFile file) throws Exception {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
-        return responseService.getSingleResult(editorFileService.save(file));
+        return responseService.getSingleResult(editorFileService.saveEditorImageFile(file));
     }
 
-    @GetMapping(value = "/api/fileDownload")
+    @GetMapping(value = "/api/file-download")
     public ResponseEntity<Resource> fileDownload(@RequestParam String fileName,
                                                  @RequestParam String originName,
                                                  HttpServletRequest request) throws IOException {
@@ -90,14 +90,109 @@ public class StudioRestApiController {
             e.printStackTrace();
         }
 
-        if(contentType == null){
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(
-                        HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(originName, "UTF-8")  + "\"")
+                        HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(originName, "UTF-8") + "\"")
                 .body(resource);
 
+    }
+
+
+    @PostMapping(value = "/api/studio-holiday")
+    public SingleResult<StudioHolidayResponseDto> insertStudioHoliday(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String dateCode,
+            @RequestParam String dateValue
+
+    ) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        StudioHolidayRequestDto params = new StudioHolidayRequestDto(dateCode, dateValue);
+        return responseService.getSingleResult(studioService.saveHoliday(studioResponseDto, params));
+    }
+
+    @DeleteMapping(value = "/api/studio-holiday")
+    public SingleResult<StudioHolidayResponseDto> deleteStudioHoliday(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String dateCode,
+            @RequestParam String dateValue) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        StudioHolidayRequestDto params = new StudioHolidayRequestDto(dateCode, dateValue);
+        return responseService.getSingleResult(studioService.deleteHoliday(studioResponseDto, params));
+    }
+
+    @PostMapping(value = "/api/studio-file")
+    @Transactional
+    public SingleResult<FileResponseDto> insertImageFile(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam("detailFiles") MultipartFile file) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+
+        return responseService.getSingleResult(editorFileService.saveStudioImageFile(studioResponseDto, file));
+    }
+
+    @PutMapping(value = "/api/studio-file/order")
+    public CommonResult studioFileOrder(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String index
+    ) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+//            return responseService.getFailResult();
+        }
+        studioService.saveFileOrders(studioResponseDto, index);
+        return responseService.getSuccessResult();
+//        return responseService.getSingleResult(editorFileService.orderStudioFile(studioResponseDto, file));
+    }
+
+    //
+    @PutMapping(value = "/api/studio-detail")
+    @Transactional
+    public CommonResult insertStudioDetail(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String stdoDsc,
+            @RequestParam int openDayStartTm,
+            @RequestParam int openDayEndTm,
+            @RequestParam int wkndStartTm,
+            @RequestParam int wkndDayEndTm,
+            @RequestParam String keyword
+    ) throws IllegalAccessException {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+//            return responseService.getFailResult();
+        }
+        StudioDetailRequestDto studioDetailRequestDto = StudioDetailRequestDto.builder()
+                .studioDescription(stdoDsc)
+                .openTime(openDayStartTm)
+                .closeTime(openDayEndTm)
+                .weekendOpenTime(wkndStartTm)
+                .weekendCloseTime(wkndDayEndTm)
+                .build();
+        studioService.updateStudioDetail(studioResponseDto, studioDetailRequestDto);
+        studioService.updateStudioKeyword(studioResponseDto, keyword);
+/*
+params = {LinkedHashMap@11153}  size = 9
+ "stdoDsc" -> "dsadsad"
+ "openDayStartTm" -> "10"
+ "openDayEndTm" -> "18"
+ "wkndStartTm" -> "10"
+ "wkndDayEndTm" -> "18"
+ "dateType" -> "W"
+ "weekVal" -> "0"
+ "dateVal" -> ""
+ "keyword" -> "101"
+ */
+
+
+        return responseService.getSuccessResult();
     }
 }

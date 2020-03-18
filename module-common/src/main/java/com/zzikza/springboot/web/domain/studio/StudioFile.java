@@ -38,9 +38,13 @@ public class StudioFile extends BaseTimeEntity {
     Studio studio;
 
     @Builder
-    public StudioFile(String fileName, Studio studio) {
-        this.file.fileName = fileName;
+    public StudioFile(Studio studio,FileAttribute fileAttribute) {
         this.studio = studio;
+        this.file = fileAttribute;
+    }
+
+    public StudioFile(FileAttribute fileAttribute) {
+        this.file = fileAttribute;
     }
 
     public void setStudio(Studio studio) {
@@ -56,5 +60,13 @@ public class StudioFile extends BaseTimeEntity {
 
     public String getFileName() {
         return this.file.getFileName();
+    }
+
+    public void setFileOrder(int fileOrder) {
+        this.file.setFileOrder(fileOrder);
+    }
+
+    public Integer getFileOrder() {
+        return this.file.getFileOrder();
     }
 }

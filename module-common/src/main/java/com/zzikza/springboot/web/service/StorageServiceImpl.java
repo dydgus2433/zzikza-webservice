@@ -75,6 +75,31 @@ public class StorageServiceImpl implements StorageService {
         String randomName = getRandomFileName(file);
         fileAttribute.setFileName(randomName);
         try {
+            randomName = FILE_PATH + randomName;
+            String urlPath = putObjectByS3Client(file, randomName);
+            fileAttribute.setFilePath(urlPath);
+        } catch (AmazonClientException | IOException e) {
+            throw e;
+        }
+        return fileAttribute;
+    }
+
+    public FileAttribute fileUpload(MultipartFile file, String type) throws IOException, AmazonClientException {
+        FileAttribute fileAttribute = getMultipartFileToFileAttribute(file);
+
+        String randomName = getRandomFileName(file);
+        fileAttribute.setFileName(randomName);
+        try {
+            if("studio".equals(type)){
+
+            }else if("product".equals(type)){
+
+            }else if("product".equals(type)){
+
+            }
+
+            randomName = FILE_PATH + randomName;
+
             String urlPath = putObjectByS3Client(file, randomName);
             fileAttribute.setFilePath(urlPath);
         } catch (AmazonClientException | IOException e) {
@@ -86,9 +111,9 @@ public class StorageServiceImpl implements StorageService {
     private String putObjectByS3Client(MultipartFile file, String randomName) throws IOException {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
-        s3Client.putObject(new PutObjectRequest(bucket, FILE_PATH + randomName, file.getInputStream(), objectMetadata)
+        s3Client.putObject(new PutObjectRequest(bucket, randomName, file.getInputStream(), objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3Client.getUrl(bucket, FILE_PATH + randomName).toString();
+        return s3Client.getUrl(bucket, randomName).toString();
     }
 
     /**

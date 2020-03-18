@@ -2067,7 +2067,7 @@ table.ui-datepicker-calendar td.ui-datepicker-current-day a {
     .tPages ul li.active span,
     .tPages ul li.prev span,
     .tPages ul li.next span {
-        width: 25px
+        /*width: 25px*/
     }
 
     .tInsert td .filebox .upload-name {

@@ -1,0 +1,169 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+{{>layout/header}}
+<div class="container">
+    {{>layout/left-panel}}
+    <!-- 본문자리 -->
+    <div class="left_content_area">
+        <div class="left_content_head">
+            <h2 class="sub_tit">매장관리</h2>
+        </div>
+        <div class="inner">
+            <div class="box_area full">
+                <h3 class="sub_stit">
+                    스튜디오 소개 사진 <span>스튜디오를 대표하는 사진으로 올려주세요 (최대 9장)</span>
+                </h3>
+                <div class="shop_fileup_area">
+                    <span class="tit">파일 사이즈</span>
+                    <div class="filebox">
+                        <input class="upload-name"
+                               value="{{#file-empty}}파일선택{{/file-empty}}{{^file-empty}}{{file-size}}개의 파일{{/file-empty}}"
+                               disabled="disabled"><label for="detailFiles">찾아보기</label>
+                        <input type="file" id="detailFiles" class="upload-hidden"
+                               multiple="multiple" name="detailFiles">
+                    </div>
+                </div>
+                <ul class="shop_img_list" id="sortable">
+                    {{#files}}
+                            <li index="{{id}}" id="img_id_{{id}}">
+                                <div class="img_area">
+                                    <button type="button" class="btn_del_img">삭제</button>
+                                    {{^fileName}}
+                                        <img src="/images/common/no_img.gif" alt="등록 이미지 없음">
+                                    {{/fileName}}
+                                    {{#fileName}}
+                                        <img src="/img/thumb/{{fileName}}"
+                                             onerror="this.src='/images/common/no_img.gif'">
+                                    {{/fileName}}
+                                </div>
+                                <div class="text">{{fileOrder}}</div>
+                            </li>
+                    {{/files}}
+                </ul>
+            </div>
+            <!-- form  -->
+            <form id="stdoFrm" action="/api/updateStudioDetail" method="post">
+                <div class="box_area full">
+                    <h3 class="sub_stit">스튜디오 설명</h3>
+                    <textarea class="textarea_shop" name="stdoDsc" id="stdoDsc"
+                              placeholder="스튜디오 설명을 작성해주세요 (1,000자 이내)">{{#detail}}{{studioDescription}}{{/detail}}</textarea>
+                </div>
+                <div class="box_area full">
+                    <h3 class="sub_stit">영업시간 관리</h3>
+                    <ul class="shop_time_select">
+                        <li><span class="tit">평일</span> <select name="openDayStartTm"
+                            {{#times}}
+                                <option value="{{idx}}" {{#is-open-time}}selected{{/is-open-time}}>{{idx}}시</option>
+                            {{/times}}
+                            </select> ~ <select name="openDayEndTm" id="openDayEndTm" class="time">
+                                {{#times}}
+                                    <option value="{{idx}}" {{#is-end-time}}selected{{/is-end-time}}>{{idx}}시</option>
+                                {{/times}}
+                            </select></li>
+                        <li><span class="tit">주말</span> <select name="wkndStartTm" id="wkndStartTm" class="time">
+                            {{#times}}
+                                <option value="{{idx}}"
+                                        {{#is-weekend-start-time}}selected{{/is-weekend-start-time}}>{{idx}}시
+                                </option>
+                            {{/times}}
+                        </select> ~ <select name="wkndDayEndTm" id="wkndDayEndTm" class="time">
+                            {{#times}}
+                                <option value="{{idx}}" {{#is-weekend-end-time}}selected{{/is-weekend-end-time}}>{{idx}}
+                                    시
+                                </option>
+                            {{/times}}
+                        </select></li>
+                    </ul>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">휴무일 관리</h3>
+                    <ul class="shop_time_select">
+                        <li><select name="dateType" id="dateType">
+                            <option value="W">매주</option>
+                            <option value="D">지정일</option>
+                        </select> <select id="weekVal" name="weekVal">
+                        </select> <input type="text" name="dateVal" id="dateVal"
+                                         class="form-control" style="display: none; width: 122px;" readonly/>
+                            <button type="button" id="btnAdd" class="btn_s_form">추가</button>
+                        </li>
+                        <li>
+                            <div class="multi vgT">
+                                <ul id="holiday" name="holiday">
+                                    {{#holidays}}
+                                        <li type="{{dateCode}}" value="{{dateValue}}">{{dateName}}</li>
+                                    {{/holidays}}
+                                </ul>
+                            </div>
+                            <button type="button" id="btnDel" class="btn_form_del">삭제</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">키워드 관리</h3>
+                    <div class="keyword_left">
+                        <div class="multi">
+                            <ul id="keyword">
+                                {{#keywordMaps}}
+                                    {{!#studioKeyword}}
+                                        <li value="{{id}}" data-keyword-id="{{id}}">
+                                            {{keywordName}}
+                                        </li>
+                                    {{!/studioKeyword}}
+                                {{/keywordMaps}}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="keyword_btn">
+                        <button type="button" class="btn_left" id="leftBtn">좌측이동</button>
+                        <button type="button" class="btn_right" id="rightBtn">우측이동</button>
+                    </div>
+                    <div class="keyword_right">
+                        <div class="multi">
+                            <ul id="keywordCate">
+                                {{#NoKeywordMaps}}
+                                    {{!#studioKeyword}}
+                                        <li value="{{id}}" data-keyword-id="{{id}}">
+                                            {{keywordName}}
+                                        </li>
+                                    {{!/studioKeyword}}
+                                {{/NoKeywordMaps}}
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="btn_area">
+                        <button type="button" class="btn_save" id="submitBtn">저장</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/js/upload/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="/js/upload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/js/upload/jquery.fileupload.js"></script>
+    <!-- .content -->
+    <script src="/js/store/storeView.js"></script>
+    <script>
+        const contextPath = '';
+    </script>
+    <!-- 본문자리 -->
+</div>
+
+
+<!-- popup -->
+<div id="popup"></div>
+<!--// popup -->
+</body>
+</html>
+
