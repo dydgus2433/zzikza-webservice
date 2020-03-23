@@ -5,6 +5,7 @@ import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.studio.*;
 import com.zzikza.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
@@ -14,12 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
 public class StudioService {
-
-
     private final StudioRepository studioRepository;
     private final StudioBoardRepository studioBoardRepository;
     private final StudioBoardFileRepository studioBoardFileRepository;
@@ -28,6 +28,14 @@ public class StudioService {
     private final StudioKeywordRepository studioKeywordRepository;
     private final StudioKeywordMapRepository studioKeywordMapRepository;
     private final StorageServiceImpl storageService;
+    @Value("${service.fileupload.basedirectory}")
+    private String FILE_PATH;
+    @Value("${service.fileupload.thumb.directory}")
+    private String FILE_THUMB_PATH;
+    @Value("${service.fileupload.midsize.directory}")
+    private String FILE_MIDSIZE_PATH;
+    @Value("${service.fileupload.large.directory}")
+    private String FILE_LARGE_PATH;
 
     public StudioResponseDto findByStudioIdAndPassword(StudioRequestDto params) {
         String stdoId = (String) params.getStudioId();
@@ -38,7 +46,6 @@ public class StudioService {
     public StudioResponseDto findByStudioId(StudioRequestDto params) {
         return new StudioResponseDto(studioRepository.findByStudioId(params.getStudioId()).orElseThrow(() -> new IllegalArgumentException("회원정보가 맞지 않습니다.")));
     }
-
 
     public StudioResponseDto findById(String id) {
         return new StudioResponseDto(studioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("회원정보가 맞지 않습니다.")));
@@ -144,9 +151,23 @@ public class StudioService {
         addKeywords.forEach((addKeyword) -> studio.addStudioKeywordMap(StudioKeywordMap.builder().studioKeyword(addKeyword).build()));
     }
 
-    public void deleteStudioFileById(String index) {
-        studioFileRepository.deleteById(index);
+    public void deleteStudioFileById(String id) {
+        StudioFile file = studioFileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
+        if (Objects.nonNull(file.getFileName())) {
+            storageService.delete(FILE_PATH + file.getFileName());
+        }
+        if (Objects.nonNull(file.getFileLargePath())) {
+            storageService.delete(FILE_LARGE_PATH + file.getFileName());
+        }
+        if (Objects.nonNull(file.getFileMidsizePath())) {
+            storageService.delete(FILE_MIDSIZE_PATH + file.getFileName());
+        }
+        if (Objects.nonNull(file.getFileThumbPath())) {
+            storageService.delete(FILE_THUMB_PATH + file.getFileName());
+        }
+        studioFileRepository.deleteById(id);
     }
+
 
 //    @Transactional
 //    public StudioHolidayResponseDto updateHoliday(StudioResponseDto studioResponseDto, StudioHolidayRequestDto params) {

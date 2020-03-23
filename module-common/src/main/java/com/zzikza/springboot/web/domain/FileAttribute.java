@@ -27,6 +27,17 @@ public class FileAttribute {
     @Column(name = "FL_PTH")
     public String filePath;
 
+
+    @Column(name = "FL_THUMB_PTH")
+    public String fileThumbPath;
+
+    @Column(name = "FL_MIDSIZE_PTH")
+    public String fileMidsizePath;
+
+    @Column(name = "FL_LARGE_PTH")
+    public String fileLargePath;
+
+
     @Column(name = "FL_ORD")
     public Integer fileOrder;
 

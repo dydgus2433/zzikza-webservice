@@ -25,7 +25,7 @@ public class FileResponseDto implements Comparable<FileResponseDto>{
     public FileResponseDto(StudioFile entity) {
         this.id = entity.getId();
         this.fileName = entity.getFile().getFileName();
-        this.filePath = entity.getFile().getFilePath();
+        this.filePath = entity.getFile().getFileThumbPath();
         this.fileOrder = entity.getFile().getFileOrder();
     }
 

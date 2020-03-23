@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class StudioFile extends BaseTimeEntity {
     @Id
     @Column(name = "STDO_FL_ID")
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
@@ -25,7 +25,9 @@ public class StudioFile extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = "prefix_key", value = "STF"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
-
+    @ManyToOne
+    @JoinColumn(name = "STDO_SEQ")
+    Studio studio;
     @Embedded
 //    @AttributeOverrides({
 //            @AttributeOverride(name = "TITLE", column = @Column(name = "")),
@@ -33,12 +35,8 @@ public class StudioFile extends BaseTimeEntity {
 //    })
     private FileAttribute file;
 
-    @ManyToOne
-    @JoinColumn(name = "STDO_SEQ")
-    Studio studio;
-
     @Builder
-    public StudioFile(Studio studio,FileAttribute fileAttribute) {
+    public StudioFile(Studio studio, FileAttribute fileAttribute) {
         this.studio = studio;
         this.file = fileAttribute;
     }
@@ -50,7 +48,7 @@ public class StudioFile extends BaseTimeEntity {
     public void setStudio(Studio studio) {
         this.studio = studio;
         //기존 스튜디오와 관계 제거
-        if(this.studio != null){
+        if (this.studio != null) {
             this.studio.getStudioFiles().remove(this);
         }
 
@@ -61,12 +59,27 @@ public class StudioFile extends BaseTimeEntity {
     public String getFileName() {
         return this.file.getFileName();
     }
+    public String getFilePath() {
+        return this.file.getFilePath();
+    }
 
-    public void setFileOrder(int fileOrder) {
-        this.file.setFileOrder(fileOrder);
+    public String getFileLargePath() {
+        return this.file.getFileLargePath();
+    }
+
+    public String getFileMidsizePath() {
+        return this.file.getFileMidsizePath();
+    }
+
+    public String getFileThumbPath() {
+        return this.file.getFileThumbPath();
     }
 
     public Integer getFileOrder() {
         return this.file.getFileOrder();
+    }
+
+    public void setFileOrder(int fileOrder) {
+        this.file.setFileOrder(fileOrder);
     }
 }
