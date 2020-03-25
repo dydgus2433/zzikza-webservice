@@ -5,6 +5,7 @@ import com.zzikza.springboot.web.domain.studio.StudioBoard;
 import com.zzikza.springboot.web.domain.studio.StudioBoardFile;
 import com.zzikza.springboot.web.domain.studio.StudioBoardFileRepository;
 import com.zzikza.springboot.web.domain.studio.StudioBoardRepository;
+import com.zzikza.springboot.web.util.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class BoardViewController {
         setBoardCategoriesWithSelected(brdCateCd, model);
 
         Page<StudioBoard> paging = studioBoardRepository.findAllByBoardCategoryCodeEquals(EBoardCategory.valueOf(brdCateCd), pageable);
-        setPagingParameters(model, paging);
+        PagingUtil.setPagingParameters(model, paging);
         model.addAttribute("brdCateCd", brdCateCd);
         model.addAttribute("title", "찍자사장님 사이트 - 게시판목록");
         return BOARD_LIST_VIEW;
@@ -74,30 +75,6 @@ public class BoardViewController {
     }
 
 
-    private void setPagingParameters(Model model, Page<?> paging) {
-        Pageable pageable = paging.getPageable();
-        int firstIndexNotZero = 1;
-        int nowPage = pageable.getPageNumber() + firstIndexNotZero;
-
-        model.addAttribute("is-paging", paging.getTotalPages() > 0);
-        model.addAttribute("is-fisrt", paging.isFirst());
-        List<Map<String, Object>> pageList = new ArrayList<>();
-        for (int i = paging.getPageable().first().getPageNumber() + firstIndexNotZero; i < paging.getTotalPages() + firstIndexNotZero; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("idx", i);
-            map.put("now-active", i == nowPage);
-            pageList.add(map);
-        }
-        model.addAttribute("pageList", pageList);
-        model.addAttribute("now-page", nowPage); //현재 페이지
-        model.addAttribute("prev-page", nowPage - 1); //이전 페이지
-        model.addAttribute("next-page", nowPage + 1); //다음 페이지
-        model.addAttribute("paging-fnc", "fn_paging");
-        model.addAttribute("has-next", paging.hasNext());
-        model.addAttribute("last-page-no", paging.getTotalPages());
-
-        model.addAttribute("list", paging.getContent());
-    }
 
 
     private void setBoardCategoriesWithSelected(String brdCateCd, Model model) {

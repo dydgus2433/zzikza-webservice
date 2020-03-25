@@ -1,23 +1,32 @@
 package com.zzikza.springboot.web.studio;
 
 import com.zzikza.springboot.web.annotaion.LoginStudio;
+import com.zzikza.springboot.web.domain.enums.EBoardCategory;
 import com.zzikza.springboot.web.domain.enums.EProductCategory;
 import com.zzikza.springboot.web.domain.enums.EShowStatus;
 import com.zzikza.springboot.web.domain.exhibition.Exhibition;
 import com.zzikza.springboot.web.domain.exhibition.ExhibitionRepository;
 import com.zzikza.springboot.web.domain.product.*;
+import com.zzikza.springboot.web.domain.studio.Studio;
+import com.zzikza.springboot.web.domain.studio.StudioBoard;
+import com.zzikza.springboot.web.domain.studio.StudioRepository;
 import com.zzikza.springboot.web.dto.ExhibitionResponseDto;
 import com.zzikza.springboot.web.dto.FileResponseDto;
 import com.zzikza.springboot.web.dto.ProductKeywordResponseDto;
 import com.zzikza.springboot.web.dto.StudioResponseDto;
+import com.zzikza.springboot.web.util.PagingUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +35,7 @@ import java.util.stream.Collectors;
 public class ProductViewController {
 
     private final ProductRepository productRepository;
+    private final StudioRepository studioRepository;
     private final ProductKeywordRepository productKeywordRepository;
     private final ProductKeywordMapRepository productKeywordMapRepository;
     private final ExhibitionRepository exhibitionRepository;
@@ -211,10 +221,15 @@ public class ProductViewController {
 
     @Transactional(readOnly = true)
     @GetMapping(value = "/prod/list")
-    public String productListViewPage(@LoginStudio StudioResponseDto sessionVo,  Model model) {
+    public String productListViewPage(@LoginStudio StudioResponseDto sessionVo,  Pageable pageable,  Model model) {
+//        Page<StudioBoard> findAllByBoardCategoryCodeEquals(EBoardCategory boardCategory, Pageable pageable);
 
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
+        Page<Product> paging = productRepository.findAllByStudio(studio, pageable);
+        PagingUtil.setPagingParameters(model, paging);
 
-        return "product/productList"
+        model.addAttribute("title", "찍자사장님 사이트 - 상품 목록");
+        return "product/productList";
     }
 
 }
