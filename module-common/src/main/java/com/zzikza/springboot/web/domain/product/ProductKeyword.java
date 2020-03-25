@@ -30,7 +30,7 @@ public class ProductKeyword extends BaseTimeEntity {
     @Column(name = "PRD_KEYWORD_NM")
     String keywordName;
 
-    @OneToMany(mappedBy = "productKeyword", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productKeyword", fetch = FetchType.EAGER)
     List<ProductKeywordMap> productKeywordMaps;
     @Builder
     public ProductKeyword(String keywordName) {

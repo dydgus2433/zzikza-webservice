@@ -6,7 +6,10 @@ import com.zzikza.springboot.web.domain.exhibition.ExhibitionRepository;
 import com.zzikza.springboot.web.domain.product.*;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioRepository;
-import com.zzikza.springboot.web.dto.*;
+import com.zzikza.springboot.web.dto.FileResponseDto;
+import com.zzikza.springboot.web.dto.ProductRequestDto;
+import com.zzikza.springboot.web.dto.ProductResponseDto;
+import com.zzikza.springboot.web.dto.StudioResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -97,13 +99,13 @@ public class ProductService {
         }
         productRepository.save(product);
         String[] keywordIds = productRequestDto.getSplitKeywords();
-        for(String keywordId : keywordIds){
-            ProductKeyword productKeyword = productKeywordRepository.findById(keywordId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 키워드입니다."));
+        for (String keywordId : keywordIds) {
+            ProductKeyword productKeyword = productKeywordRepository.findById(keywordId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 키워드입니다."));
             product.addProductKeyword(productKeyword);
 
         }
 
-        Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 전시회입니다."));
+        Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다."));
         product.addProductExhibition(exhibition);
 
         studio.addProudct(product);
@@ -116,7 +118,7 @@ public class ProductService {
         스튜디오로
         파일들 찾고 사이즈 + 1을 fileOrder로 세팅해야함.
          */
-        Product product = productRepository.findById(prdId).orElseThrow(()-> new IllegalArgumentException("상품이 없습니다."));
+        Product product = productRepository.findById(prdId).orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
         FileAttribute fileAttribute = storageService.fileUpload(file, "product");
         fileAttribute.setFileOrder(productFileRepository.findAllByProduct(product).size() + 1);
 
@@ -129,7 +131,7 @@ public class ProductService {
 
     @Transactional
     public void saveFileOrders(String prdId, String index) {
-        Product product = productRepository.findById(prdId).orElseThrow(()-> new IllegalArgumentException("상품이 없습니다."));
+        Product product = productRepository.findById(prdId).orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
 
         List<ProductFile> productFileList = productFileRepository.findAllByProduct(product);
         List<String> indexes = Arrays.asList(index.split(","));
@@ -149,9 +151,9 @@ public class ProductService {
 
         ProductFile file = productFileRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 파일이 없습니다."));
 
-        if(!file.getProduct().getId().equals(prdId)){
+        if (!file.getProduct().getId().equals(prdId)) {
             try {
-                throw  new IllegalAccessException("권한이 없습니다.");
+                throw new IllegalAccessException("권한이 없습니다.");
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -173,16 +175,34 @@ public class ProductService {
     }
 
     public void deleteProduct(String prdId) {
-        Product product = productRepository.findById(prdId).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
+
+        Product product = productRepository.findById(prdId).orElseThrow(() -> new IllegalArgumentException("스튜디오가 없습니다."));
+
         productRepository.delete(product);
+
+        for (ProductFile productFile : product.getProductFiles()) {
+            FileAttribute file = productFile.getFile();
+            if (Objects.nonNull(file.getFileName())) {
+                storageService.delete(FILE_PATH + file.getFileName());
+            }
+            if (Objects.nonNull(file.getFileLargePath())) {
+                storageService.delete(FILE_LARGE_PATH + file.getFileName());
+            }
+            if (Objects.nonNull(file.getFileMidsizePath())) {
+                storageService.delete(FILE_MIDSIZE_PATH + file.getFileName());
+            }
+            if (Objects.nonNull(file.getFileThumbPath())) {
+                storageService.delete(FILE_THUMB_PATH + file.getFileName());
+            }
+        }
     }
 
     @Transactional
     public ProductResponseDto updateProduct(ProductRequestDto productRequestDto, StudioResponseDto studioResponseDto) {
-        Product product = productRepository.findById(productRequestDto.getPrdId()).orElseThrow(()-> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        Product product = productRepository.findById(productRequestDto.getPrdId()).orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
         String[] keywordIds = productRequestDto.getSplitKeywords();
-        for(String keywordId : keywordIds){
-            ProductKeyword productKeyword = productKeywordRepository.findById(keywordId).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 키워드입니다."));
+        for (String keywordId : keywordIds) {
+            ProductKeyword productKeyword = productKeywordRepository.findById(keywordId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 키워드입니다."));
             product.addProductKeyword(productKeyword);
         }
 
@@ -190,12 +210,12 @@ public class ProductService {
         //전시회 적용X인 경우 기존것 삭제
         List<ProductExhibition> productExhibitions = product.getProductExhbitions();
         productExhibitionRepository.deleteInBatch(productExhibitions);
-        if(!productRequestDto.getExhId().equals("")){
+        if (!productRequestDto.getExhId().equals("")) {
             //모두 삭제하고 다시 추가하는 방법이 있지만 현재는 상품하나당 전시회 일대일 대응이기 때문에
 
-            Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 전시회입니다."));
+            Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다."));
             long count = product.getProductExhbitions().stream().filter((e) -> e.getExhibition().getId().equals(exhibition.getId())).count();
-            if(count == 0){
+            if (count == 0) {
                 product.addProductExhibition(exhibition);
             }
         }

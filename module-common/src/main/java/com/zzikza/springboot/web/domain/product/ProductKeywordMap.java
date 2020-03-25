@@ -26,7 +26,7 @@ public class ProductKeywordMap extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "PRD_ID")
     Product product;
 
