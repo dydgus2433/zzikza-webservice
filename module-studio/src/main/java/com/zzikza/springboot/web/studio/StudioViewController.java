@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class StudioViewController {
 
     private final StudioRepository studioRepository;
-    private final StudioFileRepository studioFileRepository;
 
     private final String STORE_VIEW = "/store/storeView";
 

@@ -18,7 +18,7 @@ import java.util.List;
 @Entity(name = "tb_stdo_qstn")
 public class StudioQuestion  extends BaseTimeEntity {
     @Id
-    @Column(name = "STDO_QSTN_ID")
+    @Column(name = "STDO_QSTN_ID", length = 15)
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator",
             parameters = {

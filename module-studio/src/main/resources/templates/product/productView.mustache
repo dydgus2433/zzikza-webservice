@@ -1,0 +1,876 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+{{>layout/header}}
+<div class="container">
+    {{>layout/left-panel}}
+    <!-- 본문자리 -->
+    <script type="text/javascript" src="/js/product/quill_image_resize.js"></script>
+    <div class="left_content_area">
+        <div class="left_content_head">
+            <h2 class="sub_tit">상품관리</h2>
+        </div>
+        <!-- form  -->
+        <form id="prdFrm">
+            <div class="inner">
+                <div class="box_area full">
+                    <h3 class="sub_stit">카테고리</h3>
+                    <select class="select_goods_category" name="prdCateCd">
+                        {{#codes}}
+                            <option value="{{commCd}}" {{#is-selected}}selected{{/is-selected}}>{{commCdNm}}</option>
+                        {{/codes}}
+                    </select>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">상품명</h3>
+                    <input type="text" name="title" class="form_goods" subtitle="상품명" placeholder="상품명을 입력해 주세요."
+                           maxlength="200" value="{{#product}}{{title}}{{/product}}" required="required">
+                </div>
+                <div class="box_area full">
+                    <h3 class="sub_stit">
+                        상품사진
+                        <span>상품을 대표하는 사진을 올려주세요 (최대 10장)</span>
+                    </h3>
+                    <div class="shop_fileup_area">
+                        <span class="tit">파일 사이즈</span>
+                        <div class="filebox">
+                            <input class="upload-name"
+                                   value="{{#isEmpty}}파일선택{{/isEmpty}}{{^isEmpty}}{{file-size}}개의 파일{{/isEmpty}}"
+                                   disabled="disabled"><label for="detailFiles">찾아보기</label>
+                            <input type="file" id="detailFiles" class="upload-hidden"
+                                   multiple="multiple" name="detailFiles" required="required">
+                        </div>
+                    </div>
+                    <ul class="shop_img_list" id="sortable">
+                        {{#files}}
+                                <li index="{{id}}" id="img_id_{{id}}">
+                                    <div class="img_area">
+                                        <button type="button" class="btn_del_img">삭제</button>
+                                        <img src="{{filePath}}" onerror="this.src='/images/common/no_img.gif'">
+                                    </div>
+                                    <div class="text">{{fileOrder}}</div>
+                                </li>
+                        {{/files}}
+                    </ul>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">상품 금액</h3>
+                    <input type="number" name="prdPrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요."
+                           value="{{#product}}{{price}}{{/product}}" required="required">
+                </div>
+
+<!--                <div class="box_area full">-->
+<!--                    <h3 class="sub_stit">상품 할인 금액</h3>-->
+<!--                    <select id="prdSalePrcSel">-->
+<!--                        <option value="N">비사용</option>-->
+<!--                        <option value="Y">사용</option>-->
+<!--                    </select>-->
+<!--                    <input type="number" id="prdSalePrc" name="prdSalePrc" class="form_goods number"-->
+<!--                           placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!salePrice}}{{!/product}}"-->
+<!--                           style="display: none;">-->
+<!--                </div>-->
+
+                <!-- 				<div class="box_area full"> -->
+                <!-- 					<h3 class="sub_stit">할인 금액</h3> -->
+                <!-- 					<input type="number" name="prdSalePrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!productSalePrice}}{{!/product}}"> -->
+                <!-- 				</div> -->
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">촬영소요시간</h3>
+                    <ul class="shop_time_select">
+                        <li>
+                            <input type="number" class="form_time" name="prdHour"
+                                   value="{{#product}}{{hour}}{{/product}}" required="required" placeholder="2"
+                                   min="0">
+                            <span class="tit">시간</span>
+                            <select class="form_time" name="prdMin">
+                                {{#minutes}}
+                                    <option value="{{minute}}"
+                                            {{#is-selected}}selected{{/is-selected}}>{{minute}}</option>
+                                {{/minutes}}
+                            </select>분
+                        </li>
+                    </ul>
+                </div>
+                <div class="box_area full">
+                    <h3 class="sub_stit">상품 요약설명</h3>
+                    <textarea class="textarea_shop" name="prdBrfDsc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다.
+홈페이지와 다른 연락처는 입력하지 말아주세요 :)">{{#product}}{{briefDescription}}{{/product}}</textarea>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">상품 설명</h3>
+                    <!--                 <textarea class="textarea_shop" id="quill" name="prdDsc"-->
+                    <!--                               placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요.">{{!#product}}{{!productDescription}}{{!/product}}</textarea>-->
+                    <div id="quill">{{#product}}{{{description}}}{{/product}}</div>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">키워드 관리</h3>
+                    <div class="keyword_left">
+                        <div class="multi">
+                            <ul id="keyword">
+                                {{#keywordMaps}}
+                                {{!#studioKeyword}}
+                                    <li value="{{id}}" data-keyword-id="{{id}}">
+                                        {{keywordName}}
+                                    </li>
+                                {{!/studioKeyword}}
+                                {{/keywordMaps}}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="keyword_btn">
+                        <button type="button" class="btn_left" id="leftBtn">좌측이동</button>
+                        <button type="button" class="btn_right" id="rightBtn">우측이동</button>
+                    </div>
+                    <div class="keyword_right">
+                        <div class="multi">
+                            <ul id="keywordCate">
+                                {{#NoKeywordMaps}}
+                                {{!#studioKeyword}}
+                                    <li value="{{id}}" data-keyword-id="{{id}}">
+                                        {{keywordName}}
+                                    </li>
+                                {{!/studioKeyword}}
+                                {{/NoKeywordMaps}}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box_area full">
+                    <h3 class="sub_stit">공개여부</h3>
+                    <select class="select_goods_category" name="showStatCd">
+                        {{#showCodes}}
+                            <option value="{{commCd}}" {{#is-selected}}selected{{/is-selected}}>{{commCdNm }}</option>
+                        {{/showCodes}}
+                    </select>
+                </div>
+
+                <div class="box_area full">
+                    <h3 class="sub_stit">기획전</h3>
+                    <select class="select_goods_category" name="exhId">
+                        <option value="">해당없음</option>
+                        {{#exhibitions}}
+                            <option value="{{id}}" {{#selected}}selected{{/selected}}>{{title }}</option>
+                        {{/exhibitions}}
+                    </select>
+                </div>
+
+                <!--
+                <style>
+                .test li {
+                    cursor: pointer;
+                    padding: 4px 10px;
+                    border-bottom: 1px solid #ddd;
+                }
+                .test {
+                    margin : 10px;
+                    width: 350px;
+                    height: 200px;
+                    line-height: 30px;
+                    overflow-y: scroll;
+                    background: #fff;
+                    border: 1px solid #a5aecf;
+                    border-radius: 0;
+                }
+                 .test.option_right {
+                     width: 450px;
+                     height: 200px;
+                     line-height: 30px;
+                     overflow-y: scroll;
+                     background: #fff;
+                     border: 1px solid #a5aecf;
+                     border-radius: 0;
+                 }
+                #category li:last-child{
+                    border-bottom: 0px;
+                    text-align: center;
+                }
+
+                .test li.active {
+                    color: #fff;
+                    background: #4aa5ff;
+                }
+
+                .test li input[type='checkbox']{
+                   -webkit-appearance: checkbox;
+                }
+
+
+
+                .test li button {
+                    -webkit-appearance: button;
+                    -webkit-writing-mode: horizontal-tb !important;
+                    text-rendering: auto;
+                    color: buttontext;
+                    letter-spacing: normal;
+                    word-spacing: normal;
+                    text-transform: none;
+                    text-indent: 0px;
+                    text-shadow: none;
+                    display: inline-block;
+                    text-align: center;
+                    align-items: flex-start;
+                    cursor: default;
+                    background-color: buttonface;
+                    box-sizing: border-box;
+                    margin: 0em;
+                    font: 400 13.3333px Arial;
+                    padding: 1px 6px;
+                    border-width: 2px;
+                    border-style: outset;
+                    border-color: buttonface;
+                    border-image: initial;
+                }
+
+
+                .test input[type="number"]::-webkit-outer-spin-button,
+                .test input[type="number"]::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                .quantitySelector .controller {
+                   display: table-cell;
+                }
+
+                .quantitySelector .controller button {
+                    position: relative;
+                    display: block;
+                    background: #fff;
+                    width: 25px;
+                    height: 24px;
+                    text-indent: -9999px;
+                }
+                .quantitySelector .controller button:before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    margin: auto;
+                    width: 12px;
+                    height: 2px;
+                    background: url(/resources/images/common/icon_calculateDark.png) no-repeat 0 -5px;
+                }
+                .quantitySelector .controller.plus button:before {
+                    width: 12px;
+                    height: 12px;
+                    background-position: -13px 0;
+                }
+
+
+                .quantitySelector .currentQuantity {
+                    display: table-cell;
+                    border: solid #dfe5ed;
+                    border-width: 0 1px;
+                    vertical-align: top;
+                }
+
+                .quantitySelector .currentQuantity .iText {
+                    display: block;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    margin: 0;
+                    padding: 0;
+                    outline: 0;
+                    border: 0;
+                    border-radius: 0;
+                    background: #fff;
+                    width: 48px;
+                    height: 24px;
+                    line-height: 24px;
+                    font-size: 14px;
+                    text-align: center;
+                    color: #666;
+                }
+
+                ul.keyword li:after{
+                    background-image:url (/resources/css/easyui/themes/icons/cancel.png)
+                }
+
+                figcaption{
+                    font-weight : bold;
+                    text-align: center;
+                    border-bottom: 1px solid brown;
+                }
+                .example{
+                    width : 30%;
+                    float: left;
+                    margin-right : 10px;
+                }
+                .test input[type='text']{
+                        width : 49%;
+                    }
+                @media (max-width: 768px){
+                    .test {
+                        width: 100%;
+                    }
+                    .test.center{
+                        width: 100%;
+                    }
+
+                    .test.option_left{
+                        width: 100%;
+                    }
+
+                    .test.option_right{
+                            width: 100%;
+                    }
+
+                    .example{
+                        float: left;
+                        margin-right : 10px;
+                        margin-bottom : 10px;
+                    }
+                }
+
+                img.cancel{
+                    float: right;
+                }
+
+                li .optionBtn {
+                    float : right;
+                }
+                .optionBtn {
+                    float : right;
+                        /* width: 200px; */
+                    height: 45px;
+                    color: #fff;
+                    font-size: 15px;
+                    font-weight: 600;
+                    color: #4b9fe8;
+                    background: #fff;
+                    border: 1px solid #4b9fe8;
+                }
+                </style>
+                <script>
+                $(document).ready(function(){
+                    //big 옵션 추가
+                    $("#category li").last().on("click", function(){
+                        //ul#category 에 li 추가
+                        console.log("li:last",this);
+
+                        if($("input[type='text'].categoryAdd").length < 1){
+                            $(this).last().before("<li><input type='text' class='categoryAdd' style='width:100%'/></li>");
+                        }else{
+                            alert("옵션명을 입력해주세요.")
+                        }
+
+                    });
+
+                    $("#category").on("click", "li", function(){
+                        smallOptionReset();
+                        if($(this).data("optn_id")){
+                            $(this).siblings().removeClass("active")
+                            $(this).addClass("active");
+                            console.log('$(this).data("optn_id")',$(this).data("optn_id"));
+
+                            //속성도 가져와야하고
+                            $.ajax({
+                                url : '/api/selectOption',
+                                method : 'post',
+                                data : {
+                                    optnId : $("#category li.active").data("optn_id")
+                                },
+                            }).done(function(result){
+                                console.log("result", result);
+                                var option = result.rows[0];
+                                if(option.multiChkYn){
+                                    $("#multiCheckCd").prop("checked", option.multiChkYn == "Y" )
+                                }else{
+                                    $("#multiCheckCd").prop("checked", false)
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                console.error('FAIL REQUEST: ', textStatus);
+                                alert('처리중 오류가 발생하였습니다.');
+                            }).always(function() {
+                                console.log('DONE');
+                            });
+                            //작은 옵션도 가져와야함
+                            $("ul#optionSort li").remove();
+                            $.ajax({
+                                url : '/api/selectSmallOptions',
+                                method : 'post',
+                                data : {
+                                    optnId : $("#category li.active").data("optn_id")
+                                },
+                            }).done(function(result){
+                                console.log("selectSmallOptions result", result);
+
+                                for(var i = 0; i < result.rows.length; i++){
+                                    var option = result.rows[i];
+                                    var  textInput = $("ul#optionSort");
+                                     var htmlText = "<li data-optn_id="+option.optnId+">"+option.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
+                                     textInput.append(htmlText);
+                                }
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                    console.error('FAIL REQUEST: ', textStatus);
+                                    alert('처리중 오류가 발생하였습니다.');
+                                }).always(function() {
+                                    console.log('DONE');
+                                });
+                        }
+                    });
+
+
+                    $("#category").on("click", ".cancel", function(){
+                        console.log('"category click", ".cancel"');
+
+                        var option = { optnId: $(this).parent().data("optn_id"),
+                                    tempKey : tempKey
+                        };
+                        var deleteTrue = false;
+                        $.ajax({
+                            url : '/api/deleteBigOptions',
+                            method : 'post',
+                                data : option,
+                        }).done(function(result){
+                            console.log('result', result);
+                            $("li[data-optn_id='"+result.optnId+"']").remove();
+                            $("ul#optionSort li").remove();
+                            smallOptionReset();
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                                console.error('FAIL REQUEST: ', textStatus);
+                                alert('처리중 오류가 발생하였습니다.');
+                            }).always(function() {
+                                console.log('DONE');
+                            });
+                    });
+
+                    $("#optionSort").on("click", "li", function(){
+                        if($(this).data("optn_id")){
+                            $(this).siblings().removeClass("active")
+                            $(this).addClass("active");
+                            console.log('$(this).data("optn_id")',$(this).data("optn_id"));
+
+                            //속성도 가져와야하고
+                            $.ajax({
+                                url : '/api/selectOption',
+                                method : 'post',
+                                data : {
+                                    optnId : $("#optionSort li.active").data("optn_id")
+                                },
+                            }).done(function(result){
+                                console.log("result", result);
+                                var option = result.rows[0];
+
+                                if(option.optnNm){
+                                    $("#optionName").val(option.optnNm);
+                                }
+
+                                if(option.optnPrc){
+                                    $("#optionPrice").val(option.optnPrc);
+                                }
+
+                                if(option.qnttyLimitCnt){
+                                    $("#qnttyLimitCnt").val(option.qnttyLimitCnt);
+                                }else{
+                                    $("#qnttyLimitCnt").val(0);
+                                }
+
+                                if(option.qnttyLimitYn){
+                                    $("#countLimitCd").prop("checked", option.qnttyLimitYn == "Y" )
+                                }else{
+                                    $("#countLimitCd").prop("checked", false)
+                                }
+
+                                if(option.qnttyYn){
+                                    $("#countCd").prop("checked", option.qnttyYn == "Y" )
+                                }else{
+                                    $("#countCd").prop("checked", false)
+                                }
+
+
+                            }).fail(function(jqXHR, textStatus, errorThrown) {
+                                    console.error('FAIL REQUEST: ', textStatus);
+                                    alert('처리중 오류가 발생하였습니다.');
+                                }).always(function() {
+                                    console.log('DONE');
+                                });
+                        }else{
+                            smallOptionReset()
+                        }
+                    });
+
+                    $("#optionSort").on("click", ".cancel", function(){
+                        console.log('"optionSort click", ".cancel"');
+
+                        var option = { optnId: $(this).parent().data("optn_id"),
+                                    tempKey : tempKey
+                        };
+                        var deleteTrue = false;
+                        $.ajax({
+                            url : '/api/deleteSmallOption',
+                            method : 'post',
+                                data : option,
+                        }).done(function(result){
+                            console.log('result', result);
+                            $("li[data-optn_id='"+result.optnId+"']").remove();
+                            smallOptionReset();
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                                console.error('FAIL REQUEST: ', textStatus);
+                                alert('처리중 오류가 발생하였습니다.');
+                            }).always(function() {
+                                console.log('DONE');
+                            });
+                    });
+
+
+                    $(".saveBigOption").on("click", function(){
+                        var value;
+                        if($("#multiCheckCd").prop("checked")){
+                            value = "Y";
+                        }else{
+                            value = null;
+                        }
+                        $.ajax({
+                            url : '/api/updateBigOption',
+                            method : 'post',
+                            data : {
+                                optnId : $("#category li.active").data("optn_id"),
+                                multiChkYn : value
+                            },
+                        }).done( function(result){
+                            console.log("updateBigOption result", result);
+                            if(result.multiChkYn){
+                                $("#multiCheckCd").prop("checked", result.multiChkYn == "Y" )
+                            }else{
+                                $("#multiCheckCd").prop("checked", false)
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                                console.error('FAIL REQUEST: ', textStatus);
+                                alert('처리중 오류가 발생하였습니다.');
+                            }).always(function() {
+                                console.log('DONE');
+                            });
+                    });
+
+                    $("#category").on("keypress", "li input[type='text'].categoryAdd", function(e){
+                        if (e.keyCode == 13) {
+                            console.log("$(this)[0]",$(this)[0]);
+                            var option = {
+                                            optnNm : $(this).val(),
+                                            ord : $(this).parent().siblings().length,
+                                            depth : 0,
+                                            showCateCd : 'N',
+                                            tempKey : tempKey
+                                };
+                             $.ajax({
+                                 url : '/api/insertBigOption',
+                                 method : 'post',
+                                 data : option,
+                             }).done(function(result){
+                                     console.log('result', result);
+                                     var  textInput = $("input[type='text'].categoryAdd");
+                                     var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
+                                     textInput.parent().after(htmlText);
+                                     textInput.parent().remove();
+                                 }).fail(function(jqXHR, textStatus, errorThrown) {
+                                     console.error('FAIL REQUEST: ', textStatus);
+                                     alert('처리중 오류가 발생하였습니다.');
+                                 }).always(function() {
+                                     console.log('DONE');
+                                 });
+                        }
+                    });
+
+
+                    $(".saveSmallOption").on("click", function(){
+                        if(!$("#category li.active").data("optn_id")){
+                            alert("큰옵션을 선택해주세요.")
+                            return;
+                        }
+
+                        if(!$("#optionName").val()){
+                            $("#optionName").focus()
+                            alert("옵션명을 입력해주세요.")
+                            return;
+                        }
+
+
+                        if(!$("#optionPrice").val()){
+                            $("#optionPrice").focus()
+                            alert("가격을 입력해주세요.")
+                            return;
+                        }
+
+
+
+                        $.ajax({
+                                url : '/api/insertSmallOption',
+                                method : 'post',
+                                data : {
+                                    parentOptnId : $("#category li.active").data("optn_id"),
+                                    ord : $("#optionSort li").length,
+                                    optnNm : $("#optionName").val(),
+                                    optnPrc : $("#optionPrice").val(),
+                                    qnttyYn : ( $("#countCd").prop("checked") ? $("#countCd").val(): null ),
+                                    qnttyLimitYn :( $("#countLimitCd").prop("checked") ? $("#countLimitCd").val(): null ) ,
+                                    qnttyCnt : $("#qnttyCnt").val(),
+                                    tempKey : tempKey
+                                },
+                        }).done(function(result){
+                            console.log('result', result);
+                            var  textInput = $("ul#optionSort");
+                             var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
+                             textInput.append(htmlText);
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            console.error('FAIL REQUEST: ', textStatus);
+                            alert('처리중 오류가 발생하였습니다.');
+                        }).always(function() {
+                            console.log('DONE');
+                        });
+                    });
+                    //updateSmallOption
+                    $(".updateSmallOption").on("click", function(){
+                        if(!$("#optionSort li.active").data("optn_id")){
+                            alert("작은옵션을 선택해주세요.");
+                            return;
+                        }
+
+                        if(!$("#optionName").val()){
+                            $("#optionName").focus()
+                            alert("옵션명을 입력해주세요.")
+                            return;
+                        }
+
+
+                        if(!$("#optionPrice").val()){
+                            $("#optionPrice").focus()
+                            alert("가격을 입력해주세요.")
+                            return;
+                        }
+
+                        $.ajax({
+                                url : '/api/updateSmallOption',
+                                method : 'post',
+                                data : {
+                                    optnId : $("#optionSort li.active").data("optn_id"),
+                                    ord : $("#optionSort li.active").index(),
+                                    optnNm : $("#optionName").val(),
+                                    optnPrc : $("#optionPrice").val(),
+                                    qnttyYn : ( $("#countCd").prop("checked") ? $("#countCd").val(): null ),
+                                    qnttyLimitYn :( $("#countLimitCd").prop("checked") ? $("#countLimitCd").val(): null ) ,
+                                    qnttyLimitCnt : $("#qnttyLimitCnt").val(),
+                                    tempKey : tempKey
+                                },
+                        }).done(function(result){
+                            var option = result;
+                            if(option.optnNm){
+                                $("#optionName").val(option.optnNm);
+                                $("#optionSort li.active").html(option.optnNm+'<img class="cancel" src="/resources/css/easyui/themes/icons/cancel.png">');
+                            }
+
+                            if(option.optnPrc){
+                                $("#optionPrice").val(option.optnPrc);
+                            }
+
+                            if(option.qnttyLimitCnt){
+                                $("#qnttyLimitCnt").val(option.qnttyLimitCnt);
+                            }else{
+                                $("#qnttyLimitCnt").val(0);
+                            }
+
+                            if(option.qnttyLimitYn){
+                                $("#countLimitCd").prop("checked", option.qnttyLimitYn == "Y" )
+                            }else{
+                                $("#countLimitCd").prop("checked", false)
+                            }
+
+                            if(option.qnttyYn){
+                                $("#countCd").prop("checked", option.qnttyYn == "Y" )
+                            }else{
+                                $("#countCd").prop("checked", false)
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            console.error('FAIL REQUEST: ', textStatus);
+                            alert('처리중 오류가 발생하였습니다.');
+                        }).always(function() {
+                            console.log('DONE');
+                        });
+                    });
+                    //옵션 미리보기 버튼
+                    $(".optionPreview").on('click', function(){
+                        $("#preview").html("");
+                        $.ajax({
+                            url : '/api/selectTempOptions',
+                            method : 'post',
+                            data : {
+                                tempKey : tempKey
+                            },
+                        }).done(function(result){
+                            console.log('selectTempOptions result', result);
+
+                            if(result.rows){
+
+                                var rows = result.rows;
+                                var $frag = $(document.createDocumentFragment());
+                                for(var i = 0; i < result.rows.length; i++){
+                                    var row = result.rows[i];
+                                    if(row.depth == "0"){
+                                        console.log("depth 0 ", row)
+                                        var html = "";
+                                        html += '<div class="test example">';
+                                        html +='<figure><figcaption>'+row.optnNm+'</figcaption>    <ul class='+row.optnId+' data-optn_id='+row.optnId+'> </ul> </figure>'
+                                        html +='</div>';
+                                        $frag.append(html);
+                                    }
+                                }
+
+                                $("#preview").append($frag);
+
+                                for(var i = 0; i < result.rows.length; i++){
+                                    var row = result.rows[i];
+                                    if(row.depth == "0"){
+                                    }else{
+                                        console.log("depth 1 ", row)
+                                        console.log("li append","."+row.parentOptnId)
+                                        var li = document.createElement("li");
+                                        li.textContent = row.optnNm;
+                                        if(row.parentOptnId){
+                                            $("."+row.parentOptnId).append(li);
+                                        }
+                                    }
+                                }
+                            }
+                        }).fail(function(jqXHR, textStatus, errorThrown) {
+                            console.error('FAIL REQUEST: ', textStatus);
+                            alert('처리중 오류가 발생하였습니다.');
+                        }).always(function() {
+                            console.log('DONE');
+                        });
+                    });
+
+                    $(".plus").on('click', function(){
+                        var cnt = $("#qnttyLimitCnt").val();
+                        cnt++;
+                        $("#qnttyLimitCnt").val(cnt);
+                    });
+                    $(".minus").on('click', function(){
+                        var cnt = $("#qnttyLimitCnt").val();
+                        cnt--;
+                        $("#qnttyLimitCnt").val(cnt);
+                    });
+
+                });
+
+                function smallOptionReset(){
+                    $("#optionAdd input[type='text']").val("");
+                    $("#optionAdd input[type='checkbox']").prop("checked", false);
+                    $("#qnttyLimitCnt").val(0);
+                }
+                </script>
+                <div class="box_area full option">
+                    <h3 class="sub_stit">옵션 관리</h3>
+                    <div style="display: flex;">
+                        <div class="test option_left" id="category">
+                            <ul id="bigOption">
+                                <c:forEach items="${options }" var="option" varStatus="index">
+                                    <li data-optn_id="${option.optnId}">${option.optnNm} <img class="cancel" src="/resources/css/easyui/themes/icons/cancel.png"></li>
+                                </c:forEach>
+                                <li><img src="/resources/css/easyui/themes/icons/edit_add.png"></li>
+                            </ul>
+                        </div>
+                        <div  class="test option_right">
+                            <ul id="bigOptionAdd">
+                                <li>
+                                    <input type="checkbox" value="Y" id="multiCheckCd" name="multiCheckCd"> 중복 선택 가능 옵션
+                                </li>
+                                <li style="text-align: right; border-bottom : 0px;"><input type="button" class="saveBigOption optionBtn" value="큰옵션저장"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div  style="display: flex;">
+                    <div  class="test option_left" >
+                        <ul id="optionSort">
+                                <li><img src="/resources/css/easyui/themes/icons/edit_add.png"></li>
+                        </ul>
+                    </div>
+                    <div  class="test option_right">
+                        <ul id="optionAdd">
+                            <li>
+                                <input type="text" id="optionName" name="optionName" placeholder="옵션명">
+                                <input type="text" id="optionPrice" name="optionPrice" placeholder="옵션 가격" >
+                            </li>
+                            <li  class="quantitySelector">
+                                <input type="checkbox" id="countCd" name="countCd" value="Y"> 수량 선택 가능 옵션
+                            </li>
+                            <li  class="quantitySelector">
+                                <input type="checkbox" id="countLimitCd" name="countLimitCd" value="Y"> 수량 제한 기능 옵션
+                                <span  style="float: right">
+                                <span class="controller minus">
+                                <button type="button">줄이기</button>
+                                </span>
+                                <span class="currentQuantity">
+                                <input type="number" class="iText" pattern="[0-9]*"  id="qnttyLimitCnt" name="qnttyLimitCnt" inputmode="numeric" value="0" data-max-number="45" data-min-number="1">
+                                </span>
+                                <span class="controller plus">
+                                <button type="button">늘리기</button>
+                                </span>
+                                </span>
+                            </li>
+                            <li  style="text-align: right; border-bottom : 0px;"><input type="button" class="updateSmallOption optionBtn" value="작은옵션수정"/><input type="button" class="saveSmallOption optionBtn" value="작은옵션저장"/></li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div  class="option_left" >
+                        <input type="button" class="optionPreview optionBtn" value="옵션 미리보기"/>
+                    </div>
+
+                </div>
+                <div class="box_area full option">
+                    <h3 class="sub_stit">옵션 미리보기</h3>
+                    <div  id="preview">
+
+                    </div>
+                </div>
+                -->
+                <div class="box_area full">
+                    <div class="btn_area">
+                        {{#product}}
+                            <input type="hidden" class="form_time" name="prdId" id="prdId" value="{{id }}">
+                            <button type="button" class="btn_save" id="deleteBtn">삭제</button>
+                            <button type="button" class="btn_save" id="submitBtn">저장</button>
+                        {{/product}}
+                        {{^product}}
+                            <!--                        <button type="button" class="btn_save" id="submitBtn">저장</button>-->
+                        {{/product}}
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--// left_area -->
+
+<!--     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/upload/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="/js/upload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="/js/upload/jquery.fileupload.js"></script>
+    <!-- .content -->
+    <script src="/js/product/productView.js"></script>
+    <script>
+        const contextPath = '';
+        const prdId = '{{#product}}{{id}}{{/product}}';
+    </script>
+    <!-- 본문자리 -->
+</div>
+
+
+<!-- popup -->
+<div id="popup"></div>
+<!--// popup -->
+</body>
+</html>

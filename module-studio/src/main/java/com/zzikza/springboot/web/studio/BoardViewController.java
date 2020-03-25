@@ -100,7 +100,7 @@ public class BoardViewController {
     }
 
 
-    private void setBoardCategoriesWithSelected(@PathVariable String brdCateCd, Model model) {
+    private void setBoardCategoriesWithSelected(String brdCateCd, Model model) {
         EBoardCategory selected = EBoardCategory.valueOf(EBoardCategory.class, brdCateCd.toLowerCase());
         List<Map<String, Object>> commonCodes = new ArrayList<>();
         for (EBoardCategory commonCode : EBoardCategory.values()) {

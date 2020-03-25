@@ -1,6 +1,5 @@
 package com.zzikza.springboot.web.dto;
 
-import com.zzikza.springboot.web.domain.posts.Posts;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.util.PasswordUtil;
 import lombok.Builder;
@@ -28,6 +27,7 @@ public class StudioRequestDto {
                 .accountStatus(accountStatus)
                 .build();
     }
+
 
     public String getEncodingPassword() {
         return PasswordUtil.getEncriptPassword(password, studioId);

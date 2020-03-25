@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "tb_adv")
 public class Banner extends BaseTimeEntity {
     @Id
-    @Column(name = "ADV_ID")
+    @Column(name = "ADV_ID", length = 15)
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @Parameter(name = "table_name", value = "sequences"),

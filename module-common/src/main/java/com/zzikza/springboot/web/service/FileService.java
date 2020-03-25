@@ -3,6 +3,7 @@ package com.zzikza.springboot.web.service;
 import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.editor.EditorFile;
 import com.zzikza.springboot.web.domain.editor.EditorFileRepository;
+import com.zzikza.springboot.web.domain.product.ProductFile;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioFile;
 import com.zzikza.springboot.web.domain.studio.StudioFileRepository;
@@ -60,10 +61,7 @@ public class FileService {
         return new FileResponseDto(studioFileDto);
     }
 
-    public FileResponseDto orderStudioFile(StudioResponseDto studioResponseDto, MultipartFile file) {
-        return null;
-    }
-    //저장
+
 
     //삭제는 현재 미구현 (언제 삭제할지도 의문.. 그리고 복사해서 붙여놓은 부분때문에 한파일 지워지면 다른 본문 지워질 우려있음.)
 }

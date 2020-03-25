@@ -1,4 +1,4 @@
-package com.zzikza.springboot.web.domain.studio;
+package com.zzikza.springboot.web.domain.product;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
 import com.zzikza.springboot.web.domain.FileAttribute;
@@ -12,49 +12,51 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "tb_stdo_fl")
-public class StudioFile extends BaseTimeEntity {
+@Entity(name = "tb_prd_fl")
+public class ProductFile extends BaseTimeEntity {
     @Id
-    @Column(name = "STDO_FL_ID", length = 15)
+    @Column(name = "PRD_FL_ID", length = 15)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
             @org.hibernate.annotations.Parameter(name = "segment_column_name", value = "name"),
-            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_stdo_fl"),
-            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "STF"),
+            @org.hibernate.annotations.Parameter(name = "segment_value", value = "tb_prd_fl"),
+            @org.hibernate.annotations.Parameter(name = "prefix_key", value = "PFI"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
+
     @ManyToOne
-    @JoinColumn(name = "STDO_SEQ")
-    Studio studio;
+    @JoinColumn(name = "PRD_ID")
+    Product product;
+
     @Embedded
-//    @AttributeOverrides({
-//            @AttributeOverride(name = "TITLE", column = @Column(name = "")),
-//            @AttributeOverride(name = "CONTENT", column = @Column(name = ""))
-//    })
     private FileAttribute file;
 
     @Builder
-    public StudioFile(Studio studio, FileAttribute fileAttribute) {
-        this.studio = studio;
+    public ProductFile(Product product, FileAttribute fileAttribute) {
+        this.product = product;
         this.file = fileAttribute;
     }
 
-    public StudioFile(FileAttribute fileAttribute) {
+    public ProductFile(FileAttribute fileAttribute) {
         this.file = fileAttribute;
     }
 
-    public void setStudio(Studio studio) {
-        this.studio = studio;
-        //기존 스튜디오와 관계 제거
-        if (this.studio != null) {
-            this.studio.getStudioFiles().remove(this);
+    public ProductFile(ProductFileTemp productFileTemp) {
+        this.file = productFileTemp.getFile();
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+        if (this.product != null) {
+            this.product.getProductFiles().remove(this);
         }
 
-        studio.getStudioFiles().add(this);
-        this.studio = studio;
+        product.getProductFiles().add(this);
+        this.product = product;
     }
+
 
     public String getFileName() {
         return this.file.getFileName();

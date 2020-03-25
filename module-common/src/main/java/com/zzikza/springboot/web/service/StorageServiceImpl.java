@@ -121,8 +121,14 @@ public class StorageServiceImpl implements StorageService {
                 fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
                 fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
                 fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
+            } else if ("product_temp".equals(type)) {
+                fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
+                fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
+                fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
             } else if ("product".equals(type)) {
-
+                fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
+                fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
+                fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
             } else {
 
             }

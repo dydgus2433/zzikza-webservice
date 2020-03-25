@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity(name = "tb_stdo_qstn_repl")
 public class StudioQuestionReply  extends BaseTimeEntity {
     @Id
-    @Column(name = "STDO_QSTN_REPL_ID")
+    @Column(name = "STDO_QSTN_REPL_ID", length = 15)
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator",
             parameters = {

@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity(name = "tb_adv_fl")
 public class BannerFile extends BaseTimeEntity {
     @Id
-    @Column(name = "ADV_FL_ID")
+    @Column(name = "ADV_FL_ID", length = 15)
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Entity(name = "tb_crtf")
 public class Certification  extends BaseTimeEntity {
     @Id
-    @Column(name = "CRTF_ID")
+    @Column(name = "CRTF_ID", length = 15)
     @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),

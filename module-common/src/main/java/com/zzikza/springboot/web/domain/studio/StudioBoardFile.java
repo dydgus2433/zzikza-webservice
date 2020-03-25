@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity(name = "tb_stdo_brd_fl")
 public class StudioBoardFile extends BaseTimeEntity {
     @Id
-    @Column(name = "STDO_BRD_FL_ID")
+    @Column(name = "STDO_BRD_FL_ID", length = 15)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),

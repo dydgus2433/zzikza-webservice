@@ -1,6 +1,8 @@
 package com.zzikza.springboot.web.dto;
 
 import com.zzikza.springboot.web.domain.editor.EditorFile;
+import com.zzikza.springboot.web.domain.product.ProductFile;
+import com.zzikza.springboot.web.domain.product.ProductFileTemp;
 import com.zzikza.springboot.web.domain.studio.StudioFile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,20 @@ public class FileResponseDto implements Comparable<FileResponseDto>{
     }
 
     public FileResponseDto(StudioFile entity) {
+        this.id = entity.getId();
+        this.fileName = entity.getFile().getFileName();
+        this.filePath = entity.getFile().getFileThumbPath();
+        this.fileOrder = entity.getFile().getFileOrder();
+    }
+
+    public FileResponseDto(ProductFile entity) {
+        this.id = entity.getId();
+        this.fileName = entity.getFile().getFileName();
+        this.filePath = entity.getFile().getFileThumbPath();
+        this.fileOrder = entity.getFile().getFileOrder();
+    }
+
+    public FileResponseDto(ProductFileTemp entity) {
         this.id = entity.getId();
         this.fileName = entity.getFile().getFileName();
         this.filePath = entity.getFile().getFileThumbPath();

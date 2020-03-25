@@ -3,8 +3,8 @@ package com.zzikza.springboot.web.domain.enums;
 public enum EProductStatus {
 
 
-    정상("NORMAL"),
-    삭제("DELETE");
+    NORMAL("NORMAL"),
+    DELETE("DELETE");
 
     String value;
 

@@ -120,7 +120,6 @@ $(document).ready(function () {
     fileUploadSetting();
     $("#fileBtn").off('click').on('click', fileUploadAction)
     $("#submitBtn").off('click').on('click', submitAction)
-    $("#updateBtn").off('click').on('click', submitAction)
 
     $("#sortable").sortable({
         update: function (event, ui) {
@@ -203,24 +202,24 @@ $(document).ready(function () {
         }
     });
 
-    //삭제버튼 클릭
-    $("#deleteBtn").on("click", function () {
-        if (confirm("삭제하면 복구할 수 없습니다. 삭제하시겠습니까?")) {
-
-
-            $.ajax({
-                url: "/api/product",
-                type: "DELETE",
-                data: {prdId: prdId},
-            }).done(function (data) {
-                location.href = '/prod/list';
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
-            }).always(function () {
-            });
-        }
-    });
+    // //삭제버튼 클릭
+    // $("#deleteBtn").on("click", function () {
+    //     if (confirm("삭제하면 복구할 수 없습니다. 삭제하시겠습니까?")) {
+    //
+    //
+    //         $.ajax({
+    //             url: "/api/product",
+    //             type: "DELETE",
+    //             data: {prdId: prdId},
+    //         }).done(function (data) {
+    //             location.href = '/prod/list';
+    //         }).fail(function (jqXHR, textStatus, errorThrown) {
+    //             console.error('FAIL REQUEST: ', textStatus);
+    //             alert('처리중 오류가 발생하였습니다.');
+    //         }).always(function () {
+    //         });
+    //     }
+    // });
 
 
     if ($("#prdSalePrc").val() > 0) {
@@ -261,16 +260,19 @@ function pad(n, width) {
 
 function fileUploadSetting() {
     // Change this to the location of your server-side upload handler:
-    const url = '/api/product-file';  // 사용
+    const url = '/api/product-file/temp';  // 사용
     const upload = $('#detailFiles').fileupload({
         url: url,
-        type : 'POST',
         sequentialUploads: true,
         dataType: 'json',
         maxNumberOfFiles: 10,
+        type: 'POST',
+        formData: {
+            tempKey: tempKey
+        },
         add: function (e, data) {
-            var uploadFile = data.files[0];
-            var isValid = true;
+            const uploadFile = data.files[0];
+            let isValid = true;
             if (!(/png|jpe?g|gif/i).test(uploadFile.name)) {
 
                 alert('png, jpg, gif 만 가능합니다');
@@ -289,7 +291,6 @@ function fileUploadSetting() {
             }
 
             if (isValid) {
-
                 data.submit();
 
             }
@@ -301,11 +302,18 @@ function fileUploadSetting() {
             const result =  data.result.data;
             const id = "img_id_" + result.id;
             $("#sortable li:last").remove();
-
+            // result
+            /*
+            {id: "PFT0000000003", fileName: "75b20055-b924-4cc4-b236-6028f6530e31.jpg", filePath: "https://zzikza-upload.s3.ap-northeast-2.amazonaws.…ad/thumb/75b20055-b924-4cc4-b236-6028f6530e31.jpg", fileOrder: 1}
+id: "PFT0000000003"
+fileName: "75b20055-b924-4cc4-b236-6028f6530e31.jpg"
+filePath: "https://zzikza-upload.s3.ap-northeast-2.amazonaws.com/upload/thumb/75b20055-b924-4cc4-b236-6028f6530e31.jpg"
+fileOrder: 1
+             */
             const html = "<li index=\"" + result.id + "\" id=\"" + id + "\">"
                 + "<div class=\"img_area\" >"
                 + "<button type=\"button\" class=\"btn_del_img\">삭제</button>"
-                + "<img src=\"" +  result.filePath + "\" data-file='" + result.fileName + "'  onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
+                + "<img src=\"" + result.filePath + "\" data-file='" + result.fileName + "'  onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
                 + "</div>"
                 + "<div class=\"text\">0</div>"
                 + "</li>";
@@ -317,8 +325,8 @@ function fileUploadSetting() {
         progress: function (e, data) {
             //검사하자
 
-            var index = data.originalFiles.indexOf(data.files[0]);
-            var id = "img_id_" + index;
+            const index = data.originalFiles.indexOf(data.files[0]);
+            const id = "img_id_" + index;
             if (indexes.indexOf(index) > -1) {
             } else {
                 indexes.push(index);
@@ -326,7 +334,7 @@ function fileUploadSetting() {
                 var html = "<li index=\"\" id=\"" + id + "\">"
                     + "<div class=\"img_area\" >"
                     + "<button type=\"button\" class=\"btn_del_img\">삭제</button>"
-                    + "<img src=\"" +  "/images/common/no_img.gif" + "\" alt=\"\">"
+                    + "<img src=\"" + "/images/common/no_img.gif" + "\" alt=\"\">"
                     + "</div>"
                     + "<div class=\"text\">∞</div>"
                     + "</li>";
@@ -443,11 +451,8 @@ function submitAction() {
 
     let url = '/api/product';
     let ajaxType = 'POST';
-    if ($("#prdId").val()) {
-        url = '/api/product';
-        ajaxType = 'PUT';
-    }
 
+    formData.append("tempKey", tempKey);
 
     $.ajax({
         url: url,
@@ -456,6 +461,7 @@ function submitAction() {
         processData: false,
         contentType: false,
     }).done(function (data) {
+        console.log(url, data);
         if (data.success) {
             alert('상품이 등록되었습니다.');
             location.href = '/prod/list';
@@ -481,8 +487,8 @@ function deleteImageAction(e) {
         // 이거로 파일 삭제해야함
 
         $.ajax({
-            url:  "/api/product-file",
-            data: {prdId : prdId, index: indexStr, flNm: src},
+            url: "/api/product-file/temp",
+            data: {index: indexStr, fileName: src, tempKey: tempKey},
             type: "DELETE"
         }).done(function (a, b, c) {
             $(target).remove();
@@ -515,8 +521,8 @@ function updateAndOrderOption(options) {
     }
 
     $.ajax({
-        url: "/api/option/order",
-        data: {optnIds: indexes.join(","), prdId: prdId},
+        url: "/api/product-file/temp/order",
+        data: {optnIds: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -547,7 +553,7 @@ function bigOptionIndexing() {
     //
     // $.ajax({
     // 	url: contextPath + "/api/updateOptionOrder",
-    // 	data : {optnIds : indexes.join(",")},
+    // 	data : {optnIds : indexes.join(","), tempKey : tempKey},
     // 	type: "post"
     // }).done(function(a,b,c){
     // }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -580,8 +586,8 @@ function indexing() {
     }
 
     $.ajax({
-        url: "/api/product-file/order",
-        data: {index: indexes.join(","), prdId: prdId},
+        url: contextPath + "/api/product-file/temp/order",
+        data: {index: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
