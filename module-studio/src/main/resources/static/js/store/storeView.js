@@ -112,7 +112,7 @@ $(document).ready(function () {
 
             $.ajax({
                 url: "/api/studio-holiday",
-                data: {dateCode: type, dateValue: value},
+                data: {dateCode: type, dateValue: value ,id : option.id},
                 type: "DELETE",
                 async: false
             }).done(function (data) {
@@ -132,8 +132,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#stdoDsc").on('keyup', function () {
-        const tempText = $("textarea[name='stdoDsc']");
+    $("#studioDescription").on('keyup', function () {
+        const tempText = $("textarea[name='studioDescription']");
         let tempChar = "";
         // TextArea의
         // 문자를 한글자씩
@@ -403,7 +403,7 @@ function validate() {
         }
     }
 
-    inputs = $("textarea[name='stdoDsc']");
+    inputs = $("textarea[name='studioDescription']");
     for (i = 0; i < inputs.length; i++) {
         input = inputs[i];
         if ($(input).val() === "") {

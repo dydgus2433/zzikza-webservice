@@ -48,7 +48,7 @@ $( document ).ready(function() {
 });
    
 </script>  
-<!-- {openDayStartTm=1, wkndStartTm=1, dateType=W, dateVal=, keywords=1, wkndDayEndTm=14, files=http://localhost/img/thumb/c2fe31e4-2dc4-47ab-8652-ccf1b7910d1e.jpg, stdoDsc=테스트2, weekVal=0, openDayEndTm=14} -->
+<!-- {openTime=1, weekendOpenTime=1, dateType=W, dateVal=, keywords=1, weekendCloseTime=14, files=http://localhost/img/thumb/c2fe31e4-2dc4-47ab-8652-ccf1b7910d1e.jpg, studioDescription=테스트2, weekVal=0, closeTime=14} -->
 <!-- s:contetns -->
     <div class="section"> 
         <div class="top">
@@ -78,7 +78,7 @@ $( document ).ready(function() {
             <div class="studioInfo">
                 <div class="contWrap">
                     <p class="tit">${studio.stdoNm }</p>
-                    <div class="cont"  style="white-space: pre-wrap;"><c:out value="${studio.stdoDsc }"></c:out></div>
+                    <div class="cont"  style="white-space: pre-wrap;"><c:out value="${studio.studioDescription }"></c:out></div>
                     <!--                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25321.327943563098!2d127.02990940300094!3d37.50400295780005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca405861e4a67%3A0x73ec1c047764908!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rCDthYztl6TrnoDroZw!5e0!3m2!1sko!2skr!4v1564976538213!5m2!1sko!2skr" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 <%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.addr }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.lttd },${studio.lgtd }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe>

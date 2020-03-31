@@ -354,7 +354,7 @@ function validate(){
 		var input = inputs[i];
 		if($(input).val() == ""){
 			var name = input.name;
-			if(name == 'prdHour' || name == 'prdMin'){
+			if(name == 'productHour' || name == 'productMinute'){
 				alert("촬영소요시간을 입력해주세요");
 			}else{
 				alert(input.placeholder);
@@ -364,7 +364,7 @@ function validate(){
 		}
 	}
 	
-	inputs = $("textarea[name='prdDsc']");
+	inputs = $("textarea[name='productDescription']");
 	for(var i = 0; i < inputs.length; i++){
 		var input = inputs[i];
 		if($(input).val() == ""){
@@ -374,15 +374,15 @@ function validate(){
 		}
 	}
 	
-	if($("input[name='prdMin']").val() >= 60 || $("input[name='prdMin']").val() < 0 ){
+	if($("input[name='productMinute']").val() >= 60 || $("input[name='productMinute']").val() < 0 ){
 		alert("알맞은 시간을 입력하세요.");
-		$("input[name='prdMin']").focus();
+		$("input[name='productMinute']").focus();
 		return false;
 	}
 	
-	if($("textarea[name='prdDsc']").val() == ""){
+	if($("textarea[name='productDescription']").val() == ""){
 		alert("상품설명을 입력하세요.");
-		$("textarea[name='prdDsc']").focus();
+		$("textarea[name='productDescription']").focus();
 		return false;
 	}
 	

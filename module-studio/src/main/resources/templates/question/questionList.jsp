@@ -29,7 +29,7 @@
 						<tbody>
 							<c:forEach items="${list }" var="item">
 								<tr>
-									<td><c:out value="${item.userNm }"></c:out></td>
+									<td><c:out value="${item.userName }"></c:out></td>
 									<td class="textL" style=""><c:out value="${item.qstnContent }"></c:out></td>
 									<td>
 									<fmt:parseDate value="${item.regDt}" var="regDt" pattern="yyyy-MM-dd HH:mm:ss.S"/>

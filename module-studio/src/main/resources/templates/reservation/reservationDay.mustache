@@ -1,0 +1,62 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+    {{>layout/header}}
+	<div class="container">
+        {{>layout/left-panel}}
+        <!-- 본문자리 -->
+        <div class="left_content_area">
+            <div class="left_content_head">
+                <h2 class="sub_tit">예약관리 [일별]</h2>
+            </div>
+            <div class="inner">
+                <div class="box_area full">
+                    <div class="book_day_head">
+                        <div class="left">
+                            <input type="hidden" id="dateVal" value="{{#year}}{{year}}{{/year}}-{{#month}}{{month}}{{/month}}-{{#day}}{{day}}{{/day}}">
+                            <button type="button" class="btn_prev_month" onclick="javascript:prevDay('{{#year}}{{year}}{{/year}}','{{#minus-month}}{{minus-month}}{{/minus-month}}','{{#day}}{{day}}{{/day}}')">이전달</button>
+                            <h1>{{#year}}{{year}}{{/year}}년 {{#month}}{{month}}{{/month}}월 {{#day}}{{day}}{{/day}}일</h1>
+                            <button type="button" class="btn_next_month" onclick="javascript:nextDay('{{#year}}{{year}}{{/year}}','{{#minus-month}}{{minus-month}}{{/minus-month}}','{{#day}}{{day}}{{/day}}')">다음달</button>
+                        </div>
+                        <div class="right">
+                            <button type="button" class="btn_book" onclick="javascript:monthSchedule('{{#year}}{{year}}{{/year}}','{{#month}}{{month}}{{/month}}')">월별보기</button>
+                            <button type="button" class="btn_book_new">일정등록</button>
+                        </div>
+                    </div>
+                    <div class="book_day_list">
+                        {{#list}}
+                            <ul class="reservation" seq="{{id}}">
+                                <li class="tit">{{reservationStartHour }}:{{reservationStartMinute }} ~ {{reservationEndHour }}:{{reservationEndMinute }}
+                                    <em>{{userName }}고객님 - {{scheduleName }}</em></li>
+                                <li>
+                                    <span class="stit">연락처</span>
+                                    <p class="text">{{tel }}</p>
+                                </li>
+                                <li>
+                                    <span class="stit">촬영인원</span>
+                                    <p class="text">{{peopleCnt }}명</p>
+                                </li>
+                            </ul>
+
+                        {{/list}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// left_area -->
+        <script src="/js/reservation/reservationDay.js"></script>
+        <script>
+        </script>
+        <!-- 본문자리 -->
+	</div>
+	
+	
+	<!-- popup -->
+	<div id="popup"></div>
+	<!--// popup -->
+</body>
+</html>

@@ -33,8 +33,8 @@
 								<tr class="prdRow" data-seq='${item.prdId }' data-req-id='${item.reqId}'>
 									<td>${item.prdId }</td>
 									<td class="textL">${item.reqTitle }</td>
-									<td>${item.prdBrfDsc }</td>
-									<td><fmt:formatNumber type="number">${item.prdPrc}</fmt:formatNumber></td>
+									<td>${item.productBriefDesc }</td>
+									<td><fmt:formatNumber type="number">${item.price}</fmt:formatNumber></td>
 									<td>
 									<fmt:parseDate value="${item.regDt}" var="regDt" pattern="yyyy-MM-dd HH:mm:ss.S"/>
 									<fmt:formatDate value="${regDt}" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT"/>

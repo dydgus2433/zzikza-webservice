@@ -7,6 +7,7 @@ import com.zzikza.springboot.web.domain.enums.EShowStatus;
 import com.zzikza.springboot.web.domain.exhibition.Exhibition;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.studio.Studio;
+import com.zzikza.springboot.web.dto.ProductRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public class Product extends BaseTimeEntity {
     @Column
     String title;
     @Column(name = "PRD_DSC")
-    String description;
+    String productDescription;
     @Column(name = "PRD_BRF_DSC")
     String briefDescription;
 
@@ -80,7 +81,7 @@ public class Product extends BaseTimeEntity {
 
     @Builder
     public Product(String id, String title, Studio studio, Integer price, EProductStatus productStatus,
-                   EProductCategory productCategory, EShowStatus showStatus, Integer prdHour, Integer prdMinute,
+                   EProductCategory productCategory, EShowStatus showStatus, Integer productHour, Integer productMinuteute,
                    String productDescription, String productBriefDescription) {
         this.id = id;
         this.title = title;
@@ -89,9 +90,9 @@ public class Product extends BaseTimeEntity {
         this.productStatus = productStatus;
         this.productCategory = productCategory;
         this.showStatus = showStatus;
-        this.hour = prdHour;
-        this.minute = prdMinute;
-        this.description = productDescription;
+        this.hour = productHour;
+        this.minute = productMinuteute;
+        this.productDescription = productDescription;
         this.briefDescription = productBriefDescription;
     }
 
@@ -120,5 +121,17 @@ public class Product extends BaseTimeEntity {
                 .product(this)
                 .build();
         this.productExhbitions.add(productExhibition);
+    }
+
+    public void update(ProductRequestDto dto) {
+        this.title = dto.getTitle();
+        this.price = dto.getPrice();
+//        this.productStatus = dto.getShowStatusCode();
+        this.productCategory = dto.getProductCategory();
+        this.showStatus = dto.getShowStatusCode();
+        this.hour = dto.getProductHour();
+        this.minute =dto.getProductMinute();
+        this.productDescription = dto.getProductDescription();
+        this.briefDescription = dto.getProductBriefDesc();
     }
 }

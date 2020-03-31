@@ -1,0 +1,334 @@
+<!-- popup -->
+<div class="popup popup_book" style="display: none;">
+    <form id="popupFrm">
+        <input type="hidden" id="id" name="id" value="{{#detail}}{{id}}{{/detail}}">
+        <div class="inner">
+            <div class="popup_head">
+                <h1>일정등록</h1>
+                <button type="button" class="btn_popup_close">창닫기</button>
+            </div>
+            <div class="popup_body">
+                <table class="tInsert">
+                    <caption></caption>
+                    <colgroup>
+                        <col style="width:20%">
+                        <col style="width:80%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>시작시간</th>
+                        <td>
+                            <input type="text" class="date datepicker" id="reservationStartDate" name="reservationStartDate"
+                                   value="{{#detail}}{{reservationStartDate}}{{/detail}}">
+                            <select id="reservationStartHour" name="reservationStartHour">
+                                {{#times}}
+                                    <option value="{{idx}}" {{#is-start-time}}selected{{/is-start-time}}>{{idx}}시
+                                    </option>
+                                {{/times}}
+                            </select>
+                            <select id="reservationStartMinute" name="reservationStartMinute">
+                                {{#minutes}}
+                                    <option value="{{minute}}"
+                                            {{#is-start-minute}}selected{{/is-start-minute}}>{{minute}}분
+                                    </option>
+                                {{/minutes}}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>종료시간</th>
+                        <td>
+                            <input type="text" class="date datepicker" id="rsrvEndDt" name="rsrvEndDt"
+                                   value="{{#detail}}{{reservationEndDate}}{{/detail}}">
+                            <select id="reservationEndHour" name="reservationEndHour">
+                                {{#times}}
+                                    <option value="{{idx}}" {{#is-end-time}}selected{{/is-end-time}}>{{idx}}시</option>
+                                {{/times}}
+                            </select>
+                            <select id="reservationEndMinute" name="reservationEndMinute">
+                                {{#minutes}}
+                                    <option value="{{minute}}"
+                                            {{#is-end-minute}}selected{{/is-end-minute}}>{{minute}}분
+                                    </option>
+                                {{/minutes}}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>고객명</th>
+                        <td><input type="text" name="userName" value="{{#detail}}{{userName}}{{/detail}}"
+                                   placeholder="고객명을 입력해주세요."></td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td><input type="text" name="tel" value="{{#detail}}{{tel}}{{/detail}}"
+                                   placeholder="연락처를 입력해주세요."></td>
+                    </tr>
+                    <tr>
+                        <th>일정명</th>
+                        <td><input type="text" name="scheduleName" value="{{#detail}}{{scheduleName}}{{/detail}}"
+                                   placeholder="일정명을 입력해주세요."></td>
+                    </tr>
+                    <tr>
+                        <th>촬영인원</th>
+                        <td><input type="number" name="peopleCnt" value="{{#detail}}{{peopleCnt}}{{/detail}}"
+                                   placeholder="촬영인원을 입력해주세요."></td>
+                    </tr>
+                    <tr>
+                        <th>일정상세</th>
+                        <td><textarea class="w100" name="cstmReq"
+                                      placeholder="일정상세를 입력해주세요.">{{#detail}}{{customRequest}}{{/detail}}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>촬영금액</th>
+                        <td><input type="number" class="" id="price" name="price"
+                                   value="{{#detail}}{{price}}{{/detail}}" placeholder="촬영금액을 입력해주세요."><span
+                                class="text_won">원</span></td>
+                    </tr>
+                    <tr>
+                        <th>예약상태</th>
+                        <td>
+                            <select id="rsrvStatCd" name="rsrvStatCd">
+                                {{#commonCodes}}
+                                    <option value="{{commCd}}" {{#selected}}selected{{/selected}} >{{commCdNm}}</option>
+                                {{/commonCodes}}
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pop_btn_area">
+                    {{#detail}}
+                        {{#sessionVo}}
+                            <button type="button" id="btnOk">확인</button>
+                        {{/sessionVo}}
+                        {{^sessionVo}}
+                            <button type="button" onclick="javascript:alert('세션이 만료되었습니다.');location.href='/';">확인
+                            </button>
+                        {{/sessionVo}}
+                        <button type="button" class="btn_pop_cancel" id="btnCancel">취소</button>
+                        <button type="button" class="btn_pop_mod" id="btnMod">일정수정</button>
+                    {{/detail}}
+                    {{^detail}}
+                        <button type="button" id="btnOk">확인</button>
+                    {{/detail}}
+                    <!--button type="button" class="btn_pop_del">일정삭제</button-->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log("예약관리목록");
+
+        $(".datepicker").datepicker({
+            "dateFormat": "yy-mm-dd"
+        });
+
+        var settingDate = '${date}';
+        if ($("#reservationStartDate").val() && $("#reservationStartDate").val()) {
+
+        } else {
+            $(".datepicker").datepicker('setDate', new Date('${date}'));
+        }
+        //기본날짜 세팅
+
+
+        $(".popup").hide();
+        $(".btn_book_new").off('click').on('click', function () {
+            $.ajax({
+                url: '/reservation/popup',
+                data: {date: $("#dateVal").val()},
+            }).done(function (result) {
+                console.log(result);
+                $("#popup").html('');
+                $("#popup").html(result);
+                $(".popup_book").show();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+            $("#startDt").val($("#dateVal").val());
+        });
+
+        $(".reservation").off('click').on('click', function () {
+            const rsrvId = $(this).attr("seq");
+            console.log(rsrvId);
+
+            $.ajax({
+                url: '/reservation/popup',
+                data: {id: rsrvId, date: $("#dateVal").val()},
+            }).done(function (result) {
+                console.log(result);
+                $("#popup").html('');
+                $("#popup").html(result);
+                $(".popup_book").show();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+        });
+
+        $(".btn_qna_view").off('click').on('click', function () {
+            $(".popup_qna").show();
+        });
+
+        $(".btn_popup_close").off('click').on('click', function () {
+            $(".popup").hide();
+        });
+
+        $("#btnCancel").off('click').on('click', function () {
+            $(".popup").hide();
+        });
+
+        //숫자만 입력
+        $("input[type='number']").off('keypress').on('keypress', function (e) {
+            if (e.which && (e.which > 47 && e.which < 58 || e.which == 8)) {
+            } else {
+                e.preventDefault();
+            }
+        });
+
+
+        $("#btnOk").off('click').on('click', function () {
+            if (!validate()) {
+                console.log("유효하지 않습니다.")
+                return;
+            }
+
+            var formData = new FormData($("#popupFrm")[0]);
+
+
+            $.ajax({
+                url: '/api/reservation',
+                data: formData,
+                method: 'post',
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                alert('등록되었습니다.');
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+
+        });
+
+
+        $("#btnMod").off('click').on('click', function () {
+            if (!validate()) {
+                return;
+            }
+
+            var formData = new FormData($("#popupFrm")[0])
+
+            $.ajax({
+                url: '/api/reservation',
+                data: formData,
+                method: 'PUT',
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                console.log(result);
+                alert('수정되었습니다.')
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+
+        });
+
+        //예약취소가 맞을 듯
+        $("#btnDel").off('click').on('click', function () {
+
+            if (confirm("환불처리가 됩니다. 진행하시겠습니까?")) {
+
+            }
+
+            var formData = new FormData($("#popupFrm")[0])
+
+            $.ajax({
+                url: '/api/reservation',
+                data: formData,
+                method: 'DELETE',
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                console.log(result);
+                alert('삭제되었습니다.')
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+        });
+    });
+
+
+    function validate() {
+        let name;
+        let input;
+        let inputs = $("input[type='text']");
+        for (var i = 0; i < inputs.length; i++) {
+            input = inputs[i];
+            if ($(input).val() === "") {
+                name = input.name;
+                alert(input.placeholder);
+                $(input).focus();
+                return false;
+            }
+        }
+
+        inputs = $("input[type='number']");
+        for (var i = 0; i < inputs.length; i++) {
+            input = inputs[i];
+            if ($(input).val() == "") {
+                name = input.name;
+                alert(input.placeholder);
+                $(input).focus();
+                return false;
+            }
+        }
+
+        inputs = $("textarea[name='cstmReq']");
+        for (var i = 0; i < inputs.length; i++) {
+            input = inputs[i];
+            if ($(input).val() == "") {
+                alert("스튜디오 설명을 입력하세요.");
+                $(input).focus();
+                return false;
+            }
+        }
+
+        var startDateTm = $("#reservationStartDate").val() + '-' + $("#reservationStartHour").val() + ':' + $("#reservationStartMinute").val();
+        var endDateTm = $("#rsrvEndDt").val() + '-' + $("#reservationEndHour").val() + ':' + $("#reservationEndMinute").val();
+        startDateTm = startDateTm.replace(/-/gi, '/');
+        endDateTm = endDateTm.replace(/-/gi, '/');
+        if (new Date(startDateTm) >= new Date(endDateTm)) {
+            alert('끝나는 날짜가 앞설 수 없습니다.');
+            return false;
+
+
+            if ($("#price").val() == '') {
+                $("#price").val(0);
+            }
+        }
+        return true;
+    }
+
+</script>
+<!--// popup -->

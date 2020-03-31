@@ -211,7 +211,7 @@ $(document).ready(function () {
             $.ajax({
                 url: "/api/product",
                 type: "DELETE",
-                data: {prdId: prdId},
+                data: {id: id},
             }).done(function (data) {
                 location.href = '/prod/list';
             }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -386,7 +386,7 @@ function validate() {
         const input = $number[i];
         if ($(input).val() === "") {
             const name = input.name;
-            if (name === 'prdHour' || name === 'prdMin') {
+            if (name === 'productHour' || name === 'productMinute') {
                 alert("촬영소요시간을 입력해주세요");
             } else if (name === 'prdSalePrc') {
                 continue;
@@ -398,22 +398,22 @@ function validate() {
         }
     }
 
-    const $prdHour = $("input[name='prdHour']");
-    if ($prdHour.val() < 0) {
+    const $productHour = $("input[name='productHour']");
+    if ($productHour.val() < 0) {
         alert("알맞은 시간을 입력해주세요.");
-        $prdHour.focus();
+        $productHour.focus();
         return false;
     }
-    const $prdMin = $("input[name='prdMin']");
-    if ($prdMin.val() >= 60 || $prdMin.val() < 0) {
+    const $productMinute = $("input[name='productMinute']");
+    if ($productMinute.val() >= 60 || $productMinute.val() < 0) {
         alert("알맞은 시간을 입력하세요.");
-        $prdMin.focus();
+        $productMinute.focus();
         return false;
     }
-    const $prdDsc = $("textarea[name='prdDsc']");
-    if ($prdDsc.val() === "") {
+    const $productDescription = $("textarea[name='productDescription']");
+    if ($productDescription.val() === "") {
         alert("상품설명을 입력하세요.");
-        $prdDsc.focus();
+        $productDescription.focus();
         return false;
     }
 
@@ -439,11 +439,11 @@ function submitAction() {
         indexes.push($($this).attr("index"));
     });
     formData.append("index", indexes.join(","));
-    formData.append('prdDsc', quill.container.firstChild.innerHTML);
+    formData.append('productDescription', quill.container.firstChild.innerHTML);
 
     let url = '/api/product';
     let ajaxType = 'POST';
-    if ($("#prdId").val()) {
+    if ($("#id").val()) {
         url = '/api/product';
         ajaxType = 'PUT';
     }
@@ -457,7 +457,7 @@ function submitAction() {
         contentType: false,
     }).done(function (data) {
         if (data.success) {
-            alert('상품이 등록되었습니다.');
+            alert('상품이 수정되었습니다.');
             location.href = '/prod/list';
         } else {
             alert('상품등록이 실패했습니다. 입력값을 확인해주세요.');
@@ -482,7 +482,7 @@ function deleteImageAction(e) {
 
         $.ajax({
             url:  "/api/product-file",
-            data: {prdId : prdId, index: indexStr, flNm: src},
+            data: {id : id, index: indexStr, flNm: src},
             type: "DELETE"
         }).done(function (a, b, c) {
             $(target).remove();
@@ -516,7 +516,7 @@ function updateAndOrderOption(options) {
 
     $.ajax({
         url: "/api/option/order",
-        data: {optnIds: indexes.join(","), prdId: prdId},
+        data: {optnIds: indexes.join(","), id: id},
         type: "PUT"
     }).done(function (a, b, c) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -581,7 +581,7 @@ function indexing() {
 
     $.ajax({
         url: "/api/product-file/order",
-        data: {index: indexes.join(","), prdId: prdId},
+        data: {index: indexes.join(","), id: id},
         type: "PUT"
     }).done(function (a, b, c) {
     }).fail(function (jqXHR, textStatus, errorThrown) {

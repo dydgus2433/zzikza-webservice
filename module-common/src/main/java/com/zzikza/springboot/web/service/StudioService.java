@@ -2,6 +2,9 @@ package com.zzikza.springboot.web.service;
 
 
 import com.zzikza.springboot.web.domain.FileAttribute;
+import com.zzikza.springboot.web.domain.enums.EDateStatus;
+import com.zzikza.springboot.web.domain.reservation.Reservation;
+import com.zzikza.springboot.web.domain.reservation.ReservationRepository;
 import com.zzikza.springboot.web.domain.studio.*;
 import com.zzikza.springboot.web.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ public class StudioService {
     private final StudioHolidayRepository studioHolidayRepository;
     private final StudioKeywordRepository studioKeywordRepository;
     private final StudioKeywordMapRepository studioKeywordMapRepository;
+    private final ReservationRepository reservationRepository;
     private final StorageServiceImpl storageService;
     @Value("${service.fileupload.basedirectory}")
     private String FILE_PATH;
@@ -94,19 +98,44 @@ public class StudioService {
     @Transactional
     public StudioHolidayResponseDto deleteHoliday(StudioResponseDto studioResponseDto, StudioHolidayRequestDto params) {
         Studio studio = studioRepository.findById(studioResponseDto.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 없습니다."));
-
-        studio.getStudioHolidays().remove((params.getEntity()));
+        StudioHoliday holiday = studioHolidayRepository.findById(params.getId()).orElseThrow(()-> new IllegalArgumentException("해당 날짜가 없습니다."));
+        studio.getStudioHolidays().remove(holiday);
+        studioHolidayRepository.delete(holiday);
         return new StudioHolidayResponseDto(params);
     }
 
     public List<StudioHolidayResponseDto> selectStudioHolidays(StudioResponseDto studioResponseDto) {
-
         List<StudioHoliday> studioHolidays = studioHolidayRepository.findAllByStudio(studioResponseDto.toEntity());
         List<StudioHolidayResponseDto> studioHolidayResponseDtos = new ArrayList<>();
         for (StudioHoliday holiday : studioHolidays) {
             studioHolidayResponseDtos.add(new StudioHolidayResponseDto(holiday));
         }
+        return studioHolidayResponseDtos;
+    }
 
+
+    @Transactional
+    public List<StudioHolidayResponseDto> selectStudioWeekHolidays(StudioResponseDto studioResponseDto) {
+        Studio studio = studioRepository.findById(studioResponseDto.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 없습니다."));
+
+        List<StudioHoliday> studioHolidays = studioHolidayRepository.findAllByStudioAndDateCode(studio, EDateStatus.W);
+        List<StudioHolidayResponseDto> studioHolidayResponseDtos = new ArrayList<>();
+        for (StudioHoliday holiday : studioHolidays) {
+            studioHolidayResponseDtos.add(new StudioHolidayResponseDto(holiday));
+        }
+        return studioHolidayResponseDtos;
+    }
+
+
+    @Transactional
+    public List<StudioHolidayResponseDto> selectStudioDayHolidays(StudioResponseDto studioResponseDto) {
+        Studio studio = studioRepository.findById(studioResponseDto.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 없습니다."));
+
+        List<StudioHoliday> studioHolidays = studioHolidayRepository.findAllByStudioAndDateCode(studio, EDateStatus.D);
+        List<StudioHolidayResponseDto> studioHolidayResponseDtos = new ArrayList<>();
+        for (StudioHoliday holiday : studioHolidays) {
+            studioHolidayResponseDtos.add(new StudioHolidayResponseDto(holiday));
+        }
         return studioHolidayResponseDtos;
     }
 
@@ -166,6 +195,15 @@ public class StudioService {
             storageService.delete(FILE_THUMB_PATH + file.getFileName());
         }
         studioFileRepository.deleteById(id);
+    }
+
+    public List<ReservationResposeDto> selectReservationYYYYMM(StudioResponseDto studioResponseDto) {
+        List<Reservation> reservationRepositoryAll = reservationRepository.findAll();
+        List<ReservationResposeDto> reservationResposeDtos = new ArrayList<>();
+        for (Reservation reservation : reservationRepositoryAll) {
+            reservationResposeDtos.add(new ReservationResposeDto(reservation));
+        }
+        return reservationResposeDtos;
     }
 
 

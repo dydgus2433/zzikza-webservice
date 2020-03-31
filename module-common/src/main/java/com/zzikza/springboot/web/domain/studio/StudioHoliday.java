@@ -38,7 +38,8 @@ public class StudioHoliday  extends BaseTimeEntity {
     String dateValue;
 
     @Builder
-    public StudioHoliday(EDateStatus dateCode, String dateValue) {
+    public StudioHoliday(EDateStatus dateCode, String dateValue, String id) {
+        this.id = id;
         this.dateCode = dateCode;
         this.dateValue = dateValue;
     }

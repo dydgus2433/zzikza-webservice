@@ -41,29 +41,29 @@
 		<form id="stdoFrm" action="${contextPath}/api/updateStudioDetail"			method="post">
 			<div class="box_area full">
 				<h3 class="sub_stit">스튜디오 설명</h3>
-				<textarea class="textarea_shop" name="stdoDsc" id="stdoDsc"
-					placeholder="스튜디오 설명을 작성해주세요 (1,000자 이내)">${detail.stdoDsc }</textarea>
+				<textarea class="textarea_shop" name="studioDescription" id="studioDescription"
+					placeholder="스튜디오 설명을 작성해주세요 (1,000자 이내)">${detail.studioDescription }</textarea>
 			</div>
 			<%-- 				${detail } --%>
 			<div class="box_area full">
 				<h3 class="sub_stit">영업시간 관리</h3>
 				<ul class="shop_time_select">
-					<li><span class="tit">평일</span> <select name="openDayStartTm"
-						id="openDayStartTm" class="time">
+					<li><span class="tit">평일</span> <select name="openTime"
+						id="openTime" class="time">
 							<c:forEach begin="0" end="23" var="item">
 								<option value="${item}"	${item eq detail.openDayStrtTm ? 'selected' : ''}>${item}시</option>
 							</c:forEach>
-					</select> ~ <select name="openDayEndTm" id="openDayEndTm" class="time">
+					</select> ~ <select name="closeTime" id="closeTime" class="time">
 							<c:forEach begin="0" end="23" var="item">
-								<option value="${item}"	${item eq detail.openDayEndTm ? 'selected' : ''}>${item}시</option>
+								<option value="${item}"	${item eq detail.closeTime ? 'selected' : ''}>${item}시</option>
 							</c:forEach>
 					</select></li>
-					<li><span class="tit">주말</span> <select name="wkndStartTm"
-						id="wkndStartTm" class="time">
+					<li><span class="tit">주말</span> <select name="weekendOpenTime"
+						id="weekendOpenTime" class="time">
 							<c:forEach begin="0" end="23" var="item">
 								<option value="${item}"	${item eq detail.wkndStrtTm ? 'selected' : ''}>${item}시</option>
 							</c:forEach>
-					</select> ~ <select name="wkndDayEndTm" id="wkndDayEndTm" class="time">
+					</select> ~ <select name="weekendCloseTime" id="weekendCloseTime" class="time">
 							<c:forEach begin="0" end="23" var="item">
 								<option value="${item}"	${item eq detail.wkndEndTm ? 'selected' : ''}>${item}시</option>
 							</c:forEach>

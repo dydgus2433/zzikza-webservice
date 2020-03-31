@@ -10,10 +10,7 @@ import com.zzikza.springboot.web.domain.product.*;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioBoard;
 import com.zzikza.springboot.web.domain.studio.StudioRepository;
-import com.zzikza.springboot.web.dto.ExhibitionResponseDto;
-import com.zzikza.springboot.web.dto.FileResponseDto;
-import com.zzikza.springboot.web.dto.ProductKeywordResponseDto;
-import com.zzikza.springboot.web.dto.StudioResponseDto;
+import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.util.PagingUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -124,7 +121,7 @@ public class ProductViewController {
         if (prdId != null) {
             Product product = productRepository.findById(prdId).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
-            model.addAttribute("product", product);
+            model.addAttribute("product", new ProductResponseDto(product));
 
 
             List<ProductFile> files = product.getProductFiles();

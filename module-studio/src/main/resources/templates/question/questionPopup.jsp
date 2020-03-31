@@ -9,7 +9,7 @@
 			<input type="hidden" value="${detail.stdoQstnId}" name="stdoQstnId"/>
 			<input type="hidden" value="A" name="qstnStatCd"/>
 			<div class="popup_head">
-				<h1>${detail.userNm } 고객님 <span>문의시간 : ${detail.regDt }</span></h1>
+				<h1>${detail.userName } 고객님 <span>문의시간 : ${detail.regDt }</span></h1>
 				<button type="button" class="btn_popup_close">창닫기</button>
 			</div>
 			<div class="popup_body">

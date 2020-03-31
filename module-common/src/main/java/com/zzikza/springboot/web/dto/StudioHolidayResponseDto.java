@@ -11,13 +11,16 @@ public class StudioHolidayResponseDto implements Comparable<StudioHolidayRespons
     EDateStatus dateCode;
 
     String dateValue;
+    String id;
 
     public StudioHolidayResponseDto(StudioHoliday entity) {
+        id = entity.getId();
         dateCode = entity.getDateCode();
         dateValue = entity.getDateValue();
     }
 
     public StudioHolidayResponseDto(StudioHolidayRequestDto holidayDto) {
+        id = holidayDto.getId();
         dateCode = holidayDto.getDateCode();
         dateValue = holidayDto.getDateValue();
     }

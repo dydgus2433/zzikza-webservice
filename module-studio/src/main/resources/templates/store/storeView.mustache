@@ -52,28 +52,28 @@
             <form id="stdoFrm" action="/api/updateStudioDetail" method="post">
                 <div class="box_area full">
                     <h3 class="sub_stit">스튜디오 설명</h3>
-                    <textarea class="textarea_shop" name="stdoDsc" id="stdoDsc"
+                    <textarea class="textarea_shop" name="studioDescription" id="studioDescription"
                               placeholder="스튜디오 설명을 작성해주세요 (1,000자 이내)">{{#detail}}{{studioDescription}}{{/detail}}</textarea>
                 </div>
                 <div class="box_area full">
                     <h3 class="sub_stit">영업시간 관리</h3>
                     <ul class="shop_time_select">
-                        <li><span class="tit">평일</span> <select name="openDayStartTm"
+                        <li><span class="tit">평일</span> <select name="openTime"
                             {{#times}}
                                 <option value="{{idx}}" {{#is-open-time}}selected{{/is-open-time}}>{{idx}}시</option>
                             {{/times}}
-                            </select> ~ <select name="openDayEndTm" id="openDayEndTm" class="time">
+                            </select> ~ <select name="closeTime" id="closeTime" class="time">
                                 {{#times}}
                                     <option value="{{idx}}" {{#is-end-time}}selected{{/is-end-time}}>{{idx}}시</option>
                                 {{/times}}
                             </select></li>
-                        <li><span class="tit">주말</span> <select name="wkndStartTm" id="wkndStartTm" class="time">
+                        <li><span class="tit">주말</span> <select name="weekendOpenTime" id="weekendOpenTime" class="time">
                             {{#times}}
                                 <option value="{{idx}}"
                                         {{#is-weekend-start-time}}selected{{/is-weekend-start-time}}>{{idx}}시
                                 </option>
                             {{/times}}
-                        </select> ~ <select name="wkndDayEndTm" id="wkndDayEndTm" class="time">
+                        </select> ~ <select name="weekendCloseTime" id="weekendCloseTime" class="time">
                             {{#times}}
                                 <option value="{{idx}}" {{#is-weekend-end-time}}selected{{/is-weekend-end-time}}>{{idx}}
                                     시
@@ -98,7 +98,7 @@
                             <div class="multi vgT">
                                 <ul id="holiday" name="holiday">
                                     {{#holidays}}
-                                        <li type="{{dateCode}}" value="{{dateValue}}">{{dateName}}</li>
+                                        <li id="{{id}}" type="{{dateCode}}" value="{{dateValue}}">{{dateName}}</li>
                                     {{/holidays}}
                                 </ul>
                             </div>
@@ -155,9 +155,6 @@
     <script type="text/javascript" src="/js/upload/jquery.fileupload.js"></script>
     <!-- .content -->
     <script src="/js/store/storeView.js"></script>
-    <script>
-        const contextPath = '';
-    </script>
     <!-- 본문자리 -->
 </div>
 

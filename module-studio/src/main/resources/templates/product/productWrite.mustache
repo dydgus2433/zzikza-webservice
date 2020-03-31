@@ -23,7 +23,7 @@
             <div class="inner">
                 <div class="box_area full">
                     <h3 class="sub_stit">카테고리</h3>
-                    <select class="select_goods_category" name="prdCateCd">
+                    <select class="select_goods_category" name="productCategory">
                         {{#codes}}
                             <option value="{{commCd}}" >{{commCdNm}}</option>
                         {{/codes}}
@@ -56,7 +56,7 @@
 
                 <div class="box_area full">
                     <h3 class="sub_stit">상품 금액</h3>
-                    <input type="number" name="prdPrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요."
+                    <input type="number" name="price" class="form_goods number" placeholder="상품 금액을 입력해 주세요."
                            value="" required="required">
                 </div>
 
@@ -80,11 +80,11 @@
                     <h3 class="sub_stit">촬영소요시간</h3>
                     <ul class="shop_time_select">
                         <li>
-                            <input type="number" class="form_time" name="prdHour"
+                            <input type="number" class="form_time" name="productHour"
                                    value="0" required="required" placeholder="2"
                                    min="0">
                             <span class="tit">시간</span>
-                            <select class="form_time" name="prdMin">
+                            <select class="form_time" name="productMinute">
                                 {{#minutes}}
                                     <option value="{{minute}}"  {{#isSelected}}selected{{/isSelected}}>{{minute}}</option>
                                 {{/minutes}}
@@ -94,13 +94,13 @@
                 </div>
                 <div class="box_area full">
                     <h3 class="sub_stit">상품 요약설명</h3>
-                    <textarea class="textarea_shop" name="prdBrfDsc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다.
+                    <textarea class="textarea_shop" name="productBriefDesc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다.
 홈페이지와 다른 연락처는 입력하지 말아주세요 :)"></textarea>
                 </div>
 
                 <div class="box_area full">
                     <h3 class="sub_stit">상품 설명</h3>
-                    <!--                 <textarea class="textarea_shop" id="quill" name="prdDsc"-->
+                    <!--                 <textarea class="textarea_shop" id="quill" name="productDescription"-->
                     <!--                               placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요.">{{!#product}}{{!productDescription}}{{!/product}}</textarea>-->
                     <div id="quill"></div>
                 </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="box_area full">
                     <h3 class="sub_stit">공개여부</h3>
-                    <select class="select_goods_category" name="showStatCd">
+                    <select class="select_goods_category" name="showStatusCode">
                         {{#showCodes}}
                             <option value="{{commCd}}" {{#isSelected}}selected{{/isSelected}}>{{commCdNm }}</option>
                         {{/showCodes}}
@@ -840,7 +840,7 @@
     <script src="/js/product/productWrite.js"></script>
     <script>
         const contextPath = '';
-        const prdId = '{{#product}}{{id}}{{/product}}';
+        const id = '{{#product}}{{id}}{{/product}}';
     </script>
     <!-- 본문자리 -->
 </div>

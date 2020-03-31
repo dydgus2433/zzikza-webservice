@@ -56,33 +56,33 @@
 				</div>
 				<div class="box_area full">
 					<h3 class="sub_stit">상품 금액</h3>
-					<input type="number" name="prdPrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="${detail.prdPrc }">
+					<input type="number" name="price" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="${detail.price }">
 				</div>
 				
 				<div class="box_area full">
 				<h3 class="sub_stit">촬영소요시간</h3>
 				<ul class="shop_time_select">
 					<li>
-							<input type="number" class="form_time" name="prdHour" value="${detail.prdHour }" required="required" placeholder="2" min="0">
+							<input type="number" class="form_time" name="productHour" value="${detail.productHour }" required="required" placeholder="2" min="0">
 							<span class="tit">시간</span>
-							<input type="hidden" class="form_time"  name="prdMin" value="00" required="required" placeholder="30" min="0" max="59">
-<%-- 							<input type="number" class="form_time"  name="prdMin" value="${detail.prdMin }" required="required" placeholder="30" min="0" max="59"> --%>
+							<input type="hidden" class="form_time"  name="productMinute" value="00" required="required" placeholder="30" min="0" max="59">
+<%-- 							<input type="number" class="form_time"  name="productMinute" value="${detail.productMinute }" required="required" placeholder="30" min="0" max="59"> --%>
 <!-- 							<span class="tit">분</span> -->
 						</li>
 				</ul>
 				</div>
 				<div class="box_area full">
 					<h3 class="sub_stit">상품 요약설명</h3>
-					<textarea class="textarea_shop" name="prdBrfDsc" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다." >${detail.prdBrfDsc }</textarea>					
+					<textarea class="textarea_shop" name="productBriefDesc" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다." >${detail.productBriefDesc }</textarea>
 				</div>
 				<div class="box_area full">
 					
 					<input type="hidden" id="reqId" name="reqId" value="${reqId }">
 					<h3 class="sub_stit">상품 설명</h3>
-<%-- 					<textarea class="textarea_shop" id="quill" name="prdDsc" placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요." >${detail.prdDsc }</textarea> --%>
+<%-- 					<textarea class="textarea_shop" id="quill" name="productDescription" placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요." >${detail.productDescription }</textarea> --%>
 					
 					<div id="quill">
-						${detail.prdDsc }
+						${detail.productDescription }
 					</div>
 					<div class="btn_area">
 						<button type="button" class="btn_form" id="mobileBtn">Mobile 미리보기</button>

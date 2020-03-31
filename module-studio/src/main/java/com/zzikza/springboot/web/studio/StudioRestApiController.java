@@ -2,11 +2,14 @@ package com.zzikza.springboot.web.studio;
 
 import com.zzikza.springboot.web.annotaion.LoginStudio;
 import com.zzikza.springboot.web.domain.enums.EBoardCategory;
+import com.zzikza.springboot.web.domain.enums.EDateStatus;
 import com.zzikza.springboot.web.domain.enums.EProductCategory;
 import com.zzikza.springboot.web.domain.enums.EShowStatus;
+import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
 import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.result.CommonResult;
+import com.zzikza.springboot.web.result.ListResult;
 import com.zzikza.springboot.web.result.SingleResult;
 import com.zzikza.springboot.web.service.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,23 +43,26 @@ public class StudioRestApiController {
 
     private final StorageServiceImpl storageService;
 
+    private final ReservationService reservationService;
+
     private final StudioHolidayRepository studioHolidayRepository;
 
     @PostMapping(value = "/api/studio-board")
     public SingleResult<StudioBoardResponseDto> insertStudioBoard(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String title,
-            @RequestParam String content,
-            @RequestParam int fileLength,
-            @RequestParam EBoardCategory brdCateCd,
+//            @RequestParam String title,
+//            @RequestParam String content,
+//            @RequestParam int fileLength,
+//            @RequestParam EBoardCategory brdCateCd,
+            StudioBoardRequestDto studioBoardDto,
             MultipartHttpServletRequest request
     ) throws Exception {
-        StudioBoardRequestDto studioBoardDto = StudioBoardRequestDto.builder()
-                .title(title)
-                .content(content)
-                .brdCateCd(brdCateCd)
-                .fileLength(fileLength)
-                .build();
+//        StudioBoardRequestDto studioBoardDto = StudioBoardRequestDto.builder()
+//                .title(title)
+//                .content(content)
+//                .brdCateCd(brdCateCd)
+//                .fileLength(fileLength)
+//                .build();
 
 //        StudioResponseDto studioResponseDto = (StudioResponseDto) session.getAttribute("sessionVo");
         if (studioResponseDto == null) {
@@ -104,26 +112,28 @@ public class StudioRestApiController {
     @PostMapping(value = "/api/studio-holiday")
     public SingleResult<StudioHolidayResponseDto> insertStudioHoliday(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String dateCode,
-            @RequestParam String dateValue
+            StudioHolidayRequestDto params
 
     ) throws Exception {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
-        StudioHolidayRequestDto params = new StudioHolidayRequestDto(dateCode, dateValue);
+//        StudioHolidayRequestDto params = new StudioHolidayRequestDto(dateCode, dateValue);
         return responseService.getSingleResult(studioService.saveHoliday(studioResponseDto, params));
     }
 
     @DeleteMapping(value = "/api/studio-holiday")
     public SingleResult<StudioHolidayResponseDto> deleteStudioHoliday(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String dateCode,
-            @RequestParam String dateValue) throws Exception {
+            StudioHolidayRequestDto params) throws Exception {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
-        StudioHolidayRequestDto params = new StudioHolidayRequestDto(dateCode, dateValue);
+//        StudioHolidayRequestDto params =  StudioHolidayRequestDto.builder()
+//                .id(id)
+//                .dateCode(dateCode)
+//                .dateValue(dateValue)
+//                .build();
         return responseService.getSingleResult(studioService.deleteHoliday(studioResponseDto, params));
     }
 
@@ -157,23 +167,19 @@ public class StudioRestApiController {
     @Transactional
     public CommonResult insertStudioDetail(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String stdoDsc,
-            @RequestParam int openDayStartTm,
-            @RequestParam int openDayEndTm,
-            @RequestParam int wkndStartTm,
-            @RequestParam int wkndDayEndTm,
-            @RequestParam String keyword
+            @RequestParam String keyword,
+            StudioDetailRequestDto studioDetailRequestDto
     ) throws IllegalAccessException {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
-        StudioDetailRequestDto studioDetailRequestDto = StudioDetailRequestDto.builder()
-                .studioDescription(stdoDsc)
-                .openTime(openDayStartTm)
-                .closeTime(openDayEndTm)
-                .weekendOpenTime(wkndStartTm)
-                .weekendCloseTime(wkndDayEndTm)
-                .build();
+//        StudioDetailRequestDto studioDetailRequestDto = StudioDetailRequestDto.builder()
+//                .studioDescription(studioDescription)
+//                .openTime(openTime)
+//                .closeTime(closeTime)
+//                .weekendOpenTime(weekendOpenTime)
+//                .weekendCloseTime(weekendCloseTime)
+//                .build();
         studioService.updateStudioDetail(studioResponseDto, studioDetailRequestDto);
         studioService.updateStudioKeyword(studioResponseDto, keyword);
         return responseService.getSuccessResult();
@@ -280,35 +286,37 @@ public class StudioRestApiController {
     @PostMapping("/api/product")
     public SingleResult<ProductResponseDto> insertProduct(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam EProductCategory prdCateCd,
-            @RequestParam String title,
-            @RequestParam Integer prdPrc,
-            @RequestParam Integer prdSalePrc,
-            @RequestParam Integer prdHour,
-            @RequestParam Integer prdMin,
-            @RequestParam String prdBrfDsc,
-            @RequestParam EShowStatus showStatCd,
-            @RequestParam String exhId,
-            @RequestParam String keyword,
-            @RequestParam String index,
-            @RequestParam String prdDsc,
-            @RequestParam String tempKey
+//            @RequestParam EProductCategory productCategory,
+//            @RequestParam String title,
+//            @RequestParam Integer price,
+//            @RequestParam Integer prdSalePrc,
+//            @RequestParam Integer productHour,
+//            @RequestParam Integer productMinute,
+//            @RequestParam String productBriefDesc,
+//            @RequestParam EShowStatus showStatusCode,
+//            @RequestParam String exhId,
+//            @RequestParam String keyword,
+//            @RequestParam String index,
+//            @RequestParam String productDescription,
+            @RequestParam String tempKey,
+            ProductRequestDto product
+
 
     ) {
-        ProductRequestDto product = ProductRequestDto.builder()
-                .prdCateCd(prdCateCd)
-                .title(title)
-                .prdDsc(prdDsc)
-                .prdSalePrc(prdSalePrc)
-                .prdHour(prdHour)
-                .prdMin(prdMin)
-                .showStatCd(showStatCd)
-                .exhId(exhId)
-                .keyword(keyword)
-                .index(index)
-                .productPrice(prdPrc)
-                .prdBrfDsc(prdBrfDsc)
-                .build();
+//        ProductRequestDto product = ProductRequestDto.builder()
+//                .productCategory(productCategory)
+//                .title(title)
+//                .productDescription(productDescription)
+//                .prdSalePrc(prdSalePrc)
+//                .productHour(productHour)
+//                .productMinute(productMinute)
+//                .showStatusCode(showStatusCode)
+//                .exhId(exhId)
+//                .keyword(keyword)
+//                .index(index)
+//                .price(price)
+//                .productBriefDesc(productBriefDesc)
+//                .build();
         return responseService.getSingleResult(productService.saveProduct(product, tempKey, studioResponseDto));
     }
 
@@ -318,36 +326,9 @@ public class StudioRestApiController {
     @PutMapping("/api/product")
     public SingleResult<ProductResponseDto> updateProduct(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam EProductCategory prdCateCd,
-            @RequestParam String prdId,
-            @RequestParam String title,
-            @RequestParam Integer prdPrc,
-//            @RequestParam Integer prdSalePrc,
-            @RequestParam Integer prdHour,
-            @RequestParam Integer prdMin,
-            @RequestParam String prdBrfDsc,
-            @RequestParam EShowStatus showStatCd,
-            @RequestParam String exhId,
-            @RequestParam String keyword,
-            @RequestParam String index,
-            @RequestParam String prdDsc
+            ProductRequestDto productRequestDto
 
     ) {
-        ProductRequestDto productRequestDto = ProductRequestDto.builder()
-                .prdCateCd(prdCateCd)
-                .title(title)
-                .prdDsc(prdDsc)
-//                .prdSalePrc(prdSalePrc)
-                .prdHour(prdHour)
-                .prdMin(prdMin)
-                .showStatCd(showStatCd)
-                .exhId(exhId)
-                .keyword(keyword)
-                .index(index)
-                .productPrice(prdPrc)
-                .prdBrfDsc(prdBrfDsc)
-                .prdId(prdId)
-                .build();
         return responseService.getSingleResult(productService.updateProduct(productRequestDto, studioResponseDto));
     }
 
@@ -355,8 +336,60 @@ public class StudioRestApiController {
     @DeleteMapping("/api/product")
     public CommonResult deleteProduct(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String prdId    ) {
-        productService.deleteProduct(prdId);
+            @RequestParam String id    ) {
+        productService.deleteProduct(id);
         return responseService.getSuccessResult();
     }
+
+    //Schedule CRUD
+
+    @GetMapping("/api/studio-holiday/week")
+    public ListResult<StudioHolidayResponseDto> getStudioHolidayWeek(
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+        return responseService.getListResult(studioService.selectStudioWeekHolidays(studioResponseDto));
+    }
+
+
+    @GetMapping("/api/studio-holiday/day")
+    public ListResult<StudioHolidayResponseDto> getStudioHolidayDay(
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+        return responseService.getListResult(studioService.selectStudioDayHolidays(studioResponseDto));
+    }
+
+    //Reservation CRUD
+
+    @GetMapping("/api/reservation/yyyymm")
+    public List<ReservationResposeDto> getReservationYYYYMM(
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+        return studioService.selectReservationYYYYMM(studioResponseDto);
+    }
+
+    @Transactional
+    @PostMapping("/api/reservation")
+    public CommonResult insertReservation(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            ReservationRequestDto reservationRequestDto  ) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
+        reservationService.saveReservation(reservationRequestDto);
+        return responseService.getSuccessResult();
+    }
+    @Transactional
+    @PutMapping("/api/reservation")
+    public CommonResult updateReservation(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            ReservationRequestDto reservationRequestDto   ) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
+        reservationService.updateReservation(reservationRequestDto);
+        return responseService.getSuccessResult();
+    }
+    @Transactional
+    @DeleteMapping("/api/reservation")
+    public CommonResult deleteReservation(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            ReservationRequestDto reservationRequestDto      ) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
+       reservationService.deleteReservation(reservationRequestDto);
+        return responseService.getSuccessResult();
+    }
+
 }

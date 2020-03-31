@@ -16,9 +16,9 @@ var tempKey = '${tempKey}';
 			<div class="inner">
 				<div class="box_area full">
 					<h3 class="sub_stit">카테고리</h3>
-					<select class="select_goods_category" name="prdCateCd">
+					<select class="select_goods_category" name="productCategory">
 						<c:forEach items="${codes }" var="code" varStatus="index">
-						<option value="${code.commCd }" ${code.commCd eq detail.prdCateCd ? 'selected' : '' }>${code.commCdNm }</option>
+						<option value="${code.commCd }" ${code.commCd eq detail.productCategory ? 'selected' : '' }>${code.commCdNm }</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -63,7 +63,7 @@ var tempKey = '${tempKey}';
 			
 				<div class="box_area full">
 					<h3 class="sub_stit">상품 금액</h3>
-					<input type="number" name="prdPrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="${detail.prdPrc }" required="required">
+					<input type="number" name="price" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="${detail.price }" required="required">
 				</div>
 				
 				<div class="box_area full">
@@ -84,12 +84,12 @@ var tempKey = '${tempKey}';
 					<h3 class="sub_stit">촬영소요시간</h3>
 					<ul class="shop_time_select">
 						<li>
-							<input type="number" class="form_time" name="prdHour" value="${detail.prdHour }" required="required" placeholder="2" min="0">
+							<input type="number" class="form_time" name="productHour" value="${detail.productHour }" required="required" placeholder="2" min="0">
 							<span class="tit">시간</span>
-							<select class="form_time" name="prdMin">
+							<select class="form_time" name="productMinute">
 							<c:forEach begin="0" end="50" var="item" step="10">
 								<option value="<fmt:formatNumber minIntegerDigits="2" value="${item}" />"
-									${item eq detail.prdMin ? 'selected' : ''}><fmt:formatNumber minIntegerDigits="2" value="${item}" /></option>
+									${item eq detail.productMinute ? 'selected' : ''}><fmt:formatNumber minIntegerDigits="2" value="${item}" /></option>
 							</c:forEach>
 							</select>분
 						</li>
@@ -97,16 +97,16 @@ var tempKey = '${tempKey}';
 				</div>
 				<div class="box_area full">
 					<h3 class="sub_stit">상품 요약설명</h3>
-					<textarea class="textarea_shop" name="prdBrfDsc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다. 
-홈페이지와 다른 연락처는 입력하지 말아주세요 :)" >${detail.prdBrfDsc }</textarea>					
+					<textarea class="textarea_shop" name="productBriefDesc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다.
+홈페이지와 다른 연락처는 입력하지 말아주세요 :)" >${detail.productBriefDesc }</textarea>
 				</div>
 				
 				<div class="box_area full">
 					<h3 class="sub_stit">상품 설명</h3>
-<%-- 					<textarea class="textarea_shop" id="quill" name="prdDsc" placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요." >${detail.prdDsc }</textarea> --%>
+<%-- 					<textarea class="textarea_shop" id="quill" name="productDescription" placeholder="상품설명은 고객에게 상품구성 및 소개를 하는 영역입니다. 상세히 적어주세요." >${detail.productDescription }</textarea> --%>
 					
 					<div id="quill" >
-						${detail.prdDsc }
+						${detail.productDescription }
 					</div>
 				</div>
 
@@ -150,9 +150,9 @@ var tempKey = '${tempKey}';
 				</div>
 				<div class="box_area full">
 					<h3 class="sub_stit">공개여부</h3>
-					<select class="select_goods_category" name="showStatCd">
+					<select class="select_goods_category" name="showStatusCode">
 						<c:forEach items="${showCodes }" var="code" varStatus="index">
-						<option value="${code.commCd }" ${code.commCd eq detail.showStatCd ? 'selected' : '' }>${code.commCdNm }</option>
+						<option value="${code.commCd }" ${code.commCd eq detail.showStatusCode ? 'selected' : '' }>${code.commCdNm }</option>
 						</c:forEach>
 					</select>
 				</div>

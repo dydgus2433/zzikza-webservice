@@ -202,25 +202,6 @@ $(document).ready(function () {
         }
     });
 
-    // //삭제버튼 클릭
-    // $("#deleteBtn").on("click", function () {
-    //     if (confirm("삭제하면 복구할 수 없습니다. 삭제하시겠습니까?")) {
-    //
-    //
-    //         $.ajax({
-    //             url: "/api/product",
-    //             type: "DELETE",
-    //             data: {prdId: prdId},
-    //         }).done(function (data) {
-    //             location.href = '/prod/list';
-    //         }).fail(function (jqXHR, textStatus, errorThrown) {
-    //             console.error('FAIL REQUEST: ', textStatus);
-    //             alert('처리중 오류가 발생하였습니다.');
-    //         }).always(function () {
-    //         });
-    //     }
-    // });
-
 
     if ($("#prdSalePrc").val() > 0) {
         //select Y
@@ -394,7 +375,7 @@ function validate() {
         const input = $number[i];
         if ($(input).val() === "") {
             const name = input.name;
-            if (name === 'prdHour' || name === 'prdMin') {
+            if (name === 'productHour' || name === 'productMinute') {
                 alert("촬영소요시간을 입력해주세요");
             } else if (name === 'prdSalePrc') {
                 continue;
@@ -406,22 +387,22 @@ function validate() {
         }
     }
 
-    const $prdHour = $("input[name='prdHour']");
-    if ($prdHour.val() < 0) {
+    const $productHour = $("input[name='productHour']");
+    if ($productHour.val() < 0) {
         alert("알맞은 시간을 입력해주세요.");
-        $prdHour.focus();
+        $productHour.focus();
         return false;
     }
-    const $prdMin = $("input[name='prdMin']");
-    if ($prdMin.val() >= 60 || $prdMin.val() < 0) {
+    const $productMinute = $("input[name='productMinute']");
+    if ($productMinute.val() >= 60 || $productMinute.val() < 0) {
         alert("알맞은 시간을 입력하세요.");
-        $prdMin.focus();
+        $productMinute.focus();
         return false;
     }
-    const $prdDsc = $("textarea[name='prdDsc']");
-    if ($prdDsc.val() === "") {
+    const $productDescription = $("textarea[name='productDescription']");
+    if ($productDescription.val() === "") {
         alert("상품설명을 입력하세요.");
-        $prdDsc.focus();
+        $productDescription.focus();
         return false;
     }
 
@@ -447,7 +428,7 @@ function submitAction() {
         indexes.push($($this).attr("index"));
     });
     formData.append("index", indexes.join(","));
-    formData.append('prdDsc', quill.container.firstChild.innerHTML);
+    formData.append('productDescription', quill.container.firstChild.innerHTML);
 
     let url = '/api/product';
     let ajaxType = 'POST';

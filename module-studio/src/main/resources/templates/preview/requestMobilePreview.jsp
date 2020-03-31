@@ -52,7 +52,7 @@ $( document ).ready(function() {
    
 </script>  
 
-<fmt:parseNumber var="reservationFee" value="${product.prdPrc * (studio.fee / 100)}" integerOnly="true"/>
+<fmt:parseNumber var="reservationFee" value="${product.price * (studio.fee / 100)}" integerOnly="true"/>
 <fmt:formatNumber var="reservationFee" value="${reservationFee}" type="number"/>
 <!-- s:contetns -->
     <div class="section"> 
@@ -84,10 +84,10 @@ $( document ).ready(function() {
                         <tr>
                             <th>판매가</th>
                             <td>
-<%--                             	<span class="pre">${product.prdPrc}</span><span class="now"><strong>${product.prdSalePrc}</strong>원</span> --%>
+<%--                             	<span class="pre">${product.price}</span><span class="now"><strong>${product.prdSalePrc}</strong>원</span> --%>
 
-								<c:if test="${not empty  product.prdSalePrc}"><span class="pre">${product.prdPrc}</span><span class="now"><strong>${product.prdSalePrc}</strong>원</span></c:if>
-								<c:if test="${empty  product.prdSalePrc}"><span class="now"><strong><fmt:formatNumber type="number">${product.prdPrc}</fmt:formatNumber></strong>원</span></c:if>
+								<c:if test="${not empty  product.prdSalePrc}"><span class="pre">${product.price}</span><span class="now"><strong>${product.prdSalePrc}</strong>원</span></c:if>
+								<c:if test="${empty  product.prdSalePrc}"><span class="now"><strong><fmt:formatNumber type="number">${product.price}</fmt:formatNumber></strong>원</span></c:if>
                             	
                             </td>
                         </tr>
@@ -96,7 +96,7 @@ $( document ).ready(function() {
                             <td><span class="now"><strong>${reservationFee }</strong>원</span></td>
                         </tr>
                     </table>
-                    <div class="time">촬영시간 : <strong><c:if test="${not empty  product.prdHour}"><c:out value="${product.prdHour }시간 "></c:out></c:if><c:if test="${not empty  product.prdMin}">${product.prdMin }분</c:if></strong></div>
+                    <div class="time">촬영시간 : <strong><c:if test="${not empty  product.productHour}"><c:out value="${product.productHour }시간 "></c:out></c:if><c:if test="${not empty  product.productMinute}">${product.productMinute }분</c:if></strong></div>
                     <div class="price">결제금액 <span class="now"><strong>${reservationFee }</strong>원</span></div>
                     <div class="btns">
                         <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_share.png" alt="">공유하기</a>
@@ -106,7 +106,7 @@ $( document ).ready(function() {
                 </div>
                 
             </div>
-            <div class="contentsView"  style="white-space: pre-wrap;"><c:out value="${product.prdDsc }"></c:out></div> 
+            <div class="contentsView"  style="white-space: pre-wrap;"><c:out value="${product.productDescription }"></c:out></div>
             
             <div class="studioBox">
                 <div class="studioSilde">
@@ -122,7 +122,7 @@ $( document ).ready(function() {
             <div class="studioInfo">
                 <div class="contWrap">
                     <p class="tit">${studio.stdoNm }</p>
-                    <div class="cont" style="white-space: pre-wrap;"><c:out value="${studio.stdoDsc }"></c:out></div>
+                    <div class="cont" style="white-space: pre-wrap;"><c:out value="${studio.studioDescription }"></c:out></div>
                     <!--                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25321.327943563098!2d127.02990940300094!3d37.50400295780005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca405861e4a67%3A0x73ec1c047764908!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rCDthYztl6TrnoDroZw!5e0!3m2!1sko!2skr!4v1564976538213!5m2!1sko!2skr" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 <%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.addr }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.lgtd },${studio.lttd }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe>

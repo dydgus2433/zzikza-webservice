@@ -14,13 +14,13 @@
 <%-- 					</c:forEach> --%>
 <!-- 				</ul> -->
 				<div class="box_area full">
-<!-- 				{reqId=REQ0000000027, userNm=Steven Spark, reqTitle=조금 어려운 신청 , reqContent=조금 어려운 신청  -->
+<!-- 				{reqId=REQ0000000027, userName=Steven Spark, reqTitle=조금 어려운 신청 , reqContent=조금 어려운 신청  -->
 <!-- 조금 어려운 신청 조금 어려운 신청  -->
 <!-- 조금 어려운 신청  -->
 <!-- 조금 어려운 신청  -->
 <!-- 조금 어려운 신청 , reqStat=W, regDt=2019-11-16 01:26:17.0, regId=USER0000000002} -->
-<!-- [reqId, userNm, reqTitle, reqContent, reqStat, regDt, regId] -->
-<!-- {userNm=Steven Spark, regDt=2019-11-16 01:26:17.0, reqContent=조금 어려운 신청  -->
+<!-- [reqId, userName, reqTitle, reqContent, reqStat, regDt, regId] -->
+<!-- {userName=Steven Spark, regDt=2019-11-16 01:26:17.0, reqContent=조금 어려운 신청  -->
 <!-- 조금 어려운 신청 조금 어려운 신청  -->
 <!-- 조금 어려운 신청  -->
 <!-- 조금 어려운 신청  -->

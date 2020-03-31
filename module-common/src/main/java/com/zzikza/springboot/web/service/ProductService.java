@@ -199,7 +199,8 @@ public class ProductService {
 
     @Transactional
     public ProductResponseDto updateProduct(ProductRequestDto productRequestDto, StudioResponseDto studioResponseDto) {
-        Product product = productRepository.findById(productRequestDto.getPrdId()).orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        Product product = productRepository.findById(productRequestDto.getId()).orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
+        product.update(productRequestDto);
         String[] keywordIds = productRequestDto.getSplitKeywords();
         for (String keywordId : keywordIds) {
             ProductKeyword productKeyword = productKeywordRepository.findById(keywordId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 키워드입니다."));

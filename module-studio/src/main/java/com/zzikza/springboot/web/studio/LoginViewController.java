@@ -78,10 +78,8 @@ public class LoginViewController {
 			throw  new IllegalArgumentException(ID_WITHDRAWAL);
 		}
 		session.setAttribute(SESSION_VO, responseDto);
-//		session.setMaxInactiveInterval(SESSION_MAX_INTERVAL_TIME);
 		List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNullAndUseStatusEquals(ETableStatus.valueOf("Y"));
 		session.setAttribute("menuList", menuList);
-//		session.setAttribute("menuList2", newMenuList2);
 		return responseDto;
 	}
 //

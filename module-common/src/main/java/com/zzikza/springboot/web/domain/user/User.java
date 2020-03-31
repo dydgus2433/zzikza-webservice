@@ -35,6 +35,9 @@ public class User  extends BaseTimeEntity {
     @Column(name = "USER_ID", unique = true)
     String userId;
 
+    @Column(name = "USER_NM", unique = true)
+    String name;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<UserRequest> userRequests = new ArrayList<>();
 

@@ -6,55 +6,58 @@ import com.zzikza.springboot.web.domain.product.Product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
 @Getter
 @NoArgsConstructor
 public class ProductRequestDto {
+    String id;
     EProductCategory productCategory;
     String title;
-    Integer productPrice;
+    Integer price;
     Integer productSalePrice;
     Integer productHour;
-    Integer prdMinute;
+    Integer productMinute;
     String productBriefDesc;
     EShowStatus showStatusCode;
     String exhId;
     String keyword;
     String index;
-    String productDesc;
+    String productDescription;
     String tempKey;
-    String prdId;
+
 
     @Builder
-    public ProductRequestDto(EProductCategory prdCateCd, String title, Integer productPrice, Integer prdSalePrc, Integer prdHour, Integer prdMin, String prdBrfDsc, EShowStatus showStatCd, String exhId, String keyword, String index, String prdDsc, String tempKey, String prdId) {
-        this.productCategory = prdCateCd;
+    public ProductRequestDto(EProductCategory productCategory, String title, Integer price, Integer prdSalePrc, Integer productHour, Integer productMinute, String productBriefDesc, EShowStatus showStatusCode, String exhId, String keyword, String index, String productDescription, String tempKey, String id) {
+        this.id = id;
+        this.productCategory = productCategory;
         this.title = title;
-        this.prdId = prdId;
-        this.productPrice = productPrice;
+        this.price = price;
         this.productSalePrice = prdSalePrc;
-        this.productHour = prdHour;
-        this.prdMinute = prdMin;
-        this.productBriefDesc = prdBrfDsc;
-        this.showStatusCode = showStatCd;
+        this.productHour = productHour;
+        this.productMinute = productMinute;
+        this.productBriefDesc = productBriefDesc;
+        this.showStatusCode = showStatusCode;
         this.exhId = exhId;
         this.keyword = keyword;
         this.index = index;
-        this.productDesc = prdDsc;
+        this.productDescription = productDescription;
         this.tempKey = tempKey;
     }
 
     public Product toEntity() {
 
         return Product.builder()
-                .id(prdId)
+                .id(id)
                 .productCategory(productCategory)
                 .title(title)
-                .price(productPrice)
+                .price(price)
                 //세일은 없앨지 고민중
 //                .productSalePrice(prdSalePrc)
-                .prdHour(productHour)
-                .prdMinute(prdMinute)
-                .productDescription(productDesc)
+                .productHour(productHour)
+                .productMinuteute(productMinute)
+                .productDescription(productDescription)
                 .productBriefDescription(productBriefDesc)
                 .showStatus(showStatusCode)
                 .build();
