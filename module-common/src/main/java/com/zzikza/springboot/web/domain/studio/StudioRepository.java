@@ -8,4 +8,7 @@ public interface StudioRepository extends JpaRepository<Studio, String> {
     Optional<Studio> findByStudioIdAndPassword(String studioId, String encPassword);
 
     Optional<Studio> findByStudioId(String studioId);
+
+    Optional<Studio> findByManagerTel(String managerTel);
+    Optional<Studio> findByManagerTelAndRegistedId(String managerTel, String registedId);
 }

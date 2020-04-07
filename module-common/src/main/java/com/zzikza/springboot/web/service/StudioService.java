@@ -2,6 +2,7 @@ package com.zzikza.springboot.web.service;
 
 
 import com.zzikza.springboot.web.domain.FileAttribute;
+import com.zzikza.springboot.web.domain.certification.Certification;
 import com.zzikza.springboot.web.domain.enums.EDateStatus;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
 import com.zzikza.springboot.web.domain.reservation.ReservationRepository;
@@ -17,10 +18,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -275,5 +273,9 @@ public class StudioService {
         studioBusinessFileRepository.save(businessFile);
         studio.addBusinessFile(businessFile);
 
+    }
+
+    public Studio findByCertification(Certification certification) {
+        return studioRepository.findByManagerTel(certification.getManagerTel()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
     }
 }

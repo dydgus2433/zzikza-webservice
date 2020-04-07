@@ -85,7 +85,7 @@ $(document).ready(function() {
 		}
 		console.log("인증버튼");
 		$.ajax({
-			url : '/api/sendSecureCode',
+			url : '/api/secure-code',
 			data : $("#findFrm").serializeArray(),
 			type : 'post'
 
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	
 	$("#checkBtn").on('click', function(){
 		console.log("확인 버튼");
-		//checkSecureCode
+		//secure-code/check
 		if($("input[name='studioId']").val() == ''){
 			alert('아이디를 입력해주세요.')
 			$("input[name='studioId']").focus();
@@ -120,25 +120,25 @@ $(document).ready(function() {
 		}
 		
 
-		if($("input[name='checkSecure']").val() == ''){
+		if($("input[name='certificationValue']").val() == ''){
 			alert('인증번호를 입력해주세요.')
-			$("input[name='checkSecure']").focus();
+			$("input[name='certificationValue']").focus();
 			return;
 		}
 		
 		$.ajax({
-			url : '/api/checkSecurePassCode',
+			url : '/api/secure-password-code/check',
 			data : $("#findFrm").serializeArray(),
 			type : 'post'
 
 		}).done(function(data) {
-			if(data.rtnCode == 'SUCCESS'){
+			if(data.success){
 				$(".overTime").hide();
 				$(".secureNumber").hide();
-				alert(data.rtnMsg);
+				alert(data.msg);
 				stopTimer();
 			}else{
-				alert(data.rtnMsg);
+				alert(data.msg);
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.responseJSON.message);

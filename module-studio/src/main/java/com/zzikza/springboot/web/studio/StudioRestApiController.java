@@ -2,14 +2,19 @@ package com.zzikza.springboot.web.studio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zzikza.springboot.web.annotaion.LoginStudio;
+import com.zzikza.springboot.web.domain.certification.Certification;
+import com.zzikza.springboot.web.domain.certification.CertificationRepository;
+import com.zzikza.springboot.web.domain.enums.ECertificationStatus;
+import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
 import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.result.CommonResult;
 import com.zzikza.springboot.web.result.ListResult;
 import com.zzikza.springboot.web.result.SingleResult;
 import com.zzikza.springboot.web.service.*;
+import com.zzikza.springboot.web.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.ConstraintViolationException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,32 +31,43 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
 public class StudioRestApiController {
 
 
+    /**
+     * 휴대폰 인증 후 본인이름과 같은지 확인
+     * 같으면 성공 메시지 전송 (임시비밀번호 변경 후 문자 발송)
+     * 다르면 오류 메세지 발송
+     *
+     * @param params
+     * @return
+     */
+
+    //비밀번호
+    public static final String CRTF_PASSWORD = "S0";
+    //미인증
+    public static final String CRTF_NOT_ACCEPT = "S1";
+    //인증
+    public static final String CRTF_ACCEPT = "S2";
+    //거절
+    public static final String CRTF_REJECT = "S3";
     private final ResponseService responseService;
-
     private final StudioService studioService;
-
     private final ProductService productService;
-
     private final UserReqeustProductService userReqeustProductService;
-
     private final FileService editorFileService;
-
     private final StorageServiceImpl storageService;
-
     private final ReservationService reservationService;
     private final StudioQuestionService studioQuestionService;
-
     private final StudioHolidayRepository studioHolidayRepository;
+    private final CertificationRepository certificationRepository;
 
     @PostMapping(value = "/api/studio-board")
     public SingleResult<StudioBoardResponseDto> insertStudioBoard(
@@ -101,7 +117,6 @@ public class StudioRestApiController {
                 .body(resource);
 
     }
-
 
     @PostMapping(value = "/api/studio-holiday")
     public SingleResult<StudioHolidayResponseDto> insertStudioHoliday(
@@ -202,7 +217,6 @@ public class StudioRestApiController {
         return responseService.getSingleResult(productService.saveProductImageFileTemp(tempKey, file));
     }
 
-
     @PutMapping(value = "/api/product-file/temp/order")
     public CommonResult productFileOrderTemp(
             @LoginStudio StudioResponseDto studioResponseDto,
@@ -232,7 +246,6 @@ public class StudioRestApiController {
         return responseService.getSuccessResult();
     }
 
-
     //실제 상품 수정 및 업로드
     @PostMapping(value = "/api/product-file")
     @Transactional
@@ -247,7 +260,6 @@ public class StudioRestApiController {
         return responseService.getSingleResult(productService.saveProductImageFile(prdId, file));
     }
 
-
     @PutMapping(value = "/api/product-file/order")
     public CommonResult productFileOrder(
             @LoginStudio StudioResponseDto studioResponseDto,
@@ -261,6 +273,8 @@ public class StudioRestApiController {
         productService.saveFileOrders(prdId, index);
         return responseService.getSuccessResult();
     }
+
+    //Schedule CRUD
 
     @DeleteMapping("/api/product-file")
     public CommonResult deleteProductFile(
@@ -287,6 +301,7 @@ public class StudioRestApiController {
         return responseService.getSingleResult(productService.saveProduct(product, tempKey, studioResponseDto));
     }
 
+    //Reservation CRUD
 
     @Transactional
     @PutMapping("/api/product")
@@ -307,22 +322,17 @@ public class StudioRestApiController {
         return responseService.getSuccessResult();
     }
 
-    //Schedule CRUD
-
     @GetMapping("/api/studio-holiday/week")
     public ListResult<StudioHolidayResponseDto> getStudioHolidayWeek(
             @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params) {
         return responseService.getListResult(studioService.selectStudioWeekHolidays(studioResponseDto));
     }
 
-
     @GetMapping("/api/studio-holiday/day")
     public ListResult<StudioHolidayResponseDto> getStudioHolidayDay(
             @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params) {
         return responseService.getListResult(studioService.selectStudioDayHolidays(studioResponseDto));
     }
-
-    //Reservation CRUD
 
     @GetMapping("/api/reservation/yyyymm")
     public List<ReservationResposeDto> getReservationYYYYMM(
@@ -360,7 +370,6 @@ public class StudioRestApiController {
         return responseService.getSuccessResult();
     }
 
-
     //임시 요청 상품 파일 CRUD
     @PostMapping(value = "/api/request/product/file/temp")
     @Transactional
@@ -374,7 +383,6 @@ public class StudioRestApiController {
 
         return responseService.getSingleResult(userReqeustProductService.saveProductImageFileTemp(tempKey, file));
     }
-
 
     @PutMapping(value = "/api/request/product/file/temp/order")
     public CommonResult requestProductFileOrderTemp(
@@ -404,7 +412,6 @@ public class StudioRestApiController {
         return responseService.getSuccessResult();
     }
 
-
     @Transactional
     @PostMapping("/api/request/product")
     public SingleResult<UserRequestProductResponseDto> insertUserRequestProduct(
@@ -414,7 +421,6 @@ public class StudioRestApiController {
     ) {
         return responseService.getSingleResult(userReqeustProductService.saveUserRequestProductTempToReal(requestDto, tempKey, studioResponseDto));
     }
-
 
     @Transactional
     @PutMapping("/api/request/product")
@@ -451,7 +457,6 @@ public class StudioRestApiController {
         userReqeustProductService.saveFileOrders(id, index);
         return responseService.getSuccessResult();
     }
-
 
     @DeleteMapping("/api/request/product/file")
     public CommonResult deleteRequestProductFile(
@@ -531,7 +536,6 @@ public class StudioRestApiController {
         return false;
     }
 
-
     @GetMapping("/api/location")
     public Map<String, Object> getLocation(@RequestParam Map<String, Object> params) throws IllegalStateException, IOException, ParseException {
         String query = (String) params.get("query");
@@ -568,7 +572,6 @@ public class StudioRestApiController {
         return map;
     }
 
-
     @RequestMapping(value = {"/join"}, method = RequestMethod.POST)
     public CommonResult insertStudio(
             StudioSaveRequestDto dto,
@@ -583,7 +586,6 @@ public class StudioRestApiController {
             if (!e.getMessage().equals("회원정보가 맞지 않습니다.")) {
                 throw new Exception("이미 존재하는 아이디입니다.");
             }
-
         }
         try {
             studioService.saveStudio(dto, file);
@@ -591,9 +593,133 @@ public class StudioRestApiController {
         } catch (Exception e) {
             throw new Exception("이미 존재하는 아이디입니다.");
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    @PostMapping(value = "/api/secure-code")
+    public CommonResult sendSecureCodeApi(
+//            @RequestParam Map<String, Object>  params
+            CertificationRequestDto params
+    ) {
+        //임시비밀번호랑 id로 비밀번호 update 후 전송
+        String secureCode = RandomStringUtils.randomNumeric(6);
+        params.setCertificationValue(secureCode);
+        //존재하면 임시번호 전송
+        params.setCertificationStatus(ECertificationStatus.S1);
+
+//        try {
+//
+        try {
+            Certification certification = params.toEntity();
+            certificationRepository.save(certification);
+            Map<String, Object> successMap = MessageUtil.sendSecureCode(params);
+            //{"result_code":"1","message":"success","msg_id":"58027717","success_cnt":1,"error_cnt":0,"msg_type":"SMS"}
+            if (successMap.get("result_code").equals("1")) {
+                return responseService.getSuccessResult();
+            } else {
+                CommonResult commonResult = responseService.getFailResult();
+                commonResult.setMsg("문제가 있을 경우 문의 부탁드립니다. 02-6205-3420");
+                return commonResult;
+            }
+        } catch (Exception e) {
+            //문자 전송
+            CommonResult commonResult = responseService.getFailResult();
+            commonResult.setMsg("문제가 있을 경우 문의 부탁드립니다. 02-6205-3420");
+            return commonResult;
+        }
+    }
 
 
+    /**
+     * 인증번호가 같은지 확인
+     * 같으면 성공 메시지 전송 (임시비밀번호 변경 후 문자 발송)
+     * 다르면 오류 메세지 발송
+     *
+     * @param params
+     * @return
+     */
+    @PostMapping(value = "/api/secure-code/check")
+    public CommonResult checkSecureCodeApi(
+//            @RequestParam Map<String, Object>  params
+            CertificationRequestDto params
+    ) {
+        try {
+            String checkSecure = params.getCertificationValue();
+            String managerTel = params.getManagerTel();
+            String managerName = params.getManagerName();
+            //존재하면 임시번호 전송
+            Optional<Certification> certification = certificationRepository.findByCertificationValueAndManagerNameAndManagerTelAndCertificationStatus(checkSecure, managerName, managerTel, ECertificationStatus.S1);
+            if (certification.isPresent()) {
+                Certification certification1 = certification.orElseThrow(() -> new IllegalArgumentException("임시번호가 없습니다."));
+                String crtfVal = certification1.getCertificationValue();
+                if (checkSecure.equals(crtfVal)) {
+                    Studio studio = studioService.findByCertification(certification1);
+                    //스튜디오 전화번호와 인증번호 같은지 비교
 
+                    if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getManagerName().equals(studio.getManagerName())) {
+//                        successMap = messageMap(SUCCESS, "인증이 완료되었습니다.");
+//                        successMap.put("stdoId", lists.get(0).get("stdoId"));
+//                        CommonResult commonResult = responseService.getSuccessResult();
+                        return responseService.getSingleResult(new StudioResponseDto(studio));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            CommonResult commonResult = responseService.getFailResult();
+            commonResult.setMsg("인증정보가 일치하지 않습니다.");
+            return commonResult;
+        }
+        CommonResult commonResult = responseService.getFailResult();
+        commonResult.setMsg("인증정보가 일치하지 않습니다.");
+        return commonResult;
+    }
+
+//
+
+    @Transactional
+    @PostMapping(value = "/api/secure-password-code/check")
+    public CommonResult apiCheckSecurePassCode(CertificationRequestDto params) {
+        try {
+            String checkSecure = params.getCertificationValue();
+            String studioId = params.getStudioId();
+            String managerTel = params.getManagerTel();
+            //존재하면 임시번호 전송
+            Optional<Certification> certification = certificationRepository.findByCertificationValueAndStudioIdAndManagerTelAndCertificationStatus(checkSecure, studioId, managerTel, ECertificationStatus.S1);
+            if (certification.isPresent()) {
+                Certification certification1 = certification.orElseThrow(() -> new IllegalArgumentException("임시번호가 없습니다."));
+                String crtfVal = certification1.getCertificationValue();
+                if (checkSecure.equals(crtfVal)) {
+                    Studio studio = studioService.findByCertification(certification1);
+                    //스튜디오 전화번호와 인증번호 같은지 비교
+
+                    if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getStudioId().equals(studio.getStudioId())) {
+                        //임시 비밀번호 만들어서 전송하고 메세지 보내야함
+                        String stdoId = params.getStudioId();
+                        //임시비밀번호랑 id로 비밀번호 update 후 전송
+                        String tempPassword  = RandomStringUtils.randomAlphabetic(1) + RandomStringUtils.randomNumeric(8);
+                        params.setCertificationValue(tempPassword);
+                        StudioInfoRequestDto entity = new  StudioInfoRequestDto();
+                        entity.setChangePassword(tempPassword);
+                        studio.update(entity);
+                        MessageUtil.sendPassword(params);
+
+                        certificationRepository.save(params.toEntity());
+                        CommonResult commonResult = responseService.getSuccessResult();
+                        commonResult.setMsg("해당 인증이 확인되어 메세지가 발송되었습니다.");
+                        return commonResult;
+                    }
+
+                }
+            }
+            CommonResult commonResult = responseService.getFailResult();
+            commonResult.setMsg("인증정보가 일치하지 않습니다.");
+            return commonResult;
+        } catch (Exception e) {
+            CommonResult commonResult = responseService.getFailResult();
+            commonResult.setMsg("인증정보가 일치하지 않습니다.");
+            return commonResult;
+        }
 
     }
 }

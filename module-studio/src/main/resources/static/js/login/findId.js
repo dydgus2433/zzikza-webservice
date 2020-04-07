@@ -41,7 +41,7 @@ $(document).ready(function() {
 	console.log('find Id');
 	const $managerName = $("input[name='managerName']");
 	const $input = $("input[name='managerTel']");
-	const $checkSecure = $("input[name='checkSecure']");
+	const $certificationValue = $("input[name='certificationValue']");
 
 	$("#secureBtn").on('click', function(){
 		//show 인증번호 인증타이머 인증버튼 
@@ -53,7 +53,7 @@ $(document).ready(function() {
 				return;
 			}
 			$.ajax({
-				url: '/api/sendSecureCode',
+				url: '/api/secure-code',
 				data: $("#findFrm").serializeArray(),
 				type: 'post'
 
@@ -91,32 +91,32 @@ $(document).ready(function() {
 			return;
 		}
 		
-		if($checkSecure.val() === ''){
+		if($certificationValue.val() === ''){
 			alert('인증번호를 입력해주세요.')
-			$checkSecure.focus();
+			$certificationValue.focus();
 			return;
 		}
-		//checkSecureCode
+		//secure-code/check
 		$.ajax({
-			url : '/api/checkSecureCode',
+			url : '/api/secure-code/check',
 			data : $("#findFrm").serializeArray(),
 			type : 'post'
 
 		}).done(function(data) {
-			
-			
-			if(data.rtnCode === 'SUCCESS'){
+			// {id: "STD0000000436", studioId: "tester2", studioName: "찍자컴퍼니", accountStatus: "Y"}
+			const result = data.data;
+			if(data.success){
 				const $secureBtn = $("#secureBtn");
 				$(".overTime").hide();
 				$(".secureNumber").hide();
-				alert(data.rtnMsg);
+				alert(data.msg);
 				$(".showId").show();
-				$("#showId").html("아이디는 <b>"+data.studioId+"</b> 입니다.");
+				$("#showId").html("아이디는 <b>"+result.studioId+"</b> 입니다.");
 				$secureBtn.html("인증완료");
 				$secureBtn.attr("disabled", true);
 				stopTimer();
 			}else{
-				alert(data.rtnMsg);
+				alert(data.msg);
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.responseJSON.message);
