@@ -112,7 +112,11 @@ public class StorageServiceImpl implements StorageService {
         String randomName = getRandomFileName(file);
         fileAttribute.setFileName(randomName);
 
+
         String filePath = FILE_PATH + randomName;
+        if ("business".equals(type)) {
+            filePath = FILE_PATH + "business/" + randomName;
+        }
         String urlPath = putObjectByS3ClientWithMultipartFile(file, filePath);
         fileAttribute.setFilePath(urlPath);
 
@@ -129,7 +133,15 @@ public class StorageServiceImpl implements StorageService {
                 fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
                 fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
                 fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
-            } else {
+            } else if ("request_product_temp".equals(type)) {
+                fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
+                fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
+                fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
+            } else if ("request_product".equals(type)) {
+                fileAttribute.setFileThumbPath(makeThumbnail(file, FILE_THUMB_PATH + randomName, 200, 172));
+                fileAttribute.setFileMidsizePath(makeThumbnail(file, FILE_MIDSIZE_PATH + randomName, 600, 520));
+                fileAttribute.setFileLargePath(makeThumbnail(file, FILE_LARGE_PATH + randomName, 1400, 1000));
+            } else if("business".equals(type)){ //"business"
 
             }
 

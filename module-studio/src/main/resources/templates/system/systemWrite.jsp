@@ -60,7 +60,7 @@
 			</div>
 		</div>		
 		<!--// left_area -->
-<script src="${contextPath}/resources/js/board/boardWrite.js"></script>
+<script src="/js/board/boardWrite.js"></script>
 <script>
 var contextPath = '${contextPath }'; 
 var brdCateCd = '${brdCateCd}';

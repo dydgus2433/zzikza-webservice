@@ -63,8 +63,7 @@ $(document).ready(function() {
 			}
 			
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-	    	console.error('FAIL REQUEST: ', textStatus);
-			alert('처리중 오류가 발생하였습니다.');
+	    	alert(jqXHR.responseJSON.message);
 	    }).always(function() {
 	    	console.log('DONE');
 	    });
@@ -73,15 +72,15 @@ $(document).ready(function() {
 	
 	$("#secureBtn").on('click', function(){
 		//show 인증번호 인증타이머 인증버튼 
-		if($("input[name='stdoId']").val() == ''){
+		if($("input[name='studioId']").val() == ''){
 			alert('아이디를 입력해주세요.')
-			$("input[name='stdoId']").focus();
+			$("input[name='studioId']").focus();
 			return;
 		}
 		
-		if($("input[name='mngCntt']").val() == ''){
+		if($("input[name='managerTel']").val() == ''){
 			alert('휴대폰을 입력해주세요')
-			$("input[name='mngCntt']").focus();
+			$("input[name='managerTel']").focus();
 			return;
 		}
 		console.log("인증버튼");
@@ -99,8 +98,7 @@ $(document).ready(function() {
 			startTimer();
 			
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-			console.error('FAIL REQUEST: ', textStatus);
-			alert('처리중 오류가 발생하였습니다.');
+			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});
@@ -109,15 +107,15 @@ $(document).ready(function() {
 	$("#checkBtn").on('click', function(){
 		console.log("확인 버튼");
 		//checkSecureCode
-		if($("input[name='stdoId']").val() == ''){
+		if($("input[name='studioId']").val() == ''){
 			alert('아이디를 입력해주세요.')
-			$("input[name='stdoId']").focus();
+			$("input[name='studioId']").focus();
 			return;
 		}
 		
-		if($("input[name='mngCntt']").val() == ''){
+		if($("input[name='managerTel']").val() == ''){
 			alert('휴대폰을 입력해주세요')
-			$("input[name='mngCntt']").focus();
+			$("input[name='managerTel']").focus();
 			return;
 		}
 		
@@ -143,8 +141,7 @@ $(document).ready(function() {
 				alert(data.rtnMsg);
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-			console.error('FAIL REQUEST: ', textStatus);
-			alert('처리중 오류가 발생하였습니다.');
+			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});

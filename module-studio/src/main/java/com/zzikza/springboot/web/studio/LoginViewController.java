@@ -1,11 +1,13 @@
 package com.zzikza.springboot.web.studio;
 
+import com.zzikza.springboot.web.domain.enums.EStudioStatus;
 import com.zzikza.springboot.web.domain.enums.ETableStatus;
-import com.zzikza.springboot.web.domain.enums.EUserStatus;
+import com.zzikza.springboot.web.domain.policy.Policy;
 import com.zzikza.springboot.web.dto.MenusListResponseDto;
 import com.zzikza.springboot.web.dto.StudioRequestDto;
 import com.zzikza.springboot.web.dto.StudioResponseDto;
 import com.zzikza.springboot.web.service.MenuService;
+import com.zzikza.springboot.web.service.PolicyService;
 import com.zzikza.springboot.web.service.StudioService;
 import com.zzikza.springboot.web.util.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +17,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,22 +26,20 @@ import java.util.Map;
 @Controller
 public class LoginViewController {
 
-    private final StudioService studioService;
-    private final MenuService menuService;
-
+    public static final String SESSION_VO = "sessionVo";
+    public static final String FAIL = "FAILURE";
+    public static final String ID_WITHDRAWAL = "탈퇴한 회원입니다.";
+    // 스튜디오 회원 권한코드
+    public static final String RETURN_URL = "returl";
+    public static final String REDIRECT = "redirect:";
     private static final String LOGIN_PAGE = "login/login";
     private static final String FIND_PASSWORD_PAGE = "login/findPassword";
     private static final String FIND_ID_PAGE = "login/findId";
     private static final String JOIN_PAGE = "login/join";
-
-    public static final String SESSION_VO = "sessionVo";
-    public static final String FAIL = "FAILURE";
-    public static final String ID_WITHDRAWAL = "탈퇴한 회원입니다.";
-    public static final String AC_STATUS_OUT = "09"; // 탈퇴
-    // 스튜디오 회원 권한코드
-    public static final String RETURN_URL = "returl";
-    public static final String REDIRECT = "redirect:";
-
+    private static final String POLICY_VIEW_PAGE = "policy/policyView";
+    private final StudioService studioService;
+    private final MenuService menuService;
+    private final PolicyService policyService;
 
     @GetMapping(value = {"/", ""})
     public String loginPage(Model model) {
@@ -67,32 +67,43 @@ public class LoginViewController {
         model.addAttribute("title", "찍자사장님 사이트 - 아이디 찾기");
         return FIND_ID_PAGE;
     }
-
-	@SuppressWarnings("unchecked")
-//    @RequestMapping(value = "/loginProcess", method = { RequestMethod.POST }, produces = CONTENT_TYPE)
-    @PostMapping(value = "/loginProcess")
-	@ResponseBody
-	public StudioResponseDto loginProcess(@RequestBody StudioRequestDto params, HttpSession session, HttpServletRequest request, ModelMap model) {
-		StudioResponseDto responseDto = studioService.findByStudioIdAndPassword(params);
-		if(AC_STATUS_OUT.equals(StringUtil.nvl(responseDto.getAccountStatus()))) {
-			throw  new IllegalArgumentException(ID_WITHDRAWAL);
-		}
-		session.setAttribute(SESSION_VO, responseDto);
-		List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNullAndUseStatusEquals(ETableStatus.valueOf("Y"));
-		session.setAttribute("menuList", menuList);
-		return responseDto;
-	}
 //
 
-	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
-	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap model, @RequestParam Map<String, Object> params) {
+    @SuppressWarnings("unchecked")
+//    @RequestMapping(value = "/loginProcess", method = { RequestMethod.POST }, produces = CONTENT_TYPE)
+    @PostMapping(value = "/loginProcess")
+    @ResponseBody
+    public StudioResponseDto loginProcess(@RequestBody StudioRequestDto params, HttpSession session, HttpServletRequest request, ModelMap model) {
+        StudioResponseDto responseDto = studioService.findByStudioIdAndPassword(params);
+        if (EStudioStatus.N.equals(responseDto.getAccountStatus())) {
+            throw new IllegalArgumentException(ID_WITHDRAWAL);
+        }
+        session.setAttribute(SESSION_VO, responseDto);
+        List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNullAndUseStatusEquals(ETableStatus.valueOf("Y"));
+        session.setAttribute("menuList", menuList);
+        return responseDto;
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout(HttpSession session, @RequestParam Map<String, Object> params) {
         session.removeAttribute(SESSION_VO);
-		String url = (String) params.get(RETURN_URL);
-		if (StringUtil.isNotEmpty(url)) {
-			return REDIRECT + url;
-		}
-		return LOGIN_PAGE;
-	}
+        String url = (String) params.get(RETURN_URL);
+        if (StringUtil.isNotEmpty(url)) {
+            return REDIRECT + url;
+        }
+        return LOGIN_PAGE;
+    }
+
+    @GetMapping(value = "/policy")
+    public String policyView(@RequestParam("termCode") String termCode, Model model) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        Policy policy = policyService.findByTermCode(termCode);
+        model.addAttribute("policy", policy);
+
+        model.addAttribute("title", "찍자사장님 사이트 - 약관");
+        return POLICY_VIEW_PAGE;
+    }
+
 //
 //
 }

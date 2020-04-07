@@ -99,9 +99,9 @@ $( document ).ready(function() {
                     <div class="time">촬영시간 : <strong><c:if test="${not empty  product.productHour}"><c:out value="${product.productHour }시간 "></c:out></c:if><c:if test="${not empty  product.productMinute}">${product.productMinute }분</c:if></strong></div>
                     <div class="price">결제금액 <span class="now"><strong>${reservationFee }</strong>원</span></div>
                     <div class="btns">
-                        <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_share.png" alt="">공유하기</a>
-                        <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_question.png" alt="">문의하기</a>
-                        <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_reservation.png" alt="">예약하기</a>
+                        <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
+                        <a href="#" class="btn_type_y"><img src="$/preview/img/ico_question.png" alt="">문의하기</a>
+                        <a href="#" class="btn_type_y"><img src="$/preview/img/ico_reservation.png" alt="">예약하기</a>
                     </div>
                 </div>
                 
@@ -121,7 +121,7 @@ $( document ).ready(function() {
             
             <div class="studioInfo">
                 <div class="contWrap">
-                    <p class="tit">${studio.stdoNm }</p>
+                    <p class="tit">${studio.studioName }</p>
                     <div class="cont" style="white-space: pre-wrap;"><c:out value="${studio.studioDescription }"></c:out></div>
                     <!--                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25321.327943563098!2d127.02990940300094!3d37.50400295780005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca405861e4a67%3A0x73ec1c047764908!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rCDthYztl6TrnoDroZw!5e0!3m2!1sko!2skr!4v1564976538213!5m2!1sko!2skr" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 <%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.addr }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
@@ -138,9 +138,9 @@ $( document ).ready(function() {
                     <strong>${product.title}</strong>결제금액 ${reservationFee }원
                 </div>
                 <div class="btns">
-                    <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_share.png" alt="">공유하기</a>
-                    <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_question.png" alt="">문의하기</a>
-                    <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_reservation.png" alt="">예약하기</a>
+                    <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
+                    <a href="#" class="btn_type_y"><img src="$/preview/img/ico_question.png" alt="">문의하기</a>
+                    <a href="#" class="btn_type_y"><img src="$/preview/img/ico_reservation.png" alt="">예약하기</a>
                 </div>
             </div>    
         </div>

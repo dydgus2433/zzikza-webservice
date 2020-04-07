@@ -1,11 +1,9 @@
 package com.zzikza.springboot.web.domain.user;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
-import com.zzikza.springboot.web.domain.pay.Payment;
-import com.zzikza.springboot.web.domain.product.Product;
+import com.zzikza.springboot.web.domain.request.UserRequest;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
-import com.zzikza.springboot.web.domain.studio.StudioQuestion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

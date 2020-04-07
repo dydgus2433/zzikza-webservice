@@ -1,0 +1,90 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+    {{>layout/header}}
+	<div class="container">
+        {{>layout/left-panel}}
+        <!-- 본문자리 -->
+        <div class="left_content_area">
+            <div class="left_content_head">
+                <h2 class="sub_tit">요청사항</h2>
+            </div>
+            <div class="inner">
+
+
+                {{!#commonCodes}}
+<!--                    <li><a href="<c:url value='/detail/{{!commCd}}'/>"{{!#selected}}class='active'{{!/selected}}>{{!commCdNm}}</a></li>-->
+                {{!/commonCodes}}
+
+                <div class="box_area full">
+                    <!-- 				{reqId=REQ0000000027, userName=Steven Spark, reqTitle=조금 어려운 신청 , reqContent=조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청 , reqStat=W, regDt=2019-11-16 01:26:17.0, regId=USER0000000002} -->
+                    <!-- [reqId, userName, reqTitle, reqContent, reqStat, regDt, regId] -->
+                    <!-- {userName=Steven Spark, regDt=2019-11-16 01:26:17.0, reqContent=조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청  -->
+                    <!-- 조금 어려운 신청 , reqTitle=조금 어려운 신청 , regId=USER0000000002, reqStat=W, reqId=REQ0000000027} -->
+
+                    <h3 class="sub_stit">{{#detail}}{{title}}{{/detail}}</h3>
+                    <table class="tView">
+                        <caption>요청사항 상세내용입니다</caption>
+                        <colgroup>
+                            <col style="width:100px">
+                            <col style="">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th colspan="2">
+                                {{#detail}}{{title}}{{/detail}}
+                                <p class="date">{{#detail}}{{createDate}}{{/detail}}</p>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="white-space: pre-wrap;">{{#detail}}{{content}}{{/detail}}</td>
+                        </tr>
+                        </tbody>
+                        {{#files}}
+                            <tr>
+                                <td colspan="2" class="file">
+                                        <p class="file_name">
+                                            <img src="/img/{{#file}}{{fileName}}{{/file}}" onerror="this.src='/images/common/no_img.gif'" style="width: 100%">
+                                        </p>
+                                </td>
+                            </tr>
+                        {{/files}}
+                    </table>
+                    <div class="btn_area right">
+                        <button type="button" class="btn_form btn_req" data-seq="{{#detail}}{{id}}{{/detail}}">신청하기</button>
+                        <button type="button" class="btn_form" id="listBtn">목록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// left_area -->
+
+        <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+        <script type="text/javascript"	src="/js/upload/jquery.ui.widget.js"></script>
+        <script type="text/javascript"	src="/js/upload/jquery.iframe-transport.js"></script>
+        <script type="text/javascript"	src="/js/upload/jquery.fileupload.js"></script>
+        <script src="/js/request/requestView.js"></script>
+        <!-- 본문자리 -->
+	</div>
+	
+	
+	<!-- popup -->
+	<div id="popup"></div>
+	<!--// popup -->
+</body>
+</html>

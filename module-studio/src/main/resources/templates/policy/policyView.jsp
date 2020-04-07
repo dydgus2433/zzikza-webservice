@@ -23,8 +23,8 @@
 <!--     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css"> -->
 <!--     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css"> -->
 <!--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css"> -->
-<%--     <link rel="stylesheet" href="${contextPath}/resources/admin/assets/css/cs-skin-elastic.css"> --%>
-<%--     <link rel="stylesheet" href="${contextPath}/resources/admin/assets/css/style.css"> --%>
+<%--     <link rel="stylesheet" href="$/admin/assets/css/cs-skin-elastic.css"> --%>
+<%--     <link rel="stylesheet" href="$/admin/assets/css/style.css"> --%>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
@@ -34,7 +34,7 @@
             	<pre>${policy.termContent}</pre>
 		    </div><!-- .animated -->
         </div><!-- .content -->
-<%-- <script src="${contextPath}/resources/js/policy/policyView.js"></script> --%>
+<%-- <script src="/js/policy/policyView.js"></script> --%>
 <script>
 	var contextPath = '${contextPath}';
 // 	var brdCateCd = '${brdCateCd}';

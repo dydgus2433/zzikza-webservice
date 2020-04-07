@@ -1,7 +1,11 @@
 package com.zzikza.springboot.web.domain.user;
 
 
+import com.zzikza.springboot.web.domain.FileAttribute;
 import com.zzikza.springboot.web.domain.product.Product;
+import com.zzikza.springboot.web.domain.request.UserRequest;
+import com.zzikza.springboot.web.domain.request.UserRequestFile;
+import com.zzikza.springboot.web.domain.request.UserRequestProduct;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioDetail;
 import com.zzikza.springboot.web.domain.studio.StudioRepository;
@@ -56,9 +60,10 @@ public class UserRepositoryTest {
         //given
         User user = User.builder().userId("tester01").build();
         UserRequest userRequest = UserRequest.builder().content("제품사진 10만원에 가능?").build();
-        em.persist(userRequest);
         em.persist(user);
-        userRequest.addUserRequestFile(UserRequestFile.builder().fileName("file.mvc").build());
+        em.persist(userRequest);
+        FileAttribute fileAttribute = new FileAttribute();
+        userRequest.addUserRequestFile(UserRequestFile.builder().fileAttribute(fileAttribute).build());
 
         user.addUserRequest(userRequest);
 
@@ -69,11 +74,11 @@ public class UserRepositoryTest {
                 .studioDetail(studioDetail)
                 .build();
         em.persist(studio);
-        Product product = Product.builder().build();
+        UserRequestProduct product = UserRequestProduct.builder().build();
         em.persist(product);
-        studio.addProudct(product);
+        studio.addUserRequestProduct(product);
 
-        userRequest.addUserRequestProduct(UserRequestProduct.builder().product(product).build());
+        userRequest.addUserRequestProduct(product);
         em.persist(userRequest);
         em.flush();
         em.clear();
@@ -81,7 +86,7 @@ public class UserRepositoryTest {
         Studio expected = studioRepository.findById(studio.getId()).orElseThrow(IllegalAccessError::new);
         //then
         assertThat(userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().size()).isEqualTo(1);
-        assertThat(userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().get(0).getUserRequestProducts().get(0).getProduct()).isEqualTo(expected.getProducts().get(0));
+        assertThat(userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("아이디를 찾을 수 없습니다. id = ")).getUserRequests().get(0).getUserRequestProducts().get(0)).isEqualTo(expected.getUserRequestProducts().get(0));
     }
 
     @Test

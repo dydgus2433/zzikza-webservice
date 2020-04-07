@@ -1,11 +1,7 @@
 package com.zzikza.springboot.web.studio;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zzikza.springboot.web.annotaion.LoginStudio;
-import com.zzikza.springboot.web.domain.enums.EBoardCategory;
-import com.zzikza.springboot.web.domain.enums.EDateStatus;
-import com.zzikza.springboot.web.domain.enums.EProductCategory;
-import com.zzikza.springboot.web.domain.enums.EShowStatus;
-import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
 import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.result.CommonResult;
@@ -13,6 +9,7 @@ import com.zzikza.springboot.web.result.ListResult;
 import com.zzikza.springboot.web.result.SingleResult;
 import com.zzikza.springboot.web.service.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,8 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -39,32 +42,23 @@ public class StudioRestApiController {
 
     private final ProductService productService;
 
+    private final UserReqeustProductService userReqeustProductService;
+
     private final FileService editorFileService;
 
     private final StorageServiceImpl storageService;
 
     private final ReservationService reservationService;
+    private final StudioQuestionService studioQuestionService;
 
     private final StudioHolidayRepository studioHolidayRepository;
 
     @PostMapping(value = "/api/studio-board")
     public SingleResult<StudioBoardResponseDto> insertStudioBoard(
             @LoginStudio StudioResponseDto studioResponseDto,
-//            @RequestParam String title,
-//            @RequestParam String content,
-//            @RequestParam int fileLength,
-//            @RequestParam EBoardCategory brdCateCd,
             StudioBoardRequestDto studioBoardDto,
             MultipartHttpServletRequest request
     ) throws Exception {
-//        StudioBoardRequestDto studioBoardDto = StudioBoardRequestDto.builder()
-//                .title(title)
-//                .content(content)
-//                .brdCateCd(brdCateCd)
-//                .fileLength(fileLength)
-//                .build();
-
-//        StudioResponseDto studioResponseDto = (StudioResponseDto) session.getAttribute("sessionVo");
         if (studioResponseDto == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
@@ -193,6 +187,7 @@ public class StudioRestApiController {
         studioService.deleteStudioFileById(index);
         return responseService.getSuccessResult();
     }
+
     //임시 상품 파일 CRUN
     @PostMapping(value = "/api/product-file/temp")
     @Transactional
@@ -286,40 +281,11 @@ public class StudioRestApiController {
     @PostMapping("/api/product")
     public SingleResult<ProductResponseDto> insertProduct(
             @LoginStudio StudioResponseDto studioResponseDto,
-//            @RequestParam EProductCategory productCategory,
-//            @RequestParam String title,
-//            @RequestParam Integer price,
-//            @RequestParam Integer prdSalePrc,
-//            @RequestParam Integer productHour,
-//            @RequestParam Integer productMinute,
-//            @RequestParam String productBriefDesc,
-//            @RequestParam EShowStatus showStatusCode,
-//            @RequestParam String exhId,
-//            @RequestParam String keyword,
-//            @RequestParam String index,
-//            @RequestParam String productDescription,
             @RequestParam String tempKey,
             ProductRequestDto product
-
-
     ) {
-//        ProductRequestDto product = ProductRequestDto.builder()
-//                .productCategory(productCategory)
-//                .title(title)
-//                .productDescription(productDescription)
-//                .prdSalePrc(prdSalePrc)
-//                .productHour(productHour)
-//                .productMinute(productMinute)
-//                .showStatusCode(showStatusCode)
-//                .exhId(exhId)
-//                .keyword(keyword)
-//                .index(index)
-//                .price(price)
-//                .productBriefDesc(productBriefDesc)
-//                .build();
         return responseService.getSingleResult(productService.saveProduct(product, tempKey, studioResponseDto));
     }
-
 
 
     @Transactional
@@ -336,7 +302,7 @@ public class StudioRestApiController {
     @DeleteMapping("/api/product")
     public CommonResult deleteProduct(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String id    ) {
+            @RequestParam String id) {
         productService.deleteProduct(id);
         return responseService.getSuccessResult();
     }
@@ -345,14 +311,14 @@ public class StudioRestApiController {
 
     @GetMapping("/api/studio-holiday/week")
     public ListResult<StudioHolidayResponseDto> getStudioHolidayWeek(
-            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params) {
         return responseService.getListResult(studioService.selectStudioWeekHolidays(studioResponseDto));
     }
 
 
     @GetMapping("/api/studio-holiday/day")
     public ListResult<StudioHolidayResponseDto> getStudioHolidayDay(
-            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params) {
         return responseService.getListResult(studioService.selectStudioDayHolidays(studioResponseDto));
     }
 
@@ -360,7 +326,7 @@ public class StudioRestApiController {
 
     @GetMapping("/api/reservation/yyyymm")
     public List<ReservationResposeDto> getReservationYYYYMM(
-            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params){
+            @LoginStudio StudioResponseDto studioResponseDto, @RequestParam Map<String, Object> params) {
         return studioService.selectReservationYYYYMM(studioResponseDto);
     }
 
@@ -368,28 +334,266 @@ public class StudioRestApiController {
     @PostMapping("/api/reservation")
     public CommonResult insertReservation(
             @LoginStudio StudioResponseDto studioResponseDto,
-            ReservationRequestDto reservationRequestDto  ) {
-        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
+            ReservationRequestDto reservationRequestDto) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>" + reservationRequestDto.toString());
         reservationService.saveReservation(reservationRequestDto);
         return responseService.getSuccessResult();
     }
+
     @Transactional
     @PutMapping("/api/reservation")
     public CommonResult updateReservation(
             @LoginStudio StudioResponseDto studioResponseDto,
-            ReservationRequestDto reservationRequestDto   ) {
-        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
+            ReservationRequestDto reservationRequestDto) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>" + reservationRequestDto.toString());
         reservationService.updateReservation(reservationRequestDto);
         return responseService.getSuccessResult();
     }
+
     @Transactional
     @DeleteMapping("/api/reservation")
     public CommonResult deleteReservation(
             @LoginStudio StudioResponseDto studioResponseDto,
-            ReservationRequestDto reservationRequestDto      ) {
-        System.out.println("reservationRequestDto >>>>>>>>>>>>>>"+reservationRequestDto.toString());
-       reservationService.deleteReservation(reservationRequestDto);
+            ReservationRequestDto reservationRequestDto) {
+        System.out.println("reservationRequestDto >>>>>>>>>>>>>>" + reservationRequestDto.toString());
+        reservationService.deleteReservation(reservationRequestDto);
         return responseService.getSuccessResult();
     }
 
+
+    //임시 요청 상품 파일 CRUD
+    @PostMapping(value = "/api/request/product/file/temp")
+    @Transactional
+    public SingleResult<FileResponseDto> insertRequestProductImageFileTemp(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam(value = "tempKey", required = false) String tempKey,
+            @RequestParam("detailFiles") MultipartFile file) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+
+        return responseService.getSingleResult(userReqeustProductService.saveProductImageFileTemp(tempKey, file));
+    }
+
+
+    @PutMapping(value = "/api/request/product/file/temp/order")
+    public CommonResult requestProductFileOrderTemp(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam(value = "tempKey", required = false) String tempKey,
+            @RequestParam String index
+    ) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+//            return responseService.getFailResult();
+        }
+        userReqeustProductService.saveFileTempOrders(tempKey, index);
+        return responseService.getSuccessResult();
+    }
+
+    @DeleteMapping("/api/request/product/file/temp")
+    public CommonResult deleteRequestProductFileTemp(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String index,
+            @RequestParam(value = "tempKey", required = false) String tempKey,
+            @RequestParam(required = false) String flNm
+    ) throws IllegalAccessException {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        userReqeustProductService.deleteProductFileTempById(index);
+        return responseService.getSuccessResult();
+    }
+
+
+    @Transactional
+    @PostMapping("/api/request/product")
+    public SingleResult<UserRequestProductResponseDto> insertUserRequestProduct(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String tempKey,
+            UserRequestProductRequestDto requestDto
+    ) {
+        return responseService.getSingleResult(userReqeustProductService.saveUserRequestProductTempToReal(requestDto, tempKey, studioResponseDto));
+    }
+
+
+    @Transactional
+    @PutMapping("/api/request/product")
+    public SingleResult<UserRequestProductResponseDto> updateUserRequestProduct(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            UserRequestProductRequestDto requestDto
+    ) {
+        return responseService.getSingleResult(userReqeustProductService.saveUserRequestProduct(requestDto, studioResponseDto));
+    }
+
+    //실제 상품 수정 및 업로드
+    @PostMapping(value = "/api/request/product/file")
+    @Transactional
+    public SingleResult<FileResponseDto> insertRequestProductImageFile(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String id,
+            @RequestParam("detailFiles") MultipartFile file) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+
+        return responseService.getSingleResult(userReqeustProductService.saveUserRequestProductImageFile(id, file));
+    }
+
+    @PutMapping(value = "/api/request/product/file/order")
+    public CommonResult requestProductFileOrder(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String id,
+            @RequestParam String index
+    ) throws Exception {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        userReqeustProductService.saveFileOrders(id, index);
+        return responseService.getSuccessResult();
+    }
+
+
+    @DeleteMapping("/api/request/product/file")
+    public CommonResult deleteRequestProductFile(
+            @LoginStudio StudioResponseDto studioResponseDto,
+            @RequestParam String index,
+            @RequestParam(required = false) String flNm
+    ) throws IllegalAccessException {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        userReqeustProductService.deleteProductFileById(index);
+        return responseService.getSuccessResult();
+    }
+
+    //    /api/question/repl
+    @PostMapping("/api/question/repl")
+    public CommonResult insertStudioQuestionRepl(@LoginStudio StudioResponseDto studioResponseDto
+            , StudioQuestionReplyRequestDto reply
+    ) throws IllegalAccessException {
+        if (studioResponseDto == null || studioResponseDto.getId() == null) {
+            throw new IllegalAccessException("로그인 해주세요.");
+        }
+        studioQuestionService.addQuestionReply(reply);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/api/userinfo")
+    public CommonResult updateUserInfo(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+
+        studioService.updateStudio(sessionVo, studioInfoRequestDto);
+
+        return responseService.getSuccessResult();
+
+    }
+
+    @PutMapping("/api/userinfo-password")
+    public CommonResult updateUserInfoPassword(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+
+        studioService.updateStudioPassword(sessionVo, studioInfoRequestDto);
+
+        return responseService.getSuccessResult();
+
+    }
+
+    @PutMapping("/api/userinfo-business")
+    public CommonResult updateUserInfoBusiness(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto, @RequestParam("businessLicFile") MultipartFile file) throws IllegalAccessException, IOException {
+
+        studioService.updateStudioBusiness(sessionVo, studioInfoRequestDto, file);
+
+        return responseService.getSuccessResult();
+
+    }
+
+    @DeleteMapping("/api/studio/withdrawal")
+    public CommonResult deleteStudio(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException, IOException {
+
+        studioService.withdrawalStudio(sessionVo);
+//        studioService.deleteStudio(sessionVo);
+
+        return responseService.getSuccessResult();
+
+    }
+
+    //아이디 찾기
+//    /api/studio/id-check
+    @GetMapping("/api/studio/id-check")
+    @ResponseBody
+    public boolean studioCheckId(StudioRequestDto dto) {
+
+        try {
+            StudioResponseDto response = studioService.findById(dto.getStudioId());
+
+        } catch (Exception e) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    @GetMapping("/api/location")
+    public Map<String, Object> getLocation(@RequestParam Map<String, Object> params) throws IllegalStateException, IOException, ParseException {
+        String query = (String) params.get("query");
+        String clientId = "vi60zll466";// 애플리케이션 클라이언트 아이디값";
+        String clientSecret = "EHv5vyvhMSXHv8zmDsGAfNWHEmckBUKQrvm96THs";// 애플리케이션 클라이언트 시크릿값";
+        String addr = URLEncoder.encode(query, "UTF-8");
+        String apiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + addr; // json
+        // String apiURL = "https://openapi.naver.com/v1/map/geocode.xml?query=" + addr;
+        // // xml
+
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        URL url = new URL(apiURL);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+        con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
+        int responseCode = con.getResponseCode();
+        BufferedReader br;
+        if (responseCode == 200) { // 정상 호출
+            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        } else { // 에러 발생
+            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+        }
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = br.readLine()) != null) {
+            response.append(inputLine);
+        }
+        br.close();
+        // convert JSON string to Map
+        Map map = mapper.readValue(response.toString(), Map.class);
+        return map;
+    }
+
+
+    @RequestMapping(value = {"/join"}, method = RequestMethod.POST)
+    public CommonResult insertStudio(
+            StudioSaveRequestDto dto,
+            @RequestParam("businessLicFile") MultipartFile file) throws Exception {
+        System.out.println(dto.toString());
+
+        try {
+            StudioRequestDto studioRequestDto = StudioRequestDto.builder().studioId(dto.getStudioId()).build();
+            StudioResponseDto response = studioService.findById(dto.getStudioId());
+
+        } catch (IllegalArgumentException e) {
+            if (!e.getMessage().equals("회원정보가 맞지 않습니다.")) {
+                throw new Exception("이미 존재하는 아이디입니다.");
+            }
+
+        }
+        try {
+            studioService.saveStudio(dto, file);
+            return responseService.getSuccessResult();
+        } catch (Exception e) {
+            throw new Exception("이미 존재하는 아이디입니다.");
+        }
+
+
+
+
+    }
 }

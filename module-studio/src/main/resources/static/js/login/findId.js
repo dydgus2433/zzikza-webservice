@@ -39,14 +39,14 @@ function numberToTime(number){
 
 $(document).ready(function() {
 	console.log('find Id');
-	const $mng = $("input[name='mng']");
-	const $input = $("input[name='mngCntt']");
+	const $managerName = $("input[name='managerName']");
+	const $input = $("input[name='managerTel']");
 	const $checkSecure = $("input[name='checkSecure']");
 
 	$("#secureBtn").on('click', function(){
 		//show 인증번호 인증타이머 인증버튼 
-		'인증버튼' |> console.log;
-		if ($mng.val() !== '') {
+		console.log('인증버튼' );
+		if ($managerName.val() !== '') {
 			if ($input.val() === '') {
 				alert('담당자 휴대폰 번호를 입력해주세요')
 				$input.focus();
@@ -66,23 +66,22 @@ $(document).ready(function() {
 				startTimer();
 
 			}).fail(function (jqXHR, textStatus, errorThrown) {
-				console.error('FAIL REQUEST: ', textStatus);
-				alert('처리중 오류가 발생하였습니다.');
+				alert(jqXHR.responseJSON.message);
 			}).always(function () {
 				console.log('DONE');
 			});
 		} else {
 			alert('담당자 이름을 입력해주세요.');
-			$mng.focus();
+			$managerName.focus();
 
 		}
 	});
 	
 	$("#checkBtn").on('click', function(){
-		"확인 버튼" |> console.log;
-		if($mng.val() === ''){
+		console.log("확인 버튼");
+		if($managerName.val() === ''){
 			alert('담당자 이름을 입력해주세요.')
-			$mng.focus();
+			$managerName.focus();
 			return;
 		}
 		
@@ -112,7 +111,7 @@ $(document).ready(function() {
 				$(".secureNumber").hide();
 				alert(data.rtnMsg);
 				$(".showId").show();
-				$("#showId").html("아이디는 <b>"+data.stdoId+"</b> 입니다.");
+				$("#showId").html("아이디는 <b>"+data.studioId+"</b> 입니다.");
 				$secureBtn.html("인증완료");
 				$secureBtn.attr("disabled", true);
 				stopTimer();
@@ -120,8 +119,7 @@ $(document).ready(function() {
 				alert(data.rtnMsg);
 			}
 		}).fail(function(jqXHR, textStatus, errorThrown) {
-			console.error('FAIL REQUEST: ', textStatus);
-			alert('처리중 오류가 발생하였습니다.');
+			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});

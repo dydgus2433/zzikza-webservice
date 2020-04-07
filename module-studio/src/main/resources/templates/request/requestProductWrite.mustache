@@ -1,0 +1,97 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+    {{>layout/header}}
+	<div class="container">
+        {{>layout/left-panel}}
+        <!-- 본문자리 -->
+        <div class="left_content_area">
+            <div class="left_content_head">
+                <h2 class="sub_tit">요청관리 [촬영신청]</h2>
+            </div>
+            <div class="inner">
+
+                <form id="reqFrm" action="/api/request/repl" method="post">
+<!--                    insertRequestRepl-->
+                    <div class="box_area full">
+                        <h3 class="sub_stit">상품명</h3>
+                        <input type="text" name="title" class="form_goods" subtitle="상품명" placeholder="상품명을 입력해 주세요." value="" required="required">
+                    </div>
+                    <div class="box_area full">
+                        <h3 class="sub_stit">
+                            상품 소개 사진
+                            <span>상품을 대표하는 사진을 올려주세요 (최대 10장)</span>
+                        </h3>
+                        <div class="shop_fileup_area">
+                            <span class="tit">파일 사이즈</span>
+                            <div class="filebox">
+                                <input class="upload-name"
+                                       value="파일선택"
+                                       disabled="disabled"><label for="detailFiles">찾아보기</label>
+                                <input type="file" id="detailFiles" class="upload-hidden"
+                                       multiple="multiple" name="detailFiles">
+                            </div>
+                        </div>
+            <ul class="shop_img_list" id="sortable" >
+            </ul>
+        </div>
+        <div class="box_area full">
+            <h3 class="sub_stit">상품 금액</h3>
+            <input type="number" name="price" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="0">
+        </div>
+
+        <div class="box_area full">
+            <h3 class="sub_stit">촬영소요시간</h3>
+            <ul class="shop_time_select">
+                <li>
+                    <input type="number" class="form_time" name="productHour" value="" required="required" placeholder="2" min="0">
+                    <span class="tit">시간</span>
+                    <input type="hidden" class="form_time"  name="productMinute" value="00" required="required" placeholder="30" min="0" max="59">
+                </li>
+            </ul>
+        </div>
+        <div class="box_area full">
+            <h3 class="sub_stit">상품 요약설명</h3>
+            <textarea class="textarea_shop" name="productBriefDesc" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다." ></textarea>
+        </div>
+        <div class="box_area full">
+
+            <input type="hidden" id="reqId" name="reqId" value="{{reqId }}">
+            <h3 class="sub_stit">상품 설명</h3>
+            <div id="quill"></div>
+            <div class="btn_area">
+<!--                <button type="button" class="btn_form" id="mobileBtn">Mobile 미리보기</button>-->
+<!--                <button type="button" class="btn_form" id="pcBtn">PC 미리보기</button>-->
+                {{^detail}}
+                    <button type="button" class="btn_save">촬영신청</button>
+                {{/detail}}
+            </div>
+
+        </div>
+        </form>
+    </div>
+    </div>
+    <!--// left_area -->
+    <script>
+        const tempKey = '{{tempKey}}';
+    </script>
+    <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <script type="text/javascript"	src="/js/upload/jquery.ui.widget.js"></script>
+    <script type="text/javascript"	src="/js/upload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript"	src="/js/upload/jquery.fileupload.js"></script>
+    <script src="/js/request/requestProductWrite.js"></script>
+        <!-- 본문자리 -->
+	</div>
+	
+	
+	<!-- popup -->
+	<div id="popup"></div>
+	<!--// popup -->
+</body>
+</html>

@@ -77,7 +77,7 @@ $( document ).ready(function() {
             
             <div class="studioInfo">
                 <div class="contWrap">
-                    <p class="tit">${studio.stdoNm }</p>
+                    <p class="tit">${studio.studioName }</p>
                     <div class="cont"  style="white-space: pre-wrap;"><c:out value="${studio.studioDescription }"></c:out></div>
                     <!--                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25321.327943563098!2d127.02990940300094!3d37.50400295780005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca405861e4a67%3A0x73ec1c047764908!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rCDthYztl6TrnoDroZw!5e0!3m2!1sko!2skr!4v1564976538213!5m2!1sko!2skr" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 <%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.addr }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
@@ -95,8 +95,8 @@ $( document ).ready(function() {
           <div class="info">
           </div>
           <div class="btns">
-              <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_share.png" alt="">공유하기</a>
-              <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_question.png" alt="">문의하기</a>
-              <a href="#" class="btn_type_y"><img src="${contextPath}/resources/preview/img/ico_reservation.png" alt="">예약하기</a>
+              <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
+              <a href="#" class="btn_type_y"><img src="$/preview/img/ico_question.png" alt="">문의하기</a>
+              <a href="#" class="btn_type_y"><img src="$/preview/img/ico_reservation.png" alt="">예약하기</a>
           </div>
       </div>     

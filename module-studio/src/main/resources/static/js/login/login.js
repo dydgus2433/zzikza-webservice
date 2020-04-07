@@ -1,14 +1,14 @@
 $(document).ready(function() {
 	$("#id").focus();
 
-	$("#stdoId").on("keypress", function(e) {
+	$("#studioId").on("keypress", function(e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
-			$("#pw").focus();
+			$("#password").focus();
 		}
 	});
 
-	$("#pw").on("keypress", function(e) {
+	$("#password").on("keypress", function(e) {
 		if (e.keyCode == 13) {
 			e.preventDefault();
 			$("#loginBtn1").trigger("click");
@@ -17,23 +17,23 @@ $(document).ready(function() {
 	
 	$("#loginFrm1").validate({
 		rules : {
-			stdoId : {
+			studioId : {
 				required : true,
 				minlength : 5
 			// 중복체크 해달라고 해야함
 			},
-			pw : {
+			password : {
 				required : true,
 				minlength : 5
 			}
 
 		},
 		messages : {/* validate 메세지 */
-			stdoId : {
+			studioId : {
 				required : "아이디를 입력하세요",
 				rangelength : "아이디는 5글자 이상 15글자 이하로 입력해주세요",
 			},
-			pw : {
+			password : {
 				required : "비밀번호를 입력하세요"
 			// minlength: 5
 			}
@@ -57,8 +57,8 @@ $(document).ready(function() {
 //            alert(JSON.stringify(error));
 //        })
             var data = {
-                studioId : $("input[name=stdoId]").val(),
-                password : $("input[name=pw]").val()
+                studioId : $("input[name=studioId]").val(),
+                password : $("input[name=password]").val()
             };
 			 $.ajax({
                 type : 'POST',
@@ -83,7 +83,7 @@ $(document).ready(function() {
 	});
 //	
 //	$("#siteBtn").on('click',function(){
-//		location.href = contextPath + "/preview/guide";
+//		location.href =  "/preview/guide";
 //	});
 
 });

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class PagingUtil {
 
-    public static void setPagingParameters(Model model, Page<?> paging) {
+    public static List<?> setPagingParameters(Model model, Page<?> paging) {
         Pageable pageable = paging.getPageable();
         int firstIndexNotZero = 1;
         int nowPage = pageable.getPageNumber() + firstIndexNotZero;
@@ -34,5 +34,7 @@ public class PagingUtil {
         model.addAttribute("last-page-no", paging.getTotalPages());
 
         model.addAttribute("list", paging.getContent());
+        return paging.getContent();
     }
+
 }

@@ -1,0 +1,83 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+    {{>layout/header}}
+	<div class="container">
+        {{>layout/left-panel}}
+        <!-- 본문자리 -->
+        <!-- left_area -->
+        <div class="left_content_area">
+            <div class="left_content_head">
+                <h2 class="sub_tit">요청관리</h2>
+            </div>
+            <div class="inner">
+                <div class="box_area full">
+                    <h3 class="sub_stit">요청관리목록</h3>
+                    <table class="tCont">
+                        <caption>요청관리 목록입니다</caption>
+                        <colgroup>
+                            <col class="td01">
+                            <col style="">
+                            <col class="td02">
+                            <col class="td03">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>고객명</th>
+                            <th>요청제목</th>
+                            <th>요청날짜</th>
+                            <th>요청상태</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#list}}
+                            <tr data-seq='{{id}}'>
+                                <td>{{userName}}</td>
+                                <td>{{title}}</td>
+                                <td>
+                                    {{createDate}}
+                                </td>
+                                <td>
+                                    {{#isWait}}
+                                        <span class="fBlue">요청대기</span>
+                                        <button type="button" class="btn_insert" data-seq='{{id}}'>신청하기</button>
+                                    {{/isWait}}
+                                    {{^isWait}}
+                                        <span class="fRed">마감</span>
+                                    {{/isWait}}
+                                </td>
+                            </tr>
+
+                        {{/list}}
+                        </tbody>
+                    </table>
+                    <!--- pager --->
+                    <!-- 페이징 -->
+                    {{>layout/paging}}
+                    <!-- 페이징 -->
+
+                </div>
+            </div>
+        </div>
+        <!--// left_area -->
+        <script src="/js/moment.min.js"></script>
+        <script src="/js/fullcalendar.js"></script>
+        <script src="/js/request/requestList.js"></script>
+        <script>
+            function fn_paging(index){
+                location.href= '/request/list?page='+index;
+            }
+        </script>
+        <!-- 본문자리 -->
+	</div>
+	
+	
+	<!-- popup -->
+	<div id="popup"></div>
+	<!--// popup -->
+</body>
+</html>

@@ -59,15 +59,18 @@ public class StudioViewController {
         model.addAttribute("file-empty", files.isEmpty());
 
         StudioDetail studioDetail = studio.getStudioDetail();
+
         model.addAttribute("detail", studioDetail);
         List<Map<String, Object>> times = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             Map<String, Object> time = new HashMap<>();
             time.put("idx", i);
-            time.put("is-open-time", studioDetail.getOpenTime() == i);
-            time.put("is-end-time", studioDetail.getCloseTime() == i);
-            time.put("is-weekend-start-time", studioDetail.getWeekendOpenTime() == i);
-            time.put("is-weekend-end-time", studioDetail.getWeekendCloseTime() == i);
+            if(studioDetail != null){
+                time.put("is-open-time", studioDetail.getOpenTime() == i);
+                time.put("is-end-time", studioDetail.getCloseTime() == i);
+                time.put("is-weekend-start-time", studioDetail.getWeekendOpenTime() == i);
+                time.put("is-weekend-end-time", studioDetail.getWeekendCloseTime() == i);
+            }
             times.add(time);
         }
         model.addAttribute("times", times);

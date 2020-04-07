@@ -212,7 +212,7 @@ $(document).ready(function () {
             $("<input>")
                 .attr("class", "temp_element")
                 .attr("type", "hidden")
-                .attr("name", "stdoNm").val($("span.login_info a").text());
+                .attr("name", "studioName").val($("span.login_info a").text());
         $stdoFrm.append($(input2));
 
         $stdoFrm.attr("action", "/store/preview/mobile");
@@ -258,7 +258,7 @@ $(document).ready(function () {
             $("<input>")
                 .attr("class", "temp_element")
                 .attr("type", "hidden")
-                .attr("name", "stdoNm").val($("span.login_info a").text());
+                .attr("name", "studioName").val($("span.login_info a").text());
         $stdoFrm.append($(input2));
 
         $stdoFrm.attr("action", "/store/preview/pc");

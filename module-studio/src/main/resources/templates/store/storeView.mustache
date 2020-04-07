@@ -58,9 +58,9 @@
                 <div class="box_area full">
                     <h3 class="sub_stit">영업시간 관리</h3>
                     <ul class="shop_time_select">
-                        <li><span class="tit">평일</span> <select name="openTime"
+                        <li><span class="tit">평일</span> <select name="openTime" id="openTime" class="time">
                             {{#times}}
-                                <option value="{{idx}}" {{#is-open-time}}selected{{/is-open-time}}>{{idx}}시</option>
+                                    <option value="{{idx}}" {{#is-open-time}}selected{{/is-open-time}}>{{idx}}시</option>
                             {{/times}}
                             </select> ~ <select name="closeTime" id="closeTime" class="time">
                                 {{#times}}

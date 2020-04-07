@@ -10,14 +10,15 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+
 @Getter
 @NoArgsConstructor
 @Entity(name = "tb_stdo_dtl")
-public class StudioDetail  extends BaseTimeEntity {
+public class StudioDetail extends BaseTimeEntity {
 
     @Id
     @Column(name = "STDO_DTL_ID", length = 15)
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
@@ -26,6 +27,10 @@ public class StudioDetail  extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = "prefix_key", value = "SDI"),
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "STDO_SEQ")
+    Studio studio;
 
     @Column(name = "STDO_DSC")
     String studioDescription;
@@ -36,7 +41,7 @@ public class StudioDetail  extends BaseTimeEntity {
     int closeTime;
     @Column(name = "WKND_STRT_TM", columnDefinition = "int(2) default 10")
     int weekendOpenTime;
-    @Column(name = "WKND_END_TM", columnDefinition = "int(2) default 18" )
+    @Column(name = "WKND_END_TM", columnDefinition = "int(2) default 18")
     int weekendCloseTime;
 
     @Builder
@@ -54,5 +59,9 @@ public class StudioDetail  extends BaseTimeEntity {
         this.closeTime = requestDto.getCloseTime();
         this.weekendOpenTime = requestDto.getWeekendOpenTime();
         this.weekendCloseTime = requestDto.getWeekendCloseTime();
+    }
+
+    public void setStudio(Studio studio) {
+        this.studio = studio;
     }
 }

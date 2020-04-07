@@ -7,14 +7,16 @@ import com.zzikza.springboot.web.domain.reservation.Reservation;
 import com.zzikza.springboot.web.domain.reservation.ReservationRepository;
 import com.zzikza.springboot.web.domain.studio.*;
 import com.zzikza.springboot.web.dto.*;
+import com.zzikza.springboot.web.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +26,11 @@ import java.util.Objects;
 @Service
 public class StudioService {
     private final StudioRepository studioRepository;
+    private final StudioDetailRepository studioDetailRepository;
     private final StudioBoardRepository studioBoardRepository;
     private final StudioBoardFileRepository studioBoardFileRepository;
     private final StudioFileRepository studioFileRepository;
+    private final StudioBusinessFileRepository studioBusinessFileRepository;
     private final StudioHolidayRepository studioHolidayRepository;
     private final StudioKeywordRepository studioKeywordRepository;
     private final StudioKeywordMapRepository studioKeywordMapRepository;
@@ -42,9 +46,9 @@ public class StudioService {
     private String FILE_LARGE_PATH;
 
     public StudioResponseDto findByStudioIdAndPassword(StudioRequestDto params) {
-        String stdoId = (String) params.getStudioId();
-        String encPw = params.getEncodingPassword();
-        return new StudioResponseDto(studioRepository.findByStudioIdAndPassword(stdoId, encPw).orElseThrow(() -> new IllegalArgumentException("회원정보가 맞지 않습니다.")));
+        String studioId = (String) params.getStudioId();
+        String encPassword = params.getEncodingPassword();
+        return new StudioResponseDto(studioRepository.findByStudioIdAndPassword(studioId, encPassword).orElseThrow(() -> new IllegalArgumentException("회원정보가 맞지 않습니다.")));
     }
 
     public StudioResponseDto findByStudioId(StudioRequestDto params) {
@@ -98,7 +102,7 @@ public class StudioService {
     @Transactional
     public StudioHolidayResponseDto deleteHoliday(StudioResponseDto studioResponseDto, StudioHolidayRequestDto params) {
         Studio studio = studioRepository.findById(studioResponseDto.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 없습니다."));
-        StudioHoliday holiday = studioHolidayRepository.findById(params.getId()).orElseThrow(()-> new IllegalArgumentException("해당 날짜가 없습니다."));
+        StudioHoliday holiday = studioHolidayRepository.findById(params.getId()).orElseThrow(() -> new IllegalArgumentException("해당 날짜가 없습니다."));
         studio.getStudioHolidays().remove(holiday);
         studioHolidayRepository.delete(holiday);
         return new StudioHolidayResponseDto(params);
@@ -206,13 +210,70 @@ public class StudioService {
         return reservationResposeDtos;
     }
 
+    @Transactional
+    public void updateStudio(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
+            throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
+        }
+        studio.update(studioInfoRequestDto);
+    }
 
-//    @Transactional
-//    public StudioHolidayResponseDto updateHoliday(StudioResponseDto studioResponseDto, StudioHolidayRequestDto params) {
-//        Studio studio = studioRepository.findById(studioResponseDto.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
-//
-////        studio.getStudioHolidays().;
-//
-//        return new StudioHolidayResponseDto(params);
-//    }
+
+    @Transactional
+    public void updateStudioPassword(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
+            throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
+        }
+        studio.update(studioInfoRequestDto);
+    }
+
+    @Transactional
+    public void updateStudioBusiness(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto, MultipartFile file) throws IllegalAccessException, IOException {
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
+            throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
+        }
+        studio.update(studioInfoRequestDto);
+
+        if (!file.isEmpty()) {
+            FileAttribute fileAttribute = storageService.fileUpload(file, "business");
+            studio.addBusinessFile(new BusinessFile(fileAttribute));
+        }
+
+    }
+
+    @Transactional
+    public void withdrawalStudio(StudioResponseDto sessionVo) {
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        studio.withdrawal();
+    }
+
+    @Transactional
+    public void deleteStudio(StudioResponseDto sessionVo) {
+        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        studioRepository.delete(studio);
+    }
+
+    @Transactional
+    public void saveStudio(StudioSaveRequestDto dto, MultipartFile file) throws IOException, SQLException {
+        Studio studio = dto.toEntity();
+
+        studioRepository.save(studio);
+        StudioDetail studioDetail = StudioDetail.builder().studioDescription("")
+//                .closeTime(18)
+//                .openTime(10)
+//                .weekendCloseTime(18)
+//                .weekendOpenTime(10)
+                .build();
+        studio.setStudioDetail(studioDetail);
+        studioDetailRepository.save(studioDetail);
+        FileAttribute fileAttribute = storageService.fileUpload(file, "business");
+        BusinessFile businessFile = BusinessFile.builder().fileAttribute(fileAttribute).build();
+
+        studioBusinessFileRepository.save(businessFile);
+        studio.addBusinessFile(businessFile);
+
+    }
 }

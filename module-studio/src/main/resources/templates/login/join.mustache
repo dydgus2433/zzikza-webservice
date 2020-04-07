@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css">
-    <link rel="stylesheet" href="/admin/assets/css/cs-skin-elastic.css">
-    <link rel="stylesheet" href="/admin/assets/css/style.css">
+<!--    <link rel="stylesheet" href="/admin/assets/css/cs-skin-elastic.css">-->
+<!--    <link rel="stylesheet" href="/admin/assets/css/style.css">-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152403132-1"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
@@ -77,22 +77,22 @@
                     </a>
                 </div>
                 <div class="login-form" style="max-width: 550px">
-                    <form action="/join" id="stdoFrm" name="stdoFrm" method="post" enctype="multipart/form-data" succeed-url="/">
+                    <form action="/join" id="stdoFrm" name="stdoFrm" method="post" enctype="multipart/form-data">
                     	<div class="form-group">
                             <label>아이디 *</label>
-                            <input type="text" name="stdoId" id="stdoId" class="form-control" required="required" />			
+                            <input type="text" name="studioId" id="studioId" class="form-control" required="required" />
                         </div>
                          <div class="form-group">
                             <label>비밀번호 *</label>
-                            <input type="password" name="pw" id="pw" class="form-control" required="required"/>			
+                            <input type="password" name="password" id="password" class="form-control" required="required"/>
                         </div>
                          <div class="form-group">
                             <label>비밀번호 확인 *</label>
-                            <input type="password" name="pwChk" id="pwChk" class="form-control" required="required"/>	
+                            <input type="password" name="passwordChk" id="passwordChk" class="form-control" required="required"/>
                         </div>
                         <div class="form-group">
                             <label>회사명(사업자/법인) *</label>
-                            <input type="text" class="form-control" name="stdoNm"  required="required"/>
+                            <input type="text" class="form-control" id="studioName" name="studioName"  required="required"/>
                         </div>
                         <div class="form-group">
                             <label>스튜디오 전화번호 *</label>
@@ -102,7 +102,7 @@
                             <label>우편번호 *</label>
                              <div class="row form-group">
 	                            <div class="col-sm-9" style="width: calc(70%)">
-	                            	 <input type="number" name="postCd" id="postCd" class="form-control" maxlength="5" required="required"/>
+	                            	 <input type="number" name="postCode" id="postCode" class="form-control" maxlength="5" required="required"/>
 	                            </div>
 	                            <div class="col-sm-3"  style="width: calc(30%);padding-left: 0px;">
 	                            	 <button  type="button" class="btn-sm btn-outline-secondary" onclick="searchPostcode()" style="float: right; height: 38px; width: 90px;">검색</button>
@@ -120,23 +120,23 @@
                         </div>
                          <div class="form-group">
                             <label>담당자 *</label>
-                            <input type="text" name="mng"  class="form-control"  required="required"/>		
+                            <input type="text" name="managerName" id="managerName" class="form-control"  required="required"/>
                         </div>
                          <div class="form-group">
                             <label>담당자 연락처 *</label>
-                           	 <input type="number" name="mngCntt" id="mngCntt" class="form-control"  placeholder="ex) 01012345678"  required="required"/>
+                           	 <input type="number" name="managerTel" id="managerTel" class="form-control"  placeholder="ex) 01012345678"  required="required"/>
                         </div>
                          <div class="form-group">
                             <label>담당자 이메일 *</label>
-                           	<input type="text" id="mngEmail" name="mngEmail" class="form-control"  /> 
+                           	<input type="text" id="managerEmail" name="managerEmail" class="form-control"  />
                         </div>
                          <div class="form-group">
                             <label>사업자 번호 *</label>
-                           	<input type="number" id="bsnsNo" name="bsnsNo"  class="form-control " placeholder="숫자만 입력해주세요."   />
+                           	<input type="number" id="businessNumber" name="businessNumber"  class="form-control " placeholder="숫자만 입력해주세요."   />
                         </div>
                          <div class="form-group">
                             <label>사업자 등록증</label>
-                            <input type="file" name="bsnsLicFile" id="bsnsLicFile" class="form-control"/>
+                            <input type="file" name="businessLicFile" id="businessLicFile" class="form-control"/>
                         </div>
 <!--                          <div class="form-group"> -->
 <!--                             <label>본점</label> -->
@@ -149,8 +149,8 @@
 <!-- 	                            	 <label for="allTerms" class="form-check-label " style="padding-left: 20px;margin-left:20px;"><strong>전체 약관에 동의합니다</strong></label> -->
 <!-- 							</div> -->
 							<div class="form-group" id="policy">
-	                            	 <input type="checkbox" id="rqrdTermYn" name="rqrdTermYn" value="Y" class="form-check-input" style="margin-left: 0;" >
-	                            	 <label for="rqrdTermYn" class="form-check-label bold" style="padding-left: 20px;margin-left:20px;font-size: small;"><strong>필수 항목에 동의합니다</strong></label>
+	                            	 <input type="checkbox" id="requiredTermStatus" name="requiredTermStatus" value="Y" class="form-check-input" style="margin-left: 0;" >
+	                            	 <label for="requiredTermStatus" class="form-check-label bold" style="padding-left: 20px;margin-left:20px;font-size: small;"><strong>필수 항목에 동의합니다</strong></label>
 							</div>
 							<div class="form-group row" >
 	                            <div class="col-sm-5">
@@ -181,9 +181,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
-    <script src="/js/login/main.js"></script>
-	<script src="/js/login/join.js"></script>
-	<script src="/js/jquery.validate.min.js"></script> 
-	<script>var contextPath = '';</script>
+<!--    <script src="/js/login/main.js"></script>-->
+    <script src="/js/login/join.js"></script>
+    <script src="/js/common/validateCommon.js"></script>
+	<script src="/js/jquery.validate.min.js"></script>
 </body>
 </html>

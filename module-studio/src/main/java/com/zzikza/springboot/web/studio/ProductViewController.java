@@ -37,7 +37,7 @@ public class ProductViewController {
     private final ProductKeywordMapRepository productKeywordMapRepository;
     private final ExhibitionRepository exhibitionRepository;
 
-    @GetMapping(value = "/prod/write")
+    @GetMapping(value = "/product/write")
     public String productWritePage(@LoginStudio StudioResponseDto sessionVo, @RequestParam(required = false) String prdId, Model model) {
         //prdId
         if (sessionVo == null) {
@@ -103,7 +103,7 @@ public class ProductViewController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/prod/view")
+    @GetMapping(value = "/product/view")
     public String productViewPage(@LoginStudio StudioResponseDto sessionVo, @RequestParam(required = false) String prdId, Model model) {
         //prdId
         if (sessionVo == null) {
@@ -217,7 +217,7 @@ public class ProductViewController {
     }
 
     @Transactional(readOnly = true)
-    @GetMapping(value = "/prod/list")
+    @GetMapping(value = "/product/list")
     public String productListViewPage(@LoginStudio StudioResponseDto sessionVo,  Pageable pageable,  Model model) {
 //        Page<StudioBoard> findAllByBoardCategoryCodeEquals(EBoardCategory boardCategory, Pageable pageable);
 

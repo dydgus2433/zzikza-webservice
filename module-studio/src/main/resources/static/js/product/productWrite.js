@@ -445,7 +445,7 @@ function submitAction() {
         console.log(url, data);
         if (data.success) {
             alert('상품이 등록되었습니다.');
-            location.href = '/prod/list';
+            location.href = '/product/list';
         } else {
             alert('상품등록이 실패했습니다. 입력값을 확인해주세요.');
         }
@@ -533,7 +533,7 @@ function bigOptionIndexing() {
     // }
     //
     // $.ajax({
-    // 	url: contextPath + "/api/updateOptionOrder",
+    // 	url:  "/api/updateOptionOrder",
     // 	data : {optnIds : indexes.join(","), tempKey : tempKey},
     // 	type: "post"
     // }).done(function(a,b,c){
@@ -567,7 +567,7 @@ function indexing() {
     }
 
     $.ajax({
-        url: contextPath + "/api/product-file/temp/order",
+        url:  "/api/product-file/temp/order",
         data: {index: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {

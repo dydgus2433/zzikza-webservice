@@ -7,6 +7,6 @@ $(document).ready(function(){
 
 	$(".btn_req").off('click').on('click',function(){
 		var seq = $(this).data('seq')
-		location.href=contextPath + '/request/prod/view?reqId='+seq;
+		location.href= '/request/product/write?id='+seq;
 	});
 })

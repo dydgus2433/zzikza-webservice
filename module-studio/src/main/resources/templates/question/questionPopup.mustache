@@ -1,0 +1,98 @@
+<div class="popup popup_qna" style="display: none;">
+    <div class="inner">
+        <form action="" id="popupFrm">
+            <input type="hidden" value="{{#question}}{{id}}{{/question}}" name="id"/>
+            <div class="popup_head">
+                <h1>{{#question}}{{#user}}{{#userName}}{{userName}}{{/userName}}{{/user}}{{/question}} 고객님
+                    <span>문의시간 : {{#question}}{{createDate}}{{/question}}</span></h1>
+                <button type="button" class="btn_popup_close">창닫기</button>
+            </div>
+            <div class="popup_body">
+                <table class="tInsert">
+                    <caption></caption>
+                    <colgroup>
+                        <col style="width:100%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>일정상세</th>
+                    </tr>
+                    <tr>
+                        <td><textarea class="w100 h120"
+                                      readonly="readonly">{{#question}}{{content}}{{/question}}</textarea></td>
+                    </tr>
+                    <tr>
+                        <th>답변내용</th>
+                    </tr>
+                    <tr>
+                        <td><textarea name="content" class="w100 h120"
+                            {{#question}}{{#isAnswer}}readonly{{/isAnswer}}{{/question}} >{{#answer}}{{content}}{{/answer}}</textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pop_btn_area">
+                    {{#question}}
+                        {{#isAnswer}}
+                            <button type="button" id="btnCancel">확인</button>
+                        {{/isAnswer}}
+                        {{^isAnswer}}
+                            <button type="button" class="btn_pop_del" id="btnCancel">취소</button>
+                            <button type="button" id="btnOk">확인</button>
+                        {{/isAnswer}}
+                    {{/question}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--// popup -->
+<script>
+    $(document).ready(function () {
+        console.log("문의관리목록");
+
+        $(".datepicker").datepicker({
+            dateFormat: "yy-mm-dd",
+        });
+
+        $(".popup").hide();
+// 		$(".btn_qna_new").off('click').on('click',function () {
+// 			$(".popup_qna").show();
+// 		});
+
+// 		$(".btn_qna_view").off('click').on('click',function () {
+// 			$(".popup_qna").show();
+// 		});
+
+        $(".btn_popup_close").off('click').on('click', function () {
+            $(".popup").hide();
+        });
+
+        $("#btnCancel").off('click').on('click', function () {
+            $(".popup").hide();
+        });
+
+        $("#btnOk").off('click').on('click', function () {
+            var formData = new FormData($("#popupFrm")[0])
+
+            $.ajax({
+                url: '/api/question/repl',
+                data: formData,
+                method: 'post',
+                processData: false,
+                contentType: false,
+            }).done(function (result) {
+                alert('등록되었습니다.');
+                $(".popup").hide();
+                location.reload();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('FAIL REQUEST: ', textStatus);
+                alert('처리중 오류가 발생하였습니다.');
+            }).always(function () {
+                console.log('DONE');
+            });
+
+        });
+
+    });
+</script>

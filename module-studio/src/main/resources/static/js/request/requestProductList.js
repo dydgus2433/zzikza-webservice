@@ -3,7 +3,7 @@ $(document).ready(function(){
 	
 	$(".prdRow").off('click').on('click',function(){
 		var seq = $(this).data('seq')
-		location.href=contextPath + '/request/prod/view?prdId='+seq;
+		location.href= '/request/product/view?id='+seq;
 	})
 });
 

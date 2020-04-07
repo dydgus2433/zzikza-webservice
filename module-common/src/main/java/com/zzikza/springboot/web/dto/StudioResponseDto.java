@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.dto;
 
+import com.zzikza.springboot.web.domain.enums.EStudioStatus;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ public class StudioResponseDto implements Serializable {
     private String id;
     private String studioId;
     public String studioName;
-    private String accountStatus;
+    private EStudioStatus accountStatus;
 
     public StudioResponseDto(Studio entity){
         this.id = entity.getId();

@@ -837,7 +837,7 @@ h3.sub_stit span {
 		  상품관리
    ===================== */
 .form_goods {
-    max-width: 1094px;
+    /*max-width: 1094px;*/
     width: 100%;
 }
 

@@ -74,7 +74,7 @@ var Util = {
 			var type = "POST";
 			var async = isAsync == 'undefined' ?  true : ( isAsync != 'false' ? true : false);
 			ajaxAbort = $.ajax({
-				url : contextPath + url,
+				url :  url,
 				method : type,
 				type : type,
 				async : async,
@@ -142,8 +142,7 @@ function saveForm(formSelector, validator) {
 			location.reload();
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-    	console.error('FAIL REQUEST: ', textStatus);
-		alert('처리중 오류가 발생하였습니다.');
+    	alert(jqXHR.responseJSON.message);
     }).always(function() {
     	//console.info('DONE');
     });
