@@ -50,7 +50,7 @@ $(document).ready(function () {
             } else {
                 alert('추가하려는 값을 다시 확인해주세요.')
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
+        }).fail(function (jqXHR) {
             alert(jqXHR.responseJSON.message);
         }).always(function () {
         });
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
             $.ajax({
                 url: "/api/studio-holiday",
-                data: {dateCode: type, dateValue: value ,id : option.id},
+                data: {dateCode: type, dateValue: value, id: option.id},
                 type: "DELETE",
                 async: false
             }).done(function (data) {
@@ -121,12 +121,8 @@ $(document).ready(function () {
                 if (data.success) {
                     $("#holiday li.active[value='" + value + "']").remove();
                 }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                if (jqXHR.responseJSON.message) {
-                    alert(jqXHR.responseJSON.message);
-                } else {
-                    alert('처리중 오류가 발생하였습니다.');
-                }
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
             }).always(function () {
             });
         }
@@ -443,7 +439,7 @@ function submitAction() {
             alert('매장정보 저장 중 오류가 발생했습니다.')
         }
 // location.reload();
-    }).fail(function (jqXHR, textStatus, errorThrown) {
+    }).fail(function (jqXHR) {
         alert(jqXHR.responseJSON.message);
     }).always(function () {
         // console.info('DONE');
@@ -472,7 +468,7 @@ function deleteImageAction(e) {
             } else {
                 $(".upload-name").val("파일선택");
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
+        }).fail(function (jqXHR) {
             alert(jqXHR.responseJSON.message);
         }).always(function () {
             //console.info('DONE');
@@ -509,10 +505,10 @@ function indexing() {
         data: {index: indexes.join(",")},
         type: "PUT"
     }).done(function (a, b, c) {
-        if(b){
+        if (b) {
             alert(a.msg)
         }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
+    }).fail(function (jqXHR) {
         alert(jqXHR.responseJSON.message);
     }).always(function () {
         //console.info('DONE');

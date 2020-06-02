@@ -1,0 +1,36 @@
+{{^isEmpty}}
+    <li>
+        <!-- 제목  -->
+        <!-- 입찰 요약 -->
+        <!-- 입찰 스튜디오 -->
+        <!-- 입찰 등록일 -->
+        <div class="tit">제목	</div>
+        <div class="reqContent">입찰 요약</div>
+        <div class="reqCount">입찰 스튜디오</div>
+        <div class="regDate">입찰 등록일</div>
+    </li>
+{{/isEmpty}}
+{{#list}}
+    <li id="{{id}}" >
+        <!-- 제목  -->
+        <!-- 입찰 요약 -->
+        <!-- 입찰 스튜디오 -->
+        <!-- 입찰 등록일 -->
+        <div class="tit">
+            <span class="category">{{requestCategory}}</span>
+            <a href="/request/my_view/{{id}}">
+                <strong> {{title}}</strong>
+            </a>
+        </div>
+        <div class="reqContent">
+            {{content}}
+        </div>
+        <div class="status">
+            {{count}}
+        </div>
+        <div class="reqArea">
+            {{sido}} {{gugun}}
+        </div>
+        <div class="regDate">{{createDate}}</div>
+    </li>
+{{/list}}

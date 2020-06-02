@@ -35,10 +35,10 @@ public class UserRequestViewController {
     private final String REQUEST_PRD_LIST = "/request/requestProductList";
 
     @GetMapping(value = {"/request/list"})
-    public String requestListPage(@LoginStudio StudioResponseDto sessionVo, Pageable pageable, @RequestParam Map<String, Object> params, Model model) {
+    public String requestListPage(@LoginStudio StudioResponseDto loginStudio, Pageable pageable, @RequestParam Map<String, Object> params, Model model) {
 
 
-        model.addAttribute("detail", sessionVo);
+        model.addAttribute("detail", loginStudio);
         Page<UserRequest> paging = requestRepository.findAll(pageable);
 
         List<UserRequest> requests = (List<UserRequest>) PagingUtil.setPagingParameters(model, paging);
@@ -51,7 +51,7 @@ public class UserRequestViewController {
 
 
     @GetMapping(value = {"/request/view"})
-    public String requestViewPage(@LoginStudio StudioResponseDto sessionVo, UserRequestRequestDto params, Model model) {
+    public String requestViewPage(@LoginStudio StudioResponseDto loginStudio, UserRequestRequestDto params, Model model) {
 
         UserRequest request = requestRepository.findById(params.getId()).orElseThrow(() -> new IllegalArgumentException("요청이 없습니다."));
 
@@ -109,9 +109,9 @@ public class UserRequestViewController {
     }
 
     @GetMapping(value = {"/request/product/list"})
-    public String requestProductListPage(@LoginStudio StudioResponseDto sessionVo,Pageable pageable,  Model model) {
+    public String requestProductListPage(@LoginStudio StudioResponseDto loginStudio,Pageable pageable,  Model model) {
 
-        if (sessionVo == null) {
+        if (loginStudio == null) {
             try {
                 throw new IllegalAccessException("로그인 해주세요.");
 //        에러시 페이지 이동 해야함
@@ -121,8 +121,8 @@ public class UserRequestViewController {
         }
 
         //detail
-//        assert sessionVo != null;
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
+//        assert loginStudio != null;
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
 
         Page<UserRequestProduct> paging = userRequestProductRepository.findAllByStudio(studio, pageable);
         List<UserRequestProduct> list = (List<UserRequestProduct>) PagingUtil.setPagingParameters(model, paging);

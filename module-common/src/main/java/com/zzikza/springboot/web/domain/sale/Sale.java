@@ -27,10 +27,12 @@ public class Sale extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
 
-    @Column
+    @Column(name = "SALE_NM")
     String saleName;
+    @Column(name = "SALE_CD")
+    String saleCode;
 
-    @Column
+    @Column(name = "SALE_VALUE")
     Integer salePrice;
 
     @ManyToOne

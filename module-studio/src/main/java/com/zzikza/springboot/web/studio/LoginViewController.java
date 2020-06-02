@@ -26,7 +26,7 @@ import java.util.Map;
 @Controller
 public class LoginViewController {
 
-    public static final String SESSION_VO = "sessionVo";
+    public static final String SESSION_VO = "loginStudio";
     public static final String FAIL = "FAILURE";
     public static final String ID_WITHDRAWAL = "탈퇴한 회원입니다.";
     // 스튜디오 회원 권한코드

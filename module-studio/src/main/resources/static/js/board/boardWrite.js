@@ -38,7 +38,7 @@ function selectLocalImage() {
                 quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
             }
 
-        }).fail(function (jqXHR, textStatus, errorThrown) {
+        }).fail(function (jqXHR) {
             alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
@@ -109,9 +109,8 @@ $(document).ready(function () {
             if (data.success) {
                 location.href = '/board/' + brdCateCd;
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', jqXHR);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
         });

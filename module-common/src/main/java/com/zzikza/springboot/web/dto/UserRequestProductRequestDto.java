@@ -30,12 +30,12 @@ public class UserRequestProductRequestDto {
     String reqId;
 
     @Builder
-    public UserRequestProductRequestDto(EProductCategory productCategory, String title, Integer price, Integer prdSalePrc, Integer productHour, Integer productMinute, String productBriefDesc, EShowStatus showStatusCode, String exhId, String keyword, String index, String productDescription, String tempKey, String id, String reqId) {
+    public UserRequestProductRequestDto(EProductCategory productCategory, String title, Integer price, Integer productSalePrice, Integer productHour, Integer productMinute, String productBriefDesc, EShowStatus showStatusCode, String exhId, String keyword, String index, String productDescription, String tempKey, String id, String reqId) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;
         this.price = price;
-        this.productSalePrice = prdSalePrc;
+        this.productSalePrice = productSalePrice;
         this.productHour = productHour;
         this.productMinute = productMinute;
         this.productBriefDesc = productBriefDesc;
@@ -56,7 +56,7 @@ public class UserRequestProductRequestDto {
                 .title(title)
                 .price(price)
                 //세일은 없앨지 고민중
-//                .productSalePrice(prdSalePrc)
+//                .productSalePrice(productSalePrice)
                 .productHour(productHour)
                 .productMinuteute(productMinute)
                 .productDescription(productDescription)

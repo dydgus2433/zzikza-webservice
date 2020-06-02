@@ -251,26 +251,26 @@ public class StudioRestApiController {
     @Transactional
     public SingleResult<FileResponseDto> insertProductImageFile(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String prdId,
+            @RequestParam String id,
             @RequestParam("detailFiles") MultipartFile file) throws Exception {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
         }
 
-        return responseService.getSingleResult(productService.saveProductImageFile(prdId, file));
+        return responseService.getSingleResult(productService.saveProductImageFile(id, file));
     }
 
     @PutMapping(value = "/api/product-file/order")
     public CommonResult productFileOrder(
             @LoginStudio StudioResponseDto studioResponseDto,
-            @RequestParam String prdId,
+            @RequestParam String id,
             @RequestParam String index
     ) throws Exception {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
 //            return responseService.getFailResult();
         }
-        productService.saveFileOrders(prdId, index);
+        productService.saveFileOrders(id, index);
         return responseService.getSuccessResult();
     }
 
@@ -280,14 +280,14 @@ public class StudioRestApiController {
     public CommonResult deleteProductFile(
             @LoginStudio StudioResponseDto studioResponseDto,
             @RequestParam String index,
-            @RequestParam String prdId,
+            @RequestParam String id,
             @RequestParam(required = false) String flNm
     ) throws IllegalAccessException {
         if (studioResponseDto == null || studioResponseDto.getId() == null) {
             throw new IllegalAccessException("로그인 해주세요.");
 //            return responseService.getFailResult();
         }
-        productService.deleteProductFileById(prdId, index);
+        productService.deleteProductFileById(id, index);
         return responseService.getSuccessResult();
     }
 
@@ -484,37 +484,37 @@ public class StudioRestApiController {
     }
 
     @PutMapping("/api/userinfo")
-    public CommonResult updateUserInfo(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+    public CommonResult updateUserInfo(@LoginStudio StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
 
-        studioService.updateStudio(sessionVo, studioInfoRequestDto);
+        studioService.updateStudio(loginStudio, studioInfoRequestDto);
 
         return responseService.getSuccessResult();
 
     }
 
     @PutMapping("/api/userinfo-password")
-    public CommonResult updateUserInfoPassword(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+    public CommonResult updateUserInfoPassword(@LoginStudio StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
 
-        studioService.updateStudioPassword(sessionVo, studioInfoRequestDto);
+        studioService.updateStudioPassword(loginStudio, studioInfoRequestDto);
 
         return responseService.getSuccessResult();
 
     }
 
     @PutMapping("/api/userinfo-business")
-    public CommonResult updateUserInfoBusiness(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto, @RequestParam("businessLicFile") MultipartFile file) throws IllegalAccessException, IOException {
+    public CommonResult updateUserInfoBusiness(@LoginStudio StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto, @RequestParam("businessLicFile") MultipartFile file) throws IllegalAccessException, IOException {
 
-        studioService.updateStudioBusiness(sessionVo, studioInfoRequestDto, file);
+        studioService.updateStudioBusiness(loginStudio, studioInfoRequestDto, file);
 
         return responseService.getSuccessResult();
 
     }
 
     @DeleteMapping("/api/studio/withdrawal")
-    public CommonResult deleteStudio(@LoginStudio StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException, IOException {
+    public CommonResult deleteStudio(@LoginStudio StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException, IOException {
 
-        studioService.withdrawalStudio(sessionVo);
-//        studioService.deleteStudio(sessionVo);
+        studioService.withdrawalStudio(loginStudio);
+//        studioService.deleteStudio(loginStudio);
 
         return responseService.getSuccessResult();
 
@@ -659,7 +659,7 @@ public class StudioRestApiController {
 
                     if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getManagerName().equals(studio.getManagerName())) {
 //                        successMap = messageMap(SUCCESS, "인증이 완료되었습니다.");
-//                        successMap.put("stdoId", lists.get(0).get("stdoId"));
+//                        successMap.put("studioId", lists.get(0).get("studioId"));
 //                        CommonResult commonResult = responseService.getSuccessResult();
                         return responseService.getSingleResult(new StudioResponseDto(studio));
                     }
@@ -695,7 +695,6 @@ public class StudioRestApiController {
 
                     if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getStudioId().equals(studio.getStudioId())) {
                         //임시 비밀번호 만들어서 전송하고 메세지 보내야함
-                        String stdoId = params.getStudioId();
                         //임시비밀번호랑 id로 비밀번호 update 후 전송
                         String tempPassword  = RandomStringUtils.randomAlphabetic(1) + RandomStringUtils.randomNumeric(8);
                         params.setCertificationValue(tempPassword);

@@ -38,9 +38,9 @@ public class ProductViewController {
     private final ExhibitionRepository exhibitionRepository;
 
     @GetMapping(value = "/product/write")
-    public String productWritePage(@LoginStudio StudioResponseDto sessionVo, @RequestParam(required = false) String prdId, Model model) {
+    public String productWritePage(@LoginStudio StudioResponseDto loginStudio, @RequestParam(required = false) String prdId, Model model) {
         //prdId
-        if (sessionVo == null) {
+        if (loginStudio == null) {
             try {
                 throw new IllegalAccessException("로그인 해주세요.");
 //        에러시 페이지 이동 해야함
@@ -95,7 +95,7 @@ public class ProductViewController {
             //selected 옵션
             showCodes.add(map);
         }
-        model.addAttribute("showCodes", showCodes);
+        model.addAttribute( "showCodes", showCodes);
 
         List<Exhibition> exhibitions = exhibitionRepository.findAll(Sort.by(Sort.Order.asc("id")));
         model.addAttribute("exhibitions", exhibitions);
@@ -104,9 +104,9 @@ public class ProductViewController {
 
     @Transactional(readOnly = true)
     @GetMapping(value = "/product/view")
-    public String productViewPage(@LoginStudio StudioResponseDto sessionVo, @RequestParam(required = false) String prdId, Model model) {
+    public String productViewPage(@LoginStudio StudioResponseDto loginStudio, @RequestParam(required = false) String id, Model model) {
         //prdId
-        if (sessionVo == null) {
+        if (loginStudio == null) {
             try {
                 throw new IllegalAccessException("로그인 해주세요.");
 //        에러시 페이지 이동 해야함
@@ -118,8 +118,8 @@ public class ProductViewController {
         model.addAttribute("tempKey", tempKey);
         EProductCategory selected = null;
         EShowStatus selectedShowStatus = null;
-        if (prdId != null) {
-            Product product = productRepository.findById(prdId).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+        if (id != null) {
+            Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
             model.addAttribute("product", new ProductResponseDto(product));
 
@@ -171,8 +171,8 @@ public class ProductViewController {
             List<ExhibitionResponseDto> exhibitionResponseDtos = exhibitions.stream().map(ExhibitionResponseDto::new).collect(Collectors.toList());
 
             for (ExhibitionResponseDto exhibitionResponseDto : exhibitionResponseDtos) {
-                if(!product.getProductExhbitions().isEmpty()){
-                    if (exhibitionResponseDto.getId().equals(product.getProductExhbitions().get(0).getExhibition().getId())) {
+                if(product.getExhibition() != null){
+                    if (exhibitionResponseDto.getId().equals(product.getExhibition().getId())) {
                         exhibitionResponseDto.setSelected(true);
                     }
                 }
@@ -218,10 +218,10 @@ public class ProductViewController {
 
     @Transactional(readOnly = true)
     @GetMapping(value = "/product/list")
-    public String productListViewPage(@LoginStudio StudioResponseDto sessionVo,  Pageable pageable,  Model model) {
+    public String productListViewPage(@LoginStudio StudioResponseDto loginStudio,  Pageable pageable,  Model model) {
 //        Page<StudioBoard> findAllByBoardCategoryCodeEquals(EBoardCategory boardCategory, Pageable pageable);
 
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
         Page<Product> paging = productRepository.findAllByStudio(studio, pageable);
         PagingUtil.setPagingParameters(model, paging);
 

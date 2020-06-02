@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CertificationRepository extends JpaRepository<Certification, String> {
-    Optional<Certification> findByCertificationValueAndManagerNameAndManagerTelAndCertificationStatus(String certificationValue,  String managerName, String managerTel, ECertificationStatus certificationStatus);
-    Optional<Certification> findByCertificationValueAndStudioIdAndManagerTelAndCertificationStatus(String certificationValue,  String studioId, String managerTel, ECertificationStatus certificationStatus);
+    Optional<Certification> findByCertificationValueAndManagerNameAndManagerTelAndCertificationStatus(String certificationValue,  String managerName, String tel, ECertificationStatus certificationStatus);
+    Optional<Certification> findByCertificationValueAndStudioIdAndManagerTelAndCertificationStatus(String certificationValue,  String studioId, String tel, ECertificationStatus certificationStatus);
+
+    Optional<Certification> findByCertificationValueAndUserNameAndTelAndCertificationStatus(String checkSecure, String userName, String tel, ECertificationStatus s1);
 }

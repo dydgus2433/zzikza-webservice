@@ -33,7 +33,6 @@ public class ProductService {
     private final ProductKeywordRepository productKeywordRepository;
     private final StudioRepository studioRepository;
     private final ExhibitionRepository exhibitionRepository;
-    private final ProductExhibitionRepository productExhibitionRepository;
     @Value("${service.fileupload.basedirectory}")
     private String FILE_PATH;
     @Value("${service.fileupload.thumb.directory}")
@@ -104,9 +103,10 @@ public class ProductService {
             product.addProductKeyword(productKeyword);
 
         }
-
-        Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다."));
-        product.addProductExhibition(exhibition);
+        if (productRequestDto.getExhId() != null) {
+            Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다."));
+            product.setExhibition(exhibition);
+        }
 
         studio.addProudct(product);
         return new ProductResponseDto(product);
@@ -209,18 +209,12 @@ public class ProductService {
 
 //        product.removeProductExhibition();
         //전시회 적용X인 경우 기존것 삭제
-        List<ProductExhibition> productExhibitions = product.getProductExhbitions();
-        productExhibitionRepository.deleteInBatch(productExhibitions);
+
+        Exhibition exhibition = product.getExhibition();
         if (!productRequestDto.getExhId().equals("")) {
             //모두 삭제하고 다시 추가하는 방법이 있지만 현재는 상품하나당 전시회 일대일 대응이기 때문에
-
-            Exhibition exhibition = exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다."));
-            long count = product.getProductExhbitions().stream().filter((e) -> e.getExhibition().getId().equals(exhibition.getId())).count();
-            if (count == 0) {
-                product.addProductExhibition(exhibition);
-            }
+            product.setExhibition(exhibitionRepository.findById(productRequestDto.getExhId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 전시회입니다.")));
         }
-
 
         productRepository.save(product);
         return new ProductResponseDto(product);

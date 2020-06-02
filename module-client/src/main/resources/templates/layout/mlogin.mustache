@@ -1,0 +1,11 @@
+<div class="mlogin">
+    <a href="/"><img src="/img/ico_home2.png" alt="home">홈</a>
+    {{#loginUser}}
+        <a href="/logout"><img src="/img/ico_logout.png" alt="">로그아웃</a> <span>|</span>
+        <a href="/edit_memberMain"><img src="/img/ico_member.png" alt="">마이페이지</a>
+    {{/loginUser}}
+    {{^loginUser}}
+        <a href="/login"><img src="/img/ico_login.png" alt="">로그인</a> <span>|</span>
+        <a href="/join"><img src="/img/ico_join.png" alt="">회원가입</a>
+    {{/loginUser}}
+</div>

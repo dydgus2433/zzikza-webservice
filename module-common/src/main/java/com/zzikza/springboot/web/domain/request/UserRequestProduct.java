@@ -51,7 +51,7 @@ public class UserRequestProduct extends BaseTimeEntity {
     @Column(name = "PRD_DSC")
     String productDescription;
     @Column(name = "PRD_BRF_DSC")
-    String briefDescription;
+    String productBriefDescription;
 
 
     @Enumerated(EnumType.STRING)
@@ -94,7 +94,7 @@ public class UserRequestProduct extends BaseTimeEntity {
         this.hour = productHour;
         this.minute = productMinuteute;
         this.productDescription = productDescription;
-        this.briefDescription = productBriefDescription;
+        this.productBriefDescription = productBriefDescription;
     }
 //    public void addProtpolio(Portfolio portfolio) {
 //        this.portfolio = portfolio;
@@ -123,6 +123,6 @@ public class UserRequestProduct extends BaseTimeEntity {
         this.hour = dto.getProductHour();
         this.minute = dto.getProductMinute();
         this.productDescription = dto.getProductDescription();
-        this.briefDescription = dto.getProductBriefDesc();
+        this.productBriefDescription = dto.getProductBriefDesc();
     }
 }

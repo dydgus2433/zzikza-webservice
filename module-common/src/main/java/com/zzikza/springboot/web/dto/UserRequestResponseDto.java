@@ -1,5 +1,6 @@
 package com.zzikza.springboot.web.dto;
 
+import com.zzikza.springboot.web.domain.enums.EUserRequestCategory;
 import com.zzikza.springboot.web.domain.enums.EUserRequestStatus;
 import com.zzikza.springboot.web.domain.request.UserRequest;
 import lombok.Getter;
@@ -15,7 +16,11 @@ public class UserRequestResponseDto {
     String title;
     String content;
     String createDate;
+    String sido;
+    String gugun;
+    long count;
     EUserRequestStatus requestStatus;
+    EUserRequestCategory requestCategory;
 
     boolean getIsWait(){
         return requestStatus.equals(EUserRequestStatus.W);
@@ -27,7 +32,11 @@ public class UserRequestResponseDto {
         title = entity.getTitle();
         content = entity.getContent();
         requestStatus = entity.getRequestStatus();
+        requestCategory = entity.getRequestCategory();
         createDate = entity.getCreatedDate();
+        sido = entity.getSido();
+        gugun = entity.getGugun();
+        count = entity.getUserRequestProducts().size();
     }
 
 }

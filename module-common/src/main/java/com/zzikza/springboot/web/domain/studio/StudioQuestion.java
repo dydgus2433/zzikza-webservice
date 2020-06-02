@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.studio;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
+import com.zzikza.springboot.web.domain.enums.EQuestionCategory;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.user.User;
 import lombok.Builder;
@@ -34,6 +35,13 @@ public class StudioQuestion  extends BaseTimeEntity {
     @Column(name = "QSTN_CONTENT")
     String content;
 
+    @Column(name = "QSTN_TITLE")
+    String title;
+
+    @Column(name = "QSTN_CATE_CD")
+    @Enumerated(EnumType.STRING)
+    EQuestionCategory questionCategory;
+
     @ManyToOne
     @JoinColumn(name = "STDO_SEQ")
     Studio studio;
@@ -46,7 +54,9 @@ public class StudioQuestion  extends BaseTimeEntity {
     List<StudioQuestionReply> studioQuestionReplies = new ArrayList<>();
 
     @Builder
-    public StudioQuestion(String content, Studio studio, User user) {
+    public StudioQuestion(String content,String title,EQuestionCategory questionCategory, Studio studio, User user) {
+        this.questionCategory = questionCategory;
+        this.title = title;
         this.content = content;
         this.studio = studio;
         this.user = user;

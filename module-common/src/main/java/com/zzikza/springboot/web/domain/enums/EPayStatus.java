@@ -2,7 +2,7 @@ package com.zzikza.springboot.web.domain.enums;
 
 public enum EPayStatus {
 
-    메인상단("TOP");
+    TOP("메인상단");
     String value;
 
     EPayStatus(String value) {

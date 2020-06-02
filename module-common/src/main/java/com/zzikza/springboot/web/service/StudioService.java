@@ -11,6 +11,8 @@ import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.util.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -209,8 +211,8 @@ public class StudioService {
     }
 
     @Transactional
-    public void updateStudio(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    public void updateStudio(StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
         if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
             throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
         }
@@ -219,8 +221,8 @@ public class StudioService {
 
 
     @Transactional
-    public void updateStudioPassword(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    public void updateStudioPassword(StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto) throws IllegalAccessException {
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
         if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
             throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
         }
@@ -228,8 +230,8 @@ public class StudioService {
     }
 
     @Transactional
-    public void updateStudioBusiness(StudioResponseDto sessionVo, StudioInfoRequestDto studioInfoRequestDto, MultipartFile file) throws IllegalAccessException, IOException {
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    public void updateStudioBusiness(StudioResponseDto loginStudio, StudioInfoRequestDto studioInfoRequestDto, MultipartFile file) throws IllegalAccessException, IOException {
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
         if (!studio.getPassword().equals(PasswordUtil.getEncriptPassword(studioInfoRequestDto.getPassword(), studio.getStudioId()))) {
             throw new IllegalAccessException("비밀번호가 일치하지 않습니다.");
         }
@@ -243,14 +245,14 @@ public class StudioService {
     }
 
     @Transactional
-    public void withdrawalStudio(StudioResponseDto sessionVo) {
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    public void withdrawalStudio(StudioResponseDto loginStudio) {
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
         studio.withdrawal();
     }
 
     @Transactional
-    public void deleteStudio(StudioResponseDto sessionVo) {
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    public void deleteStudio(StudioResponseDto loginStudio) {
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
         studioRepository.delete(studio);
     }
 
@@ -277,5 +279,15 @@ public class StudioService {
 
     public Studio findByCertification(Certification certification) {
         return studioRepository.findByManagerTel(certification.getManagerTel()).orElseThrow(() -> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+    }
+
+    public List<StudioFileResponseDto> selectStudioFile(StudioRequestDto requestDto, Pageable pageable) {
+        Studio studio = studioRepository.findByStudioId(requestDto.getStudioId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 존재하지 않습니다."));
+        Page<StudioFile> studioFilePage = studioFileRepository.findAllByStudio(studio, pageable);
+        List<StudioFileResponseDto> studioFileResponseDtos = new ArrayList<>();
+        for(StudioFile file : studioFilePage.getContent()){
+            studioFileResponseDtos.add(new StudioFileResponseDto(file));
+        }
+        return studioFileResponseDtos;
     }
 }

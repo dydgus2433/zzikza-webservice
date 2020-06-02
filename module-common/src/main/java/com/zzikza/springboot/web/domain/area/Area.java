@@ -1,10 +1,8 @@
 package com.zzikza.springboot.web.domain.area;
 
-import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 

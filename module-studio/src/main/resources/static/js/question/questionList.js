@@ -16,7 +16,7 @@ $(document).ready(function(){
 			console.log(result);
 			$("#popup").html(result);
 			$(".popup_qna").show();
-		}).fail(function(jqXHR, textStatus, errorThrown) {
+		}).fail(function(jqXHR) {
 	    	alert(jqXHR.responseJSON.message);
 	    }).always(function() {
 	    	console.log('DONE');

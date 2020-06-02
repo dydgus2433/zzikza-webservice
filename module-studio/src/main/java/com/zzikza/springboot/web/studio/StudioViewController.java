@@ -30,10 +30,10 @@ public class StudioViewController {
 
     @GetMapping(value = "/store/view")
     @Transactional
-    public String storeViewPage(@LoginStudio StudioResponseDto sessionVo, Model model) {
+    public String storeViewPage(@LoginStudio StudioResponseDto loginStudio, Model model) {
 
 
-        if (sessionVo == null) {
+        if (loginStudio == null) {
             try {
                 throw new IllegalAccessException("로그인 해주세요.");
 //        에러시 페이지 이동 해야함
@@ -43,8 +43,8 @@ public class StudioViewController {
         }
 
         //detail
-//        assert sessionVo != null;
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
+//        assert loginStudio != null;
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
         model.addAttribute(new StudioResponseDto(studio));
         //files
 

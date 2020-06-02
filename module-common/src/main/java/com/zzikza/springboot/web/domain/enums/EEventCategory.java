@@ -3,8 +3,8 @@ package com.zzikza.springboot.web.domain.enums;
 public enum EEventCategory {
 
 
-    추첨("ENTRY"),
-    일반("NORMAL");
+    ENTRY("추첨"),
+    NORMAL("일반");
     String value;
 
     EEventCategory(String value) {

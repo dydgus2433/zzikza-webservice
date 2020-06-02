@@ -40,7 +40,7 @@ $(document).ready(function () {
                     alert('수정이 실패했습니다. 다시 시도해주세요.');
                 }
 
-            }).fail(function (jqXHR, textStatus, errorThrown) {
+            }).fail(function (jqXHR) {
                 alert(jqXHR.responseJSON.message);
             }).always(function () {
                 console.log('DONE');

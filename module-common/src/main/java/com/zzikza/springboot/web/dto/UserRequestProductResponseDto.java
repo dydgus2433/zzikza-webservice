@@ -33,7 +33,7 @@ public class UserRequestProductResponseDto {
         this.hour = entity.getHour();
         this.minute = entity.getMinute();
         this.productDescription = entity.getProductDescription();
-        this.productBriefDesc = entity.getBriefDescription();
+        this.productBriefDesc = entity.getProductBriefDescription();
         this.createDate = entity.getCreatedDate();
     }
 

@@ -100,13 +100,13 @@
                 </table>
                 <div class="pop_btn_area">
                     {{#detail}}
-                        {{#sessionVo}}
+                        {{#loginStudio}}
                             <button type="button" id="btnOk">확인</button>
-                        {{/sessionVo}}
-                        {{^sessionVo}}
+                        {{/loginStudio}}
+                        {{^loginStudio}}
                             <button type="button" onclick="javascript:alert('세션이 만료되었습니다.');location.href='/';">확인
                             </button>
-                        {{/sessionVo}}
+                        {{/loginStudio}}
                         <button type="button" class="btn_pop_cancel" id="btnCancel">취소</button>
                         <button type="button" class="btn_pop_mod" id="btnMod">일정수정</button>
                     {{/detail}}
@@ -146,9 +146,9 @@
                 $("#popup").html('');
                 $("#popup").html(result);
                 $(".popup_book").show();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });
@@ -167,9 +167,9 @@
                 $("#popup").html('');
                 $("#popup").html(result);
                 $(".popup_book").show();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });
@@ -214,9 +214,9 @@
             }).done(function (result) {
                 alert('등록되었습니다.');
                 location.reload();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });
@@ -241,9 +241,9 @@
                 console.log(result);
                 alert('수정되었습니다.')
                 location.reload();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });
@@ -269,9 +269,9 @@
                 console.log(result);
                 alert('삭제되었습니다.')
                 location.reload();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });

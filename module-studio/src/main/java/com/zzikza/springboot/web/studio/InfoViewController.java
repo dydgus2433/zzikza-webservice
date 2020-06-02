@@ -29,11 +29,11 @@ public class InfoViewController {
 
 
     @GetMapping(value = {"/info/view"})
-    public String infoViewPage(@LoginStudio StudioResponseDto sessionVo, @RequestParam Map<String, Object> params, Model model) {
+    public String infoViewPage(@LoginStudio StudioResponseDto loginStudio, @RequestParam Map<String, Object> params, Model model) {
 //        setStudioId(request, params);
 //        Map<String, Object> info = getOne("selectInfo", params);
 //        model.addAttribute("info", info);
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
         model.addAttribute("detail", studio);
 
         //detail
@@ -42,7 +42,7 @@ public class InfoViewController {
     }
 
     @GetMapping(value = {"/info/password"})
-    public String infoPasswordPage(@LoginStudio StudioResponseDto sessionVo,  Model model) {
+    public String infoPasswordPage(@LoginStudio StudioResponseDto loginStudio,  Model model) {
 
 //        Map<String, Object> info = getOne("selectInfo", params);
 //        model.addAttribute("info", info);
@@ -51,11 +51,11 @@ public class InfoViewController {
     }
 
     @GetMapping(value = {"/info/business"})
-    public String infoBusinessPage(@LoginStudio StudioResponseDto sessionVo,  Model model) {
+    public String infoBusinessPage(@LoginStudio StudioResponseDto loginStudio,  Model model) {
 
 //        Map<String, Object> info = getOne("selectInfo", params);
 //        model.addAttribute("info", info);
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(()-> new IllegalArgumentException("스튜디오가 없습니다."));
         model.addAttribute("detail", studio);
         model.addAttribute("title", "찍자사장님 사이트 - 사업자정보 수정");
         return INFOMATION_BUSINESS;

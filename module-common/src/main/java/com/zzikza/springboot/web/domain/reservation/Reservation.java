@@ -133,4 +133,5 @@ public class Reservation  extends BaseTimeEntity {
         this.userName = dto.getUserName();
         this.scheduleName = dto.getScheduleName();
     }
+
 }

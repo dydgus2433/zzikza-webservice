@@ -22,7 +22,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 		try {
 			// 세션 사용자 정보 조회
 			HttpSession session = request.getSession();
-			StudioResponseDto sessionVo = (StudioResponseDto) session.getAttribute("sessionVo");
+			StudioResponseDto loginStudio = (StudioResponseDto) session.getAttribute("loginStudio");
 			
 			// 현재 메뉴 조회
 			String contextPath = request.getContextPath();
@@ -77,7 +77,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 				return true;
 			}
 			
-			if (sessionVo == null || "".equals(StringUtil.nvl(sessionVo.getId()))) {
+			if (loginStudio == null || "".equals(StringUtil.nvl(loginStudio.getId()))) {
 				String returnUrl = request.getScheme()+"://"+request.getServerName();
 				if(request.getLocalPort() != 80){
 					returnUrl += ":" + request.getLocalPort();

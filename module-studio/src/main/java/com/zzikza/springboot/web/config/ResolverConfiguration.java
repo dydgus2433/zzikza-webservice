@@ -1,6 +1,6 @@
 package com.zzikza.springboot.web.config;
 
-import com.zzikza.springboot.web.resolver.LoginUserArgumentResolver;
+import com.zzikza.springboot.web.resolver.LoginStudioArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class ResolverConfiguration implements WebMvcConfigurer {
-    private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final LoginStudioArgumentResolver loginUserArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

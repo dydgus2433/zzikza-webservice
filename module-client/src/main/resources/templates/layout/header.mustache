@@ -1,9 +1,63 @@
-<!DOCTYPE html>
-<html lang="kr">
-<head>
-    <title>스프링 부트 웹 서비스</title>
-    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- s:header -->
+<div class="header">
+    <div class="wrap">
+        <!--          <a href="javascript:history.back(-1);" class="before"></a> -->
+        <div class="menu">
+            <a href="/" {{#is-home}}class='active'{{/is-home}}>홈</a>
+<!--            ${path eq '/'}-->
+            <a href="/goods/list?productCategory=&searchText=기획전&order=desc&column=distance" {{#is-sale}}class='active'{{/is-sale}}>할인</a>
+<!--            <c:if test="${(param.searchText eq '기획전') or (param.exhId eq '')}"> </c:if>-->
 
-</head>
-<body>
+            <a href="/exh/list"  {{#is-exhibition}}class='active'{{/is-exhibition}}>기획전</a>
+<!--            path eq '/exh/list'-->
+            <a href="/more" {{#is-more}}class='active'{{/is-more}}>더보기</a>
+<!--            path eq '/more'-->
+        </div>
+        <h1><a href="/">찍자</a></h1>
+        <div class="login">
+            {{#loginUser}}
+                <a href="/logout">로그아웃</a> <span>|</span>
+                <a href="/edit_memberMain">마이페이지</a>
+            {{/loginUser}}
+            {{^loginUser}}
+                <a href="/login">로그인</a> <span>|</span>
+                <a href="/join">회원가입</a>
+            {{/loginUser}}
+        </div>
+        <!-- 모바일 메뉴 추가 -->
+        <a class="mmn"></a>
+        <!-- s:20191002 검색추가 -->
+        <form id="searchTextFrm" action="/goods/list">
+            <a class="searchBtn"></a>
+            <div class="searchBox">
+                <a class="closePop"><img src="/img/close_pop.png" alt="닫기"></a>
+                <div class="section">
+                    <input type="text" placeholder="관악구, 여권" autocomplete="off" name="searchText" id="searchText">
+                    <input type="submit" value="검색">
+                    <div class="autoWord">
+                        <ul id="autoSearchWord">
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <p class="tit">카테고리</p>
+                        <ul id="searchCategories">
+                        </ul>
+                    </div>
+                    <!--                     <div class="box"> -->
+                    <!--                         <p class="tit">테마</p> -->
+                    <!--                         <ul id="searchKeywords"> -->
+                    <!--                         </ul>                         -->
+                    <!--                     </div> -->
+                </div>
+            </div>
+        </form>
+        <!-- e:20191002 검색추가 -->
+    </div>
+    <!-- s:메뉴추가 -->
+    <div class="qmn">
+        {{>layout/menu}}
+<!--        <jsp:include page="menu.jsp"></jsp:include>-->
+    </div>
+    <!-- e:메뉴추가 -->
+</div>
+<!-- e:header -->

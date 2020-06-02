@@ -82,4 +82,8 @@ public class StudioFile extends BaseTimeEntity {
     public void setFileOrder(int fileOrder) {
         this.file.setFileOrder(fileOrder);
     }
+
+    public boolean isFirst(){
+        return 0 == this.file.getFileOrder();
+    }
 }

@@ -1,5 +1,7 @@
 package com.zzikza.springboot.web.dto;
 
+import com.zzikza.springboot.web.domain.enums.EReservationStatus;
+import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
 import com.zzikza.springboot.web.util.StringUtil;
 import lombok.Getter;
@@ -31,6 +33,9 @@ public class ReservationResposeDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate reservationEndDate;
     Integer price;
+    PaymentResponseDto payment;
+    String firstFilePath;
+    EReservationStatus reservationStatus;
 
     public ReservationResposeDto(Reservation entity) {
         this.id = entity.getId();
@@ -42,6 +47,7 @@ public class ReservationResposeDto {
         }
 
         this.tel = entity.getTel();
+        this.reservationStatus = entity.getReservationStatus();
         this.peopleCnt = entity.getPeopleCnt();
         this.customRequest = entity.getCustomRequest();
         this.reservationStartDate = entity.getReservationStartDate();
@@ -51,16 +57,25 @@ public class ReservationResposeDto {
         this.reservationEndHour = entity.getReservationEndHour();
         this.reservationEndMinute = entity.getReservationEndMinute();
         if (entity.getPayment() != null) {
+            this.payment = new PaymentResponseDto(entity.getPayment());
             this.price = entity.getPayment().getRealPrice();
         } else {
             this.price = entity.getInputPrice();
         }
+        if (entity.getProduct() != null) {
+            Product product = entity.getProduct();
+            if (!product.getProductFiles().isEmpty()) {
+                this.firstFilePath = entity.getProduct().getProductFiles().get(0).getFileThumbPath();
+            }
+        }
+
     }
 
     //mustache를 위한 getter
     public String getTitle() {
-        return userName +"님 예약";
+        return userName + "님 예약";
     }
+
     public LocalDateTime getStart() {
         return reservationStartDate.atTime(reservationStartHour, reservationStartMinute);
     }
@@ -85,5 +100,15 @@ public class ReservationResposeDto {
 
     public String getReservationEndMinute() {
         return StringUtil.lpad(reservationEndMinute, "0", 2);
+    }
+
+    public boolean isReservation(){
+        return reservationStatus.equals(EReservationStatus.Y);
+    }
+    public boolean isCancel(){
+        return reservationStatus.equals(EReservationStatus.C);
+    }
+    public boolean isWait(){
+        return reservationStatus.equals(EReservationStatus.W);
     }
 }

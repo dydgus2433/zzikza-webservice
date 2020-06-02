@@ -8,16 +8,14 @@ import com.zzikza.springboot.web.domain.exhibition.Exhibition;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import com.zzikza.springboot.web.domain.studio.Studio;
 import com.zzikza.springboot.web.dto.ProductRequestDto;
+import com.zzikza.springboot.web.util.StringUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor
@@ -38,10 +36,10 @@ public class Product extends BaseTimeEntity {
 
     @Column
     String title;
-    @Column(name = "PRD_DSC")
+    @Column(name = "PRD_DSC" )
     String productDescription;
     @Column(name = "PRD_BRF_DSC")
-    String briefDescription;
+    String productBriefDescription;
 
     @ManyToOne
     @JoinColumn(name = "STDO_SEQ")
@@ -68,15 +66,22 @@ public class Product extends BaseTimeEntity {
     @Column(name = "PRD_MIN")
     Integer minute;
 
+    @Column(name = "SEARCH_TEXT")
+    String searchText;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Set<ProductKeywordMap> productKeywordMaps = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<ProductExhibition> productExhbitions = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "EXH_ID", nullable = true)
+    Exhibition exhibition;
+
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<ProductReply> productReplies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<ProductFile> productFiles = new ArrayList<>();
 
     @Builder
@@ -93,9 +98,35 @@ public class Product extends BaseTimeEntity {
         this.hour = productHour;
         this.minute = productMinuteute;
         this.productDescription = productDescription;
-        this.briefDescription = productBriefDescription;
-    }
+        this.productBriefDescription = productBriefDescription;
 
+    }
+    @PreUpdate
+    @PrePersist
+    private void setSearchText(){
+        String text = "";
+        if(!StringUtil.isEmpty(this.title)){
+            text += " "+this.title;
+        }
+        if(!StringUtil.isEmpty(this.productDescription)){
+            text += " "+ this.productDescription;
+        }
+        if(!StringUtil.isEmpty(this.productBriefDescription)){
+            text += " "+this.productBriefDescription;
+        }
+        if(!StringUtil.isEmpty(this.studio)){
+            if(!StringUtil.isEmpty(this.studio.getAddress())){
+                text += " "+this.studio.getAddress();
+            }
+            if(!StringUtil.isEmpty(this.studio.getAddressDetail())){
+                text += " "+this.studio.getAddressDetail();
+            }
+            if(!StringUtil.isEmpty(this.studio.getStudioName())){
+                text += " "+this.studio.getStudioName();
+            }
+        }
+        this.searchText =  text;
+    }
     public void setStudio(Studio studio) {
         this.studio = studio;
     }
@@ -115,13 +146,6 @@ public class Product extends BaseTimeEntity {
         this.productKeywordMaps.add(productKeywordMap);
     }
 
-    public void addProductExhibition(Exhibition exhibition) {
-        ProductExhibition productExhibition = ProductExhibition.builder()
-                .exhibition(exhibition)
-                .product(this)
-                .build();
-        this.productExhbitions.add(productExhibition);
-    }
 
     public void update(ProductRequestDto dto) {
         this.title = dto.getTitle();
@@ -132,6 +156,12 @@ public class Product extends BaseTimeEntity {
         this.hour = dto.getProductHour();
         this.minute =dto.getProductMinute();
         this.productDescription = dto.getProductDescription();
-        this.briefDescription = dto.getProductBriefDesc();
+        this.productBriefDescription = dto.getProductBriefDesc();
+        setSearchText();
+    }
+
+    public void setExhibition(Exhibition exhibition) {
+        this.exhibition = exhibition;
+        exhibition.addProduct(this);
     }
 }

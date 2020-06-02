@@ -3,9 +3,9 @@ package com.zzikza.springboot.web.domain.enums;
 public enum EProductAcceptStatus {
 
 
-    대기("WAIT"),
-    반려("REJECT"),
-    수락("ACCEPT");
+    WAIT("대기"),
+    REJECT("반려"),
+    ACCEPT("수락");
     String value;
 
     EProductAcceptStatus(String value) {

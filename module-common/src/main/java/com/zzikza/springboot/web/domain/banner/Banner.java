@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Banner extends BaseTimeEntity {
     @Column(name = "SHOW_STAT_CD")
     public EShowStatus showStatus;
 
-    @OneToMany(mappedBy = "banner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "banner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<BannerFile> bannerFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "banner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

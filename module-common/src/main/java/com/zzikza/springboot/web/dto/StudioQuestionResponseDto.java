@@ -27,4 +27,5 @@ public class StudioQuestionResponseDto {
         this.isAnswer = !entity.getStudioQuestionReplies().isEmpty();
         this.studioQuestionReplies = entity.getStudioQuestionReplies().stream().map(StudioQuestionReplyResponseDto::new).collect(Collectors.toList());
     }
+
 }

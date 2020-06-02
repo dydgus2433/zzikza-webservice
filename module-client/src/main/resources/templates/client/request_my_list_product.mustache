@@ -1,0 +1,130 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="ko"> <!--<![endif]-->
+{{>layout/head}}
+<body>
+{{>layout/mlogin}}
+{{>layout/header}}
+<!-- 본문자리 -->
+<script type="text/javascript" src="/js/infinite-scroll.pkgd.js"></script>
+<script>
+    $(document).ready(function () {
+        initInfiniteScroll();
+
+        $(document).on("click", "#request_product_list li", function (e) {
+            console.log("click 이벤트", e)
+            //TODO : 클릭 이벤트 (상품꺼 가져오면 될듯)
+        })
+    });
+
+    function initInfiniteScroll() {
+        const $container = $('#request_product_list').infiniteScroll({
+            // options
+            prefill: true,
+            checkLastPage: true,
+            path: getPath,
+            append: '.post',
+            history: 'push',
+            cache: true
+        });
+        infScroll = $container.data('infiniteScroll');
+        infScroll.on('load', function (result, path, a, b, c) {
+            const $items = result.querySelectorAll("li");
+            infScroll.appendItems($items);
+            $("div.rateit, span.rateit").rateit();
+        });
+
+        // jQuery
+        $container.on('scrollThreshold.infiniteScroll', function (event) {
+        });
+
+        // vanilla JS
+        infScroll.on('scrollThreshold', function () {
+        });
+
+        $container.on('history.infiniteScroll', function (event, title, path) {
+        });
+    }
+
+
+    function getPath() {
+        const totalCnt = Number({{totPage}});
+        if (this.loadCount < totalCnt) {
+            const pageNumber = (this.loadCount);
+            console.log("로드페이지 0부터야 1부터야", pageNumber)
+// 		  history.replaceState(null, 'historyload','/request/my_list' );
+            if (history.state) {
+                if (history.state.scrollY <= window.scrollY) {
+                    history.replaceState({
+                        'scrollX': window.scrollX,
+                        'scrollY': window.scrollY,
+                        '__scrollX': window.scrollX,
+                        '__scrollY': window.scrollY
+                    }, window.scrollY, '/request/my_list/{{requestId}}');
+                }
+            } else {
+                history.replaceState({
+                    'scrollX': window.scrollX,
+                    'scrollY': window.scrollY,
+                    '__scrollX': window.scrollX,
+                    '__scrollY': window.scrollY
+                }, window.scrollY, '/request/my_list/{{requestId}}');
+            }
+
+            return '/request/my_list/{{requestId}}/ajax?&pageNumber=' + pageNumber;
+        }
+    }
+</script>
+<!-- s:contetns -->
+<div class="section">
+    <div class="top">
+        <div class="wrap">
+            <div class="dir">
+                <a href="/">홈</a>
+                <a href="/edit_memberMain">마이페이지</a>
+                <a href="/request/my_list">내 요청내역</a>
+                <a href="#">내 요청 입찰상품</a>
+            </div>
+            <a class="mn"></a>
+        </div>
+    </div>
+    <div class="wrap reservation request">
+        <h2 class="tit">내 요청</h2>
+        {{#userRequest}}
+        <h2 class="tit">{{title}}</h2>
+        <h2 class="tit">{{requestCategory}}</h2>
+        <div class="formBox">
+            {{content}}
+
+            <ul id="request_product_list_file">
+                {{#userRequestFiles}}
+                    <li>{{#file}}{{fileName}} {{filePath}}{{/file}}</li>
+                {{/userRequestFiles}}
+            </ul>
+        </div>
+        {{/userRequest}}
+        <div class="formBox">
+            <ul id="request_product_list">
+            </ul>
+            <div class="page-load-status">
+                <div class="loader-ellips infinite-scroll-request">
+                    <span class="loader-ellips__dot"></span>
+                    <span class="loader-ellips__dot"></span>
+                    <span class="loader-ellips__dot"></span>
+                    <span class="loader-ellips__dot"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- e:contetns -->
+<script src="/js/client/request_my_list_product.js"></script>
+
+<!-- 본문자리 -->
+{{>layout/footer}}
+</body>
+</html>
+

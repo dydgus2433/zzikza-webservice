@@ -67,18 +67,18 @@
 
 <!--                <div class="box_area full">-->
 <!--                    <h3 class="sub_stit">상품 할인 금액</h3>-->
-<!--                    <select id="prdSalePrcSel">-->
+<!--                    <select id="productSalePriceSel">-->
 <!--                        <option value="N">비사용</option>-->
 <!--                        <option value="Y">사용</option>-->
 <!--                    </select>-->
-<!--                    <input type="number" id="prdSalePrc" name="prdSalePrc" class="form_goods number"-->
+<!--                    <input type="number" id="productSalePrice" name="productSalePrice" class="form_goods number"-->
 <!--                           placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!salePrice}}{{!/product}}"-->
 <!--                           style="display: none;">-->
 <!--                </div>-->
 
                 <!-- 				<div class="box_area full"> -->
                 <!-- 					<h3 class="sub_stit">할인 금액</h3> -->
-                <!-- 					<input type="number" name="prdSalePrc" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!productSalePrice}}{{!/product}}"> -->
+                <!-- 					<input type="number" name="productSalePrice" class="form_goods number" placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!productSalePrice}}{{!/product}}"> -->
                 <!-- 				</div> -->
 
                 <div class="box_area full">
@@ -101,7 +101,7 @@
                 <div class="box_area full">
                     <h3 class="sub_stit">상품 요약설명</h3>
                     <textarea class="textarea_shop" name="productBriefDesc" maxlength="1000" placeholder="상품  요약설명은 고객에게 상품구성 및 소개를 간략히하는 영역입니다.
-홈페이지와 다른 연락처는 입력하지 말아주세요 :)">{{#product}}{{briefDescription}}{{/product}}</textarea>
+홈페이지와 다른 연락처는 입력하지 말아주세요 :)">{{#product}}{{#productBriefDescription}}{{productBriefDescription}}{{/productBriefDescription}}{{/product}}</textarea>
                 </div>
 
                 <div class="box_area full">
@@ -391,9 +391,9 @@
                                 }else{
                                     $("#multiCheckCd").prop("checked", false)
                                 }
-                            }).fail(function(jqXHR, textStatus, errorThrown) {
-                                console.error('FAIL REQUEST: ', textStatus);
-                                alert('처리중 오류가 발생하였습니다.');
+                            }).fail(function(jqXHR) {
+                                alert(jqXHR.responseJSON.message);
+
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -414,9 +414,9 @@
                                      var htmlText = "<li data-optn_id="+option.optnId+">"+option.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.append(htmlText);
                                 }
-                            }).fail(function(jqXHR, textStatus, errorThrown) {
-                                    console.error('FAIL REQUEST: ', textStatus);
-                                    alert('처리중 오류가 발생하였습니다.');
+                            }).fail(function(jqXHR) {
+                                    alert(jqXHR.responseJSON.message);
+
                                 }).always(function() {
                                     console.log('DONE');
                                 });
@@ -440,9 +440,9 @@
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             $("ul#optionSort li").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                                console.error('FAIL REQUEST: ', textStatus);
-                                alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                                alert(jqXHR.responseJSON.message);
+
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -492,9 +492,9 @@
                                 }
 
 
-                            }).fail(function(jqXHR, textStatus, errorThrown) {
-                                    console.error('FAIL REQUEST: ', textStatus);
-                                    alert('처리중 오류가 발생하였습니다.');
+                            }).fail(function(jqXHR) {
+                                    alert(jqXHR.responseJSON.message);
+
                                 }).always(function() {
                                     console.log('DONE');
                                 });
@@ -518,9 +518,9 @@
                             console.log('result', result);
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                                console.error('FAIL REQUEST: ', textStatus);
-                                alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                                alert(jqXHR.responseJSON.message);
+
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -548,9 +548,9 @@
                             }else{
                                 $("#multiCheckCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                                console.error('FAIL REQUEST: ', textStatus);
-                                alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                                alert(jqXHR.responseJSON.message);
+
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -576,9 +576,9 @@
                                      var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.parent().after(htmlText);
                                      textInput.parent().remove();
-                                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                                     console.error('FAIL REQUEST: ', textStatus);
-                                     alert('처리중 오류가 발생하였습니다.');
+                                 }).fail(function(jqXHR) {
+                                     alert(jqXHR.responseJSON.message);
+
                                  }).always(function() {
                                      console.log('DONE');
                                  });
@@ -625,9 +625,9 @@
                             var  textInput = $("ul#optionSort");
                              var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                              textInput.append(htmlText);
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                            console.error('FAIL REQUEST: ', textStatus);
-                            alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                            alert(jqXHR.responseJSON.message);
+
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -693,9 +693,9 @@
                             }else{
                                 $("#countCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                            console.error('FAIL REQUEST: ', textStatus);
-                            alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                            alert(jqXHR.responseJSON.message);
+
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -744,9 +744,9 @@
                                     }
                                 }
                             }
-                        }).fail(function(jqXHR, textStatus, errorThrown) {
-                            console.error('FAIL REQUEST: ', textStatus);
-                            alert('처리중 오류가 발생하였습니다.');
+                        }).fail(function(jqXHR) {
+                            alert(jqXHR.responseJSON.message);
+
                         }).always(function() {
                             console.log('DONE');
                         });

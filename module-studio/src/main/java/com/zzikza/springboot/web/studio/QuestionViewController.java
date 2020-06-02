@@ -35,8 +35,8 @@ public class QuestionViewController {
 
     @Transactional(readOnly = true)
     @GetMapping(value = {"/question/list"})
-    public String questionListPage(@LoginStudio StudioResponseDto sessionVo, Pageable pageable, Model model) {
-        if (sessionVo == null) {
+    public String questionListPage(@LoginStudio StudioResponseDto loginStudio, Pageable pageable, Model model) {
+        if (loginStudio == null) {
             try {
                 throw new IllegalAccessException("로그인 해주세요.");
 //        에러시 페이지 이동 해야함
@@ -46,8 +46,8 @@ public class QuestionViewController {
         }
 
         //detail
-//        assert sessionVo != null;
-        Studio studio = studioRepository.findById(sessionVo.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
+//        assert loginStudio != null;
+        Studio studio = studioRepository.findById(loginStudio.getId()).orElseThrow(() -> new IllegalArgumentException("해당 스튜디오가 존재하지 않습니다."));
 
         Page<StudioQuestion> paging = studioQuestionRepository.findAllByStudio(studio, pageable);
         List<StudioQuestion> list = (List<StudioQuestion>) PagingUtil.setPagingParameters(model, paging);

@@ -26,23 +26,37 @@ public class Certification extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
 
-    @Column(name = "TEL")
+    @Column(name = "MNG_TEL")
     String managerTel;
-    @Column(name = "MGN_NM")
+    @Column(name = "MNG_NM")
     String managerName;
     @Column(name = "STDO_ID")
     String studioId;
+
+    @Column(name = "TEL")
+    String tel;
+    @Column(name = "USER_ID")
+    String userId;
+    @Column(name = "USER_NM")
+    String userName;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "CRTF_STAT")
     ECertificationStatus certificationStatus;
     @Column(name = "CRTF_VAL")
     String certificationValue;
 
+
     @Builder
-    public Certification(String studioId, String managerTel, String managerName, String registedId, ECertificationStatus certificationStatus, String certificationValue) {
+    public Certification(String studioId, String managerTel, String managerName,
+                         String userId, String tel, String userName,
+                         String registedId, ECertificationStatus certificationStatus, String certificationValue) {
         this.studioId = studioId;
         this.managerTel = managerTel;
         this.managerName = managerName;
+        this.userId = userId;
+        this.tel = tel;
+        this.userName = userName;
         this.certificationStatus = certificationStatus;
         this.certificationValue = certificationValue;
         this.registedId = registedId;

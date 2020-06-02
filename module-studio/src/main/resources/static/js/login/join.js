@@ -74,7 +74,7 @@ $(document).ready(function () {
                     alert('회원가입이 실패했습니다. 다시 시도해주세요.');
                 }
 
-            }).fail(function (jqXHR, textStatus, errorThrown) {
+            }).fail(function (jqXHR) {
                 alert(jqXHR.responseJSON.message);
             }).always(function () {
                 console.log('DONE');
@@ -206,9 +206,8 @@ function searchPostcode() {
                     }
                     //data.address[0].x
                     //data.address[0].y
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log('FAIL REQUEST: ', textStatus);
-                    alert('처리중 오류가 발생하였습니다.');
+                }).fail(function (jqXHR) {
+                    alert(jqXHR.responseJSON.message);
                 }).always(function () {
                     //console.info('DONE');
                 });

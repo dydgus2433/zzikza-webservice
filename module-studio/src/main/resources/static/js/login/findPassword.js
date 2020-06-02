@@ -51,18 +51,18 @@ $(document).ready(function() {
 			
 		}).done(function(data) {
 			console.log(data);
-			if(data.rtnCode){
-				if(data.rtnCode == '1'){
+			if(data.success){
+				if(data.success == '1'){
 					alert('임시비밀번호가 발송 되었습니다.');
 //					location.href = '/';
 				} else{
-					alert(data.rtnMsg);
+					alert(data.msg);
 				}
 			}else{
 				alert('발송이 실패 했습니다. 다시 시도해주세요.');
 			}
 			
-		}).fail(function(jqXHR, textStatus, errorThrown) {
+		}).fail(function(jqXHR) {
 	    	alert(jqXHR.responseJSON.message);
 	    }).always(function() {
 	    	console.log('DONE');
@@ -97,7 +97,7 @@ $(document).ready(function() {
 			//타이머 보여주기
 			startTimer();
 			
-		}).fail(function(jqXHR, textStatus, errorThrown) {
+		}).fail(function(jqXHR) {
 			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
@@ -140,7 +140,7 @@ $(document).ready(function() {
 			}else{
 				alert(data.msg);
 			}
-		}).fail(function(jqXHR, textStatus, errorThrown) {
+		}).fail(function(jqXHR) {
 			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');

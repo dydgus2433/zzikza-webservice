@@ -1,0 +1,508 @@
+input[type=button], input[type=submit], input[type=checkbox] {
+	cursor: pointer;
+}
+
+a.searchBtn {
+	cursor: pointer;
+}
+
+.closePop .mn .wish {
+	cursor: pointer;
+}
+/* display none으로 하면 validation check안됨 */
+/*  .formBox input[type="checkbox"] {display: block; visibility: hidden; width: 0; height: 0}  */
+
+/* 	view안의 에디터 이미지 크기 */
+div.contentsView p img {
+	/*  width: 100%; */
+	
+}
+
+/*  공지사항 가운데 정렬  */
+.main .contWrap .recently ul {
+	width: 580px;
+	height: auto;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.goods_list li {
+	cursor: pointer;
+	/* 	padding-bottom : 50px; */
+}
+
+.goods_list li a table tr td {
+	height: 23px;
+}
+
+/* submit만 되어있어서 수정 */
+.reviewWriteBox input[type="button"] {
+	width: 120px;
+	height: 120px;
+	display: inline-block;
+	vertical-align: top;
+	border-top: 1px solid #333;
+	border-right: 1px solid #333;
+	border-bottom: 1px solid #333;
+	border-left: none;
+	background: #454545;;
+	font-size: 18px;
+	font-weight: 400;
+	margin: 0 0 0 0;
+	color: #fff;
+	box-sizing: border-box;
+}
+
+.goods_list li table tr:nth-child(2) td div {
+	height: 150px;
+	overflow: hidden;
+	position: relative;
+	padding: 15px 10px;
+}
+
+.goods_list li table tr:nth-child(2) td div .blur_screen {
+	display: block;
+	width: 100%;
+	height: 80px;
+	background: url(../img/blur_screen.png) repeat-x bottom;
+	background-size: auto 80px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.goods_list li table tr:nth-child(2) td div .blur_screen {
+	background: url(../img/blur_screen_mobile.png) repeat-x bottom;
+}
+
+.rateit button.rateit-reset {
+	background: url(images/delete.gif) 0 0;
+	width: 16px;
+	height: 16px;
+	display: -moz-inline-box;
+	display: inline-block;
+	float: left;
+	outline: none;
+	border: none;
+	padding: 0;
+	margin-top: 6px;
+	cursor: pointer;
+}
+
+.rateit button.rateit-reset:hover, .rateit button.rateit-reset:focus {
+	background-position: 0 -16px;
+	cursor: pointer;
+}
+
+.order a.pay_btn {
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+div.promotion ul li img {
+	width: 300px;
+	height: 200px;
+}
+
+ul.goods_list li a img.main {
+	/*  	width : 580px;  */
+	
+}
+
+.backcolor {
+	background-color: #ffffff;
+}
+
+.viewHeader .goodsSilde .swiper-slide {
+	cursor: pointer;
+}
+
+.image__gallery__thumb .image-content img {
+	cursor: pointer;
+}
+
+.main .kv .swiper-button-next1 {
+	cursor: pointer;
+}
+
+.section .top .wrap a.mn {
+	cursor: pointer;
+}
+
+.viewHeader .infoBox .time select {
+	cursor: pointer;
+}
+
+.rateit .rateit-hover {
+	cursor: pointer;
+}
+
+.contentsView {
+	padding: 40px;
+	margin-bottom: 40px;
+	border: 1px solid #d1d4df;
+}
+
+/* 2020 02 11 메인 라운드 및 간격 조정 */
+.main .goods {
+	padding: 40px 0 30px 0;
+}
+
+.main .goods .swiper-slide a p.studio {
+	margin: 10px 0;
+}
+
+/* .main .promotion { */
+/* 	padding: 50px 0; */
+/* 	margin: 0 auto; */
+/* } */
+
+/* 2020 02 11 메인 화살표 위치 조정 */
+.prev-goods, .next-goods {
+	/*    margin-top: 35px; */
+}
+
+.main .qmn {
+	border-radius: 20px;
+}
+
+#myBtn {
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 90px; /* Place the button at the bottom of the page */
+	right: 30px; /* Place the button 30px from the right */
+	z-index: 1000; /* Make sure it does not overlap */
+	border: none; /* Remove borders */
+	outline: none; /* Remove outline */
+	background-color: #ffe080; /* Set a background color */
+	color: white; /* Text color */
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 15px; /* Some padding */
+	border-radius: 10px; /* Rounded corners */
+	font-size: 18px; /* Increase font size */
+	font-family: "Black Han Sans";
+}
+
+#myBtn:hover {
+	background-color: #ffd800; /* Add a dark-grey background on hover */
+}
+
+.page-load-status {
+	display: none; /* hidden by default */
+	padding-top: 20px;
+	border-top: 1px solid #DDD;
+	text-align: center;
+	color: #777;
+}
+
+ul.goods_list li table tr:nth-child(2) td div .blur_screen {
+	display: block;
+	width: 100%;
+	height: 80px;
+	background: url(/resources/img/blur_screen.png) repeat-x bottom;
+	background-size: auto 80px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.goods_list li p.tit {
+	text-overflow: ellipsis;
+	/* 	height: auto;  */
+	height: 28px;
+}
+
+.goods_list li p.price {
+	background: #f0f0f5;
+	text-overflow: ellipsis;
+	height: 24px;
+}
+
+.goods_list li h4 {
+	text-overflow: ellipsis;
+	height: 25px;
+}
+
+div.section div.mobileBox {
+	width: 100%;
+	position: relative;
+	margin: 0 auto;
+	display: none;
+}
+
+div.section div.webBox {
+	width: 1200px;
+	height: 300px;
+	position: relative;
+	margin: 0 auto;
+	display: block;
+}
+
+.image_gallery_list {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.image__gallery__thumb {
+	/* top right bottom left*/
+	padding: 0px 1px 2px 1px;
+}
+
+/* event_goods_view */
+#payFrm {
+	line-height: 28px;
+	box-sizing: border-box;
+	width: 50%;
+	float: right;
+}
+
+.eventBanner img {
+	height: 200px;
+	width: 100%;
+	padding: 0 0 30px 0;
+}
+
+#payFrm select.saleCd {
+	border: 1px solid #d9dbe5;
+	background: #fbfbfe;
+	line-height: 28px;
+	box-sizing: border-box;
+	width: 100%;
+}
+/* reservation_list */
+.pay_cancel {
+	display: block;
+	background: #a5a5a5;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	height: 47px;
+	line-height: 47px;
+}
+/* request_my_list */
+.wrap.request div.tit {
+	width: 20%;
+}
+
+.wrap.request div.reqContent {
+	width: 20%;
+}
+
+.wrap.request div.regDate {
+	width: 20%;
+}
+
+.wrap.request div.status {
+	width: 30%;
+}
+
+.wrap.request div.reqCount {
+	width: 10%;
+}
+
+.methodChk {
+	border: 2px solid #f00;
+	border-radius: 8px;
+	margin-right: 5px;
+}
+
+.viewHeader .infoBox table tr {
+	border-bottom: 1px solid #e5e5e5;
+	cursor: pointer;
+}
+
+#infoFrm {
+	margin-left: 0px;
+	width: 100%;
+	background-color: white;
+}
+
+div.withdrawal .text-center {
+	text-align: center;
+}
+
+div.withdrawal .lead {
+	line-height: 36px;
+	font-size: 28px;
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+
+div.withdrawal .btn-danger {
+	color: #fff;
+	background-color: #d9534f;
+	border-color: #d43f3a;
+}
+
+div.withdrawal .btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+div.withdrawal .btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+div.withdrawal p {
+	display: block;
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+
+div.withdrawal .content p {
+	line-height: 28px;
+	letter-spacing: -.4px;
+	color: #44484b;
+	font-size: 17px;
+}
+
+.header .wrap .menu a:nth-child(2).active {
+	background: url(../img/top_ico_03.png) no-repeat left center;
+	color: #edb315;
+}
+
+.header .wrap .menu a:nth-child(3).active {
+	background: url(../img/top_ico_04.png) no-repeat left center;
+	color: #edb315;
+	
+}
+
+/* 2020-02-21 */
+#modal .swiper-button-next {
+    background: url(/resources/img/kv_right.png) no-repeat;
+}
+#modal .swiper-button-prev {
+    background: url(/resources/img/kv_left.png) no-repeat;
+}
+#modal .swiper-button-prev, #modal .swiper-button-next {
+	cursor: pointer;
+    z-index: 2001;
+    width: 45px;
+    height: 88px;
+}
+#modal .swiper-button-prev:hover, #modal .swiper-button-next:hover {
+    cursor: pointer;
+}
+
+#modal .portfolio__full__container{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+   	background-color : transparent;
+    opacity: 1;
+    visibility: visible;
+     z-index: 2000;
+}
+
+#modal .portfolio__full__container .swiper-container{
+	display:flex;
+}
+
+
+#modal .portfolio__full__container .swiper-container .swiper-slide img{
+ 	max-width: 100%;
+   	max-height: 100%;
+}
+
+.zzikza-portfolio__slider.show {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1050;
+}
+
+#modal ._button__close {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    cursor: pointer;
+     position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 30px;
+    height: 30px;
+    z-index: 3;
+}
+#modal ._button__close:before {
+    width: 2px;
+    height: 100%;
+}
+#modal ._button__close:after {
+    width: 100%;
+    height: 2px;
+}
+#modal ._button__close:after,#modal ._button__close:before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    display: inline-block;
+    content: "";
+    background-color: white;
+/*     background-color: #6A6F91; */
+    -webkit-transition: background-color .6s;
+    transition: background-color .6s;
+    cursor: pointer;
+}
+#modal .portfolio__img {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+/*     width: 100%; */
+    height: 100%;
+}
+
+#modal .swiper-lazy.swiper-lazy-loaded {
+    visibility: visible;
+}
+
+#modal .swiper-lazy {
+    visibility: hidden;
+/*     background: url(/resources/img/loading_mid.gif) no-repeat; */
+}

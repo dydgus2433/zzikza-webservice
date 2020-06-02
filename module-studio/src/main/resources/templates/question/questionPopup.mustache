@@ -85,9 +85,9 @@
                 alert('등록되었습니다.');
                 $(".popup").hide();
                 location.reload();
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('FAIL REQUEST: ', textStatus);
-                alert('처리중 오류가 발생하였습니다.');
+            }).fail(function (jqXHR) {
+                alert(jqXHR.responseJSON.message);
+
             }).always(function () {
                 console.log('DONE');
             });

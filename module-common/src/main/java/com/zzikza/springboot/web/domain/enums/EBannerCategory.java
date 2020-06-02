@@ -2,7 +2,7 @@ package com.zzikza.springboot.web.domain.enums;
 
 public enum EBannerCategory {
     BOT("메인하단"),
-    MIT("메인중단"),
+    MID("메인중단"),
     TOP("메인상단");
 
     String value;

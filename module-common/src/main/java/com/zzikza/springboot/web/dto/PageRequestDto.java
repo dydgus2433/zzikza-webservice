@@ -6,7 +6,8 @@ public final class PageRequestDto {
     private int page;
     private int size;
     private Sort.Direction direction;
-
+    private String order;
+    private String column;
     public void setPage(int page) {
         this.page = page <= 0 ? 1 : page;
     }
@@ -24,6 +25,10 @@ public final class PageRequestDto {
     public org.springframework.data.domain.PageRequest of() {
         if(direction == null){
             direction = Sort.Direction.DESC;
+        }
+
+        if(!"".equals(column)){
+            return org.springframework.data.domain.PageRequest.of(page, size, direction, column);
         }
         return org.springframework.data.domain.PageRequest.of(page, size, direction, "id");
     }

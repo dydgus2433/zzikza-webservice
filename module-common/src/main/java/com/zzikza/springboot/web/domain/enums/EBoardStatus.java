@@ -2,7 +2,8 @@ package com.zzikza.springboot.web.domain.enums;
 
 public enum EBoardStatus {
 
-    메인상단("TOP");
+    Y("정상"),
+    N("삭제");
     String value;
 
     EBoardStatus(String value) {

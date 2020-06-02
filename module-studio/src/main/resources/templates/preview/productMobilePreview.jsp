@@ -77,7 +77,7 @@ select{
 }
 </style>
 <fmt:parseNumber var="reservationFee" value="${product.price * (studio.fee / 100)}" integerOnly="true"/>
-<fmt:formatNumber var="reservationFee" value="${reservationFee}" type="number"/>
+<fmt:formatNumber var="reservationFee" value="{{reservationFee}}" type="number"/>
 <!-- s:contetns -->
     <div class="section"> 
         <div class="top">
@@ -108,16 +108,16 @@ select{
                         <tr>
                             <th>판매가</th>
                             <td>
-<%--                             	<span class="pre">${product.price}</span><span class="now"><strong>${product.prdSalePrc}</strong>원</span> --%>
+<%--                             	<span class="pre">${product.price}</span><span class="now"><strong>${product.productSalePrice}</strong>원</span> --%>
 
-								<c:if test="${not empty  product.prdSalePrc}"><span class="pre">${product.price}</span><span class="now"><strong  class="prdPrice">${product.prdSalePrc}</strong>원</span></c:if>
-								<c:if test="${empty  product.prdSalePrc}"><span class="now"><strong class="prdPrice"><fmt:formatNumber type="number">${product.price}</fmt:formatNumber></strong>원</span></c:if>
+								<c:if test="${not empty  product.productSalePrice}"><span class="pre">${product.price}</span><span class="now"><strong  class="prdPrice">${product.productSalePrice}</strong>원</span></c:if>
+								<c:if test="${empty  product.productSalePrice}"><span class="now"><strong class="prdPrice"><fmt:formatNumber type="number">${product.price}</fmt:formatNumber></strong>원</span></c:if>
                             	
                             </td>
                         </tr>
                         <tr>
                             <th>예약금</th>
-                            <td><span class="now"><strong  class="reservPrice">${reservationFee }</strong>원</span></td>
+                            <td><span class="now"><strong  class="reservPrice">{{reservationFee}}</strong>원</span></td>
                         </tr>
                     </table>
                     
@@ -127,7 +127,7 @@ select{
                     			<select class="saleCd" name="saleCd" id="saleCd">
 		                    	 <option value="">할인대상선택</option>
 		                    	 <c:forEach items="${saleCodes}" var="item">
-		                   			 <option value="${item.saleCd}" data-price="${item.saleVal }" data-calc-cd="${item.calcCd}">${item.saleNm}</option>
+		                   			 <option value="${item.saleCd}" data-price="{{saleVal}}" data-calc-cd="{{calcCd}}">{{saleNm}}</option>
 		                    	 </c:forEach>
 		                   		</select> 
                     		</c:if>
@@ -148,7 +148,7 @@ select{
                     		</c:otherwise>
                     	</c:choose>
                     	
-                  		 결제금액 <span class="now"><strong  class="reservPrice">${reservationFee }</strong>원</span></div>
+                  		 결제금액 <span class="now"><strong  class="reservPrice">{{reservationFee}}</strong>원</span></div>
                     <div class="btns">
                         <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
                         <a href="#" class="btn_type_y"><img src="$/preview/img/ico_question.png" alt="">문의하기</a>
@@ -179,10 +179,10 @@ select{
                     <p class="tit">${studio.studioName }</p>
                     <div class="cont" style="white-space: pre-wrap;"><c:out value="${studio.studioDescription }"></c:out></div>
                     <!--                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25321.327943563098!2d127.02990940300094!3d37.50400295780005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca405861e4a67%3A0x73ec1c047764908!2z7ISc7Jq47Yq567OE7IucIOqwleuCqOq1rCDthYztl6TrnoDroZw!5e0!3m2!1sko!2skr!4v1564976538213!5m2!1sko!2skr" frameborder="0" style="border:0" allowfullscreen></iframe> -->
-<%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.addr }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
+<%--                     <iframe src="https://www.google.com/maps/embed/v1/place?q={{#studio}}{{addr}}{{/studio}}&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe> --%>
                     <iframe src="https://www.google.com/maps/embed/v1/place?q=${studio.lttd },${studio.lgtd }&key=AIzaSyC2tsFNel3LV_XJjVC1QyGkhVsKvM9KoPo" frameborder="0" style="border:0" allowfullscreen></iframe>
                     <div class="address">
-                        <p><span>주소</span>${studio.addr }</p>
+                        <p><span>주소</span>{{#studio}}{{addr}}{{/studio}}</p>
                         <p><span>연락처</span>${studio.tel}</p>
                     </div>
                 </div>
@@ -224,7 +224,7 @@ select{
                 <!-- s:20190923 div.web_minSize 추가 -->
             	<div class="web_minSize">
                 <div class="info">
-                       <strong>${product.title}</strong>결제금액 <span  class="reservPrice">${reservationFee}</span>원
+                       <strong>${product.title}</strong>결제금액 <span  class="reservPrice">{{reservationFee}}</span>원
                 </div>
                 <div class="btns">
                     <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>

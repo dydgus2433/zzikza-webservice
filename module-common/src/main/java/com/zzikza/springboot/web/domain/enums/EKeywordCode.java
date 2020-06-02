@@ -2,8 +2,8 @@ package com.zzikza.springboot.web.domain.enums;
 
 public enum EKeywordCode {
 
-    상품("tb_prd"),
-    스튜디오("tb_stdo");
+    tb_prd("상품"),
+    tb_stdo("스튜디오");
     String value;
 
     EKeywordCode(String value) {

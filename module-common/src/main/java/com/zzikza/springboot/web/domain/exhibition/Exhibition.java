@@ -1,6 +1,7 @@
 package com.zzikza.springboot.web.domain.exhibition;
 
 import com.zzikza.springboot.web.domain.BaseTimeEntity;
+import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.sale.Sale;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
 import lombok.Builder;
@@ -28,9 +29,18 @@ public class Exhibition  extends BaseTimeEntity {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
     String title;
+    String content;
+    String target;
+    String url;
+    @OneToOne(mappedBy = "exhibition")
+    ExhibitionFile exhibitionFile;
 
     @OneToMany(mappedBy = "exhibition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Sale> sales = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "exhibition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Product> products = new ArrayList<>();
 
     @Builder
     public Exhibition(String title) {
@@ -39,5 +49,8 @@ public class Exhibition  extends BaseTimeEntity {
 
     public void addSale(Sale sale){
         this.sales.add(sale);
+    }
+    public void addProduct(Product product){
+        this.products.add(product);
     }
 }

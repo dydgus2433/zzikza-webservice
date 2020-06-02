@@ -12,8 +12,8 @@ $(document).ready(function(){
 					}else{
 						alert('탈퇴하지 못했습니다.');
 					}
-			}).fail(function(jqXHR, textStatus, errorThrown) {
-				console.log("fail",jqXHR, textStatus, errorThrown);
+			}).fail(function(jqXHR) {
+				alert(jqXHR.responseJSON.message);
 			}).always(function() {
 		    	console.info('DONE');
 		    });

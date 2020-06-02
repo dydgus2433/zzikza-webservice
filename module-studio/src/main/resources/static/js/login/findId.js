@@ -65,7 +65,7 @@ $(document).ready(function() {
 				//타이머 보여주기
 				startTimer();
 
-			}).fail(function (jqXHR, textStatus, errorThrown) {
+			}).fail(function (jqXHR) {
 				alert(jqXHR.responseJSON.message);
 			}).always(function () {
 				console.log('DONE');
@@ -118,7 +118,7 @@ $(document).ready(function() {
 			}else{
 				alert(data.msg);
 			}
-		}).fail(function(jqXHR, textStatus, errorThrown) {
+		}).fail(function(jqXHR) {
 			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');

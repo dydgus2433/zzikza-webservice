@@ -59,9 +59,9 @@ function selectLocalImage() {
 //					 },
         }).done(function (data) {
             quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
         });
     }
@@ -293,9 +293,9 @@ function deleteImageAction(e) {
             } else {
                 $(".upload-name").val("파일선택");
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
             console.log('DONE');
         });
@@ -332,9 +332,9 @@ function indexing() {
         type: "PUT"
     }).done(function (a, b, c) {
         console.log("success", a, b, c)
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('FAIL REQUEST: ', textStatus);
-        alert('처리중 오류가 발생하였습니다.');
+    }).fail(function (jqXHR) {
+        alert(jqXHR.responseJSON.message);
+
     }).always(function () {
         console.log('DONE');
     });
@@ -425,9 +425,9 @@ function submitAction() {
             alert('요청상품등록이 실패했습니다. 입력값을 확인해주세요.');
         }
 
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('FAIL REQUEST: ', textStatus);
-        alert('처리중 오류가 발생하였습니다.');
+    }).fail(function (jqXHR) {
+        alert(jqXHR.responseJSON.message);
+
     }).always(function () {
         //console.info('DONE');
     });

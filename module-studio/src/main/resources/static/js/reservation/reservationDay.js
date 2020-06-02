@@ -9,9 +9,9 @@ $(document).ready(function () {
             $("#popup").html('');
             $("#popup").html(result);
             $(".popup_book").show();
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
             console.log('DONE');
         });
@@ -30,9 +30,9 @@ $(document).ready(function () {
             $("#popup").html('');
             $("#popup").html(result);
             $(".popup_book").show();
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
             console.log('DONE');
         });

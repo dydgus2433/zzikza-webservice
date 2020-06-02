@@ -74,9 +74,9 @@ function selectLocalImage() {
 //					 },
         }).done(function (data) {
             quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
         });
     }
@@ -203,19 +203,19 @@ $(document).ready(function () {
     });
 
 
-    if ($("#prdSalePrc").val() > 0) {
+    if ($("#productSalePrice").val() > 0) {
         //select Y
-        $("#prdSalePrcSel").val("Y");
-        $("#prdSalePrc").show();
+        $("#productSalePriceSel").val("Y");
+        $("#productSalePrice").show();
     }
-    $("#prdSalePrcSel").on("change", function (e) {
-        const selValue = $("#prdSalePrcSel").val();
+    $("#productSalePriceSel").on("change", function (e) {
+        const selValue = $("#productSalePriceSel").val();
         console.log("change ", e, selValue);
         if (selValue == 'Y') {
-            $("#prdSalePrc").show();
+            $("#productSalePrice").show();
         } else {
-            $("#prdSalePrc").hide();
-            $("#prdSalePrc").val(0)
+            $("#productSalePrice").hide();
+            $("#productSalePrice").val(0)
         }
 
     })
@@ -377,7 +377,7 @@ function validate() {
             const name = input.name;
             if (name === 'productHour' || name === 'productMinute') {
                 alert("촬영소요시간을 입력해주세요");
-            } else if (name === 'prdSalePrc') {
+            } else if (name === 'productSalePrice') {
                 continue;
             } else {
                 alert(input.placeholder);
@@ -449,9 +449,9 @@ function submitAction() {
         } else {
             alert('상품등록이 실패했습니다. 입력값을 확인해주세요.');
         }
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('FAIL REQUEST: ', textStatus);
-        alert('처리중 오류가 발생하였습니다.');
+    }).fail(function (jqXHR) {
+        alert(jqXHR.responseJSON.message);
+
     }).always(function () {
         //console.info('DONE');
     });
@@ -481,9 +481,9 @@ function deleteImageAction(e) {
             } else {
                 $uploadName.val("파일선택");
             }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error('FAIL REQUEST: ', textStatus);
-            alert('처리중 오류가 발생하였습니다.');
+        }).fail(function (jqXHR) {
+            alert(jqXHR.responseJSON.message);
+
         }).always(function () {
         });
     } else {
@@ -506,9 +506,9 @@ function updateAndOrderOption(options) {
         data: {optnIds: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('FAIL REQUEST: ', textStatus);
-        alert('처리중 오류가 발생하였습니다.');
+    }).fail(function (jqXHR) {
+        alert(jqXHR.responseJSON.message);
+
     }).always(function () {
     });
 }
@@ -537,9 +537,9 @@ function bigOptionIndexing() {
     // 	data : {optnIds : indexes.join(","), tempKey : tempKey},
     // 	type: "post"
     // }).done(function(a,b,c){
-    // }).fail(function(jqXHR, textStatus, errorThrown) {
-    // 	console.error('FAIL REQUEST: ', textStatus);
-    // 	alert('처리중 오류가 발생하였습니다.');
+    // }).fail(function(jqXHR) {
+    // 	alert(jqXHR.responseJSON.message);
+    //
     // }).always(function() {
     // });
 }
@@ -571,9 +571,9 @@ function indexing() {
         data: {index: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR, textStatus, errorThrown) {
-        console.error('FAIL REQUEST: ', textStatus);
-        alert('처리중 오류가 발생하였습니다.');
+    }).fail(function (jqXHR) {
+        alert(jqXHR.responseJSON.message);
+
     }).always(function () {
     });
 }
