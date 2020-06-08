@@ -85,9 +85,6 @@
                 alert('등록되었습니다.');
                 $(".popup").hide();
                 location.reload();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
             }).always(function () {
                 console.log('DONE');
             });

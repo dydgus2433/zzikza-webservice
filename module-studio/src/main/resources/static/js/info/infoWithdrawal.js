@@ -10,10 +10,8 @@ $(document).ready(function(){
 						alert("탈퇴가 완료되었습니다.");
 						location.href = '/logout?returl=/';
 					}else{
-						alert('탈퇴하지 못했습니다.');
+						alert(data.msg);
 					}
-			}).fail(function(jqXHR) {
-				alert(jqXHR.responseJSON.message);
 			}).always(function() {
 		    	console.info('DONE');
 		    });

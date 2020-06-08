@@ -32,10 +32,10 @@ $(document).ready(function () {
                 required: true,
                 requireChk: true
             },
-	        businessLicFile : {
-	        	required: true,
-	        	extension : "png|jpg|jpeg"
-	        },
+            businessLicFile: {
+                required: true,
+                extension: "png|jpg|jpeg"
+            },
             tel: {
                 telRexChk: true
             },
@@ -71,11 +71,9 @@ $(document).ready(function () {
                     alert('회원가입이 완료 되었습니다.');
                     location.href = '/';
                 } else {
-                    alert('회원가입이 실패했습니다. 다시 시도해주세요.');
+                    alert(data.msg);
                 }
 
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
             }).always(function () {
                 console.log('DONE');
             });
@@ -92,17 +90,18 @@ $(document).ready(function () {
     });
 
 });
-function test(){
 
-    let tt ="studioId=tester2&password=dkssud123&passwordChk=dkssud123&studioName=찍자컴퍼니&tel=01063626542&postCode=02713&addr=서울 성북구 서경로 94&addrDtl=아느칸빌딩 203호&managerName=리롱시엔&managerTel=01022772433&managerEmail=lee@4themoment.co.kr&businessNumber=8935300335&requiredTermStatus=Y&sido=서울특별시&gugun=성북구&dong=정릉1동&lttd=37.6113417&lgtd=127.0139707".split("&");
-    for(let i =0; i < tt.length; i++){
+function test() {
+
+    let tt = "studioId=tester2&password=dkssud123&passwordChk=dkssud123&studioName=찍자컴퍼니&tel=01063626542&postCode=02713&addr=서울 성북구 서경로 94&addrDtl=아느칸빌딩 203호&managerName=리롱시엔&managerTel=01022772433&managerEmail=lee@4themoment.co.kr&businessNumber=8935300335&requiredTermStatus=Y&sido=서울특별시&gugun=성북구&dong=정릉1동&lttd=37.6113417&lgtd=127.0139707".split("&");
+    for (let i = 0; i < tt.length; i++) {
 
         const ttt = tt[i].split("=");
         console.log(ttt);
         const first = ttt[0];
         const second = ttt[1];
         console.log("first", first);
-        if(second){
+        if (second) {
             console.log("second", second);
             document.getElementById(first).value = second;
         }
@@ -196,20 +195,17 @@ function searchPostcode() {
                     },
                     dataType: 'json',
                 }).done(function (data) {
-                    if (data.addresses) {
-                        //위도
-                        document.getElementById('lttd').value = data.addresses[0].y;
-                        //경도
-                        document.getElementById('lgtd').value = data.addresses[0].x;
+                    if (data.success) {
+                        if (data.data.addresses) {
+                            //위도
+                            document.getElementById('lttd').value = data.data.addresses[0].y;
+                            //경도
+                            document.getElementById('lgtd').value = data.data.addresses[0].x;
+                        }
                     } else {
-                        //error
+                        alert(data.msg);
                     }
-                    //data.address[0].x
-                    //data.address[0].y
-                }).fail(function (jqXHR) {
-                    alert(jqXHR.responseJSON.message);
                 }).always(function () {
-                    //console.info('DONE');
                 });
             });
             //주소 disable

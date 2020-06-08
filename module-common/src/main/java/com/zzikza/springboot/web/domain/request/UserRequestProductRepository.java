@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRequestProductRepository extends JpaRepository<UserRequestProduct, String> {
     Page<UserRequestProduct> findAllByStudio(Studio studio, Pageable pageable);
+
+    Page<UserRequestProduct> findAllByUserRequest(UserRequest userRequest, Pageable pageable);
 }
 

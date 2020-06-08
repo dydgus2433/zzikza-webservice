@@ -65,13 +65,9 @@ $(document).ready(function(){
         				location.reload();
         			} 
         		}else{
-        			alert('수정이 실패했습니다. 다시 시도해주세요.');
+        			alert(data.msg);
         		}
-        		
-        	}).fail(function(jqXHR) {
-            	alert(jqXHR.responseJSON.message);
-
-            }).always(function() {
+        	}).always(function() {
             	console.log('DONE');
             });
         } 
@@ -102,8 +98,6 @@ $(document).ready(function(){
 			$("#secureBtn").html("재전송");
 			//타이머 보여주기
 			startTimer();
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});
@@ -124,9 +118,9 @@ $(document).ready(function(){
 				var ele = $("<span />").text("인증이 확인되었습니다.");
 				$("#secureBtn").after(ele);
 				stopTimer();
+			}else {
+				alert(data.msg);
 			}
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});

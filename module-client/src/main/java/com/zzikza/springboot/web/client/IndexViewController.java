@@ -29,8 +29,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zzikza.springboot.web.client.LoginClientViewController.REDIRECT;
-
 @RequiredArgsConstructor
 @Controller
 public class IndexViewController {
@@ -132,12 +130,9 @@ public class IndexViewController {
      * @return
      */
     @GetMapping(value = "/edit_password")
-    public String edit_password(@LoginUser UserResponseDto user,
-            Model model) {
-
-        // TODO : SNS type이면 리다이렉트
-        if(!user.getSnsType().equals(ESnsType.NORMAL)){
-            return REDIRECT + "/edit_memberMain";
+    public String edit_password(@LoginUser UserResponseDto user, Model model) {
+        if (!user.getSnsType().equals(ESnsType.NORMAL)) {
+            throw new IllegalArgumentException("일반회원이 아닙니다.");
         }
         model.addAttribute("title", "찍자 - 비밀번호 설정");
         return "/client/edit_password";
@@ -162,18 +157,11 @@ public class IndexViewController {
      * @return
      */
     @GetMapping(value = "/find_password")
-    public String find_password(
-            Model model) {
+    public String find_password(Model model) {
         model.addAttribute("title", "찍자 - 비밀번호 찾기");
         return "/client/find_password";
     }
 
-    @GetMapping(value = "/withdrawal")
-    public String withdrawal(
-            Model model) {
-        model.addAttribute("title", "찍자 - 회원탈퇴");
-        return "/client/withdrawal";
-    }
 
     /**
      * 회원정보 수정 페이지
@@ -182,8 +170,10 @@ public class IndexViewController {
      * @return
      */
     @GetMapping(value = "/edit_memberInfo")
-    public String edit_memberInfo(Model model) {
-
+    public String edit_memberInfo(@LoginUser UserResponseDto user, Model model) {
+        if (user == null) {
+            throw new IllegalArgumentException("로그인 해주세요.");
+        }
         model.addAttribute("title", "찍자 - 회원정보 수정");
         return "/client/edit_memberInfo";
     }
@@ -191,7 +181,6 @@ public class IndexViewController {
     @GetMapping(value = {"/join"})
     public String join(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
         setModelCallbackUrl(model, request);
-
         model.addAttribute("title", "찍자 - 회원가입");
         return "/client/join";
     }
@@ -238,7 +227,10 @@ public class IndexViewController {
      * @return
      */
     @GetMapping(value = {"/more"})
-    public String morePage(Model model) {
+    public String morePage(@LoginUser UserResponseDto user, Model model) {
+        if (user == null) {
+            throw new IllegalArgumentException("로그인 해주세요.");
+        }
 //        setUserSeq(request, params);
 //        // 예약건
 //        List<Map<String, Object>> reservations = scheduleService.selectReservations(params);
@@ -261,7 +253,6 @@ public class IndexViewController {
      */
     @GetMapping(value = {"/join_normal"})
     public String join2(Model model) {
-
         model.addAttribute("title", "찍자 - 일반 회원가입");
         return "/client/join_normal";
     }

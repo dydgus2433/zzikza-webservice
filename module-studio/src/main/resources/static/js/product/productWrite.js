@@ -74,9 +74,6 @@ function selectLocalImage() {
 //					 },
         }).done(function (data) {
             quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
         });
     }
@@ -447,11 +444,8 @@ function submitAction() {
             alert('상품이 등록되었습니다.');
             location.href = '/product/list';
         } else {
-            alert('상품등록이 실패했습니다. 입력값을 확인해주세요.');
+            alert(data.msg);
         }
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
         //console.info('DONE');
     });
@@ -481,9 +475,6 @@ function deleteImageAction(e) {
             } else {
                 $uploadName.val("파일선택");
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
         });
     } else {
@@ -506,9 +497,6 @@ function updateAndOrderOption(options) {
         data: {optnIds: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
     });
 }
@@ -522,26 +510,6 @@ function smallOptionIndexing() {
 function bigOptionIndexing() {
     const options = $("#bigOption li").not(":last");
     updateAndOrderOption(options);
-    // if(options.length < 1){
-    // 	return;
-    // }
-    // var indexes = [];
-    // for(var i = 0; i < options.length; i++){
-    // 	var option = $(options[i]);
-    //
-    // 	indexes.push($(option).data("optn_id"));
-    // }
-    //
-    // $.ajax({
-    // 	url:  "/api/updateOptionOrder",
-    // 	data : {optnIds : indexes.join(","), tempKey : tempKey},
-    // 	type: "post"
-    // }).done(function(a,b,c){
-    // }).fail(function(jqXHR) {
-    // 	alert(jqXHR.responseJSON.message);
-    //
-    // }).always(function() {
-    // });
 }
 
 //인덱싱
@@ -571,9 +539,6 @@ function indexing() {
         data: {index: indexes.join(","), tempKey: tempKey},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
     });
 }

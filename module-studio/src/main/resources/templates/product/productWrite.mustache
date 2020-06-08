@@ -2,7 +2,8 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="ko"> <!--<![endif]-->
 {{>layout/head}}
 <body>
 {{>layout/header}}
@@ -25,7 +26,7 @@
                     <h3 class="sub_stit">카테고리</h3>
                     <select class="select_goods_category" name="productCategory">
                         {{#codes}}
-                            <option value="{{commCd}}" >{{commCdNm}}</option>
+                            <option value="{{commCd}}">{{commCdNm}}</option>
                         {{/codes}}
                     </select>
                 </div>
@@ -86,7 +87,8 @@
                             <span class="tit">시간</span>
                             <select class="form_time" name="productMinute">
                                 {{#minutes}}
-                                    <option value="{{minute}}"  {{#isSelected}}selected{{/isSelected}}>{{minute}}</option>
+                                    <option value="{{minute}}"
+                                            {{#isSelected}}selected{{/isSelected}}>{{minute}}</option>
                                 {{/minutes}}
                             </select>분
                         </li>
@@ -376,9 +378,6 @@
                                 }else{
                                     $("#multiCheckCd").prop("checked", false)
                                 }
-                            }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -399,10 +398,7 @@
                                      var htmlText = "<li data-optn_id="+option.optnId+">"+option.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.append(htmlText);
                                 }
-                            }).fail(function(jqXHR) {
-                                    alert(jqXHR.responseJSON.message);
-
-                                }).always(function() {
+                            }).always(function() {
                                     console.log('DONE');
                                 });
                         }
@@ -425,10 +421,7 @@
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             $("ul#optionSort li").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -477,10 +470,7 @@
                                 }
 
 
-                            }).fail(function(jqXHR) {
-                                    alert(jqXHR.responseJSON.message);
-
-                                }).always(function() {
+                            }).always(function() {
                                     console.log('DONE');
                                 });
                         }else{
@@ -503,10 +493,7 @@
                             console.log('result', result);
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -533,10 +520,7 @@
                             }else{
                                 $("#multiCheckCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -561,9 +545,6 @@
                                      var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.parent().after(htmlText);
                                      textInput.parent().remove();
-                                 }).fail(function(jqXHR) {
-                                     alert(jqXHR.responseJSON.message);
-
                                  }).always(function() {
                                      console.log('DONE');
                                  });
@@ -610,9 +591,6 @@
                             var  textInput = $("ul#optionSort");
                              var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                              textInput.append(htmlText);
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -678,9 +656,6 @@
                             }else{
                                 $("#countCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -729,9 +704,6 @@
                                     }
                                 }
                             }
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -823,7 +795,7 @@
                 -->
                 <div class="box_area full">
                     <div class="btn_area">
-                            <button type="button" class="btn_save" id="submitBtn">저장</button>
+                        <button type="button" class="btn_save" id="submitBtn">저장</button>
                     </div>
                 </div>
             </div>
@@ -831,7 +803,7 @@
     </div>
     <!--// left_area -->
 
-<!--     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <!--     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/upload/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="/js/upload/jquery.iframe-transport.js"></script>

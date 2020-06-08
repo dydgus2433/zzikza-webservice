@@ -78,8 +78,6 @@ $(document).ready(function(){
 			//타이머 보여주기
 			startTimer();
 			
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});		
@@ -98,8 +96,6 @@ $(document).ready(function(){
 			type : 'post'
 
 		}).done(function(result) {
-			
-			
 			if(result.success){
 				$(".overTime").hide();
 				$(".secureNumber").hide();
@@ -109,13 +105,10 @@ $(document).ready(function(){
 				}else{
 					$("#showId").html("<span>아이디는 <b>"+result.data.userId+"</b> 입니다.</span>");
 				}
-				
 				stopTimer();
 			}else{
 				alert(result.msg);
 			}
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});

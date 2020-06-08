@@ -10,13 +10,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Getter
 @Entity(name = "tb_wish")
-public class UserWishProduct  extends BaseTimeEntity {
+public class UserWishProduct extends BaseTimeEntity {
 
     @Id
     @Column(name = "WSH_ID")
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
@@ -35,14 +36,14 @@ public class UserWishProduct  extends BaseTimeEntity {
     Product product;
 
     @Builder
-    public UserWishProduct() {
-    }
-
-    public void setProduct(Product product) {
+    public UserWishProduct(Product product, User user) {
         this.product = product;
+        this.user = user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 }
+
+

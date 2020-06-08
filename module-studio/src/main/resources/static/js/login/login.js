@@ -67,17 +67,16 @@ $(document).ready(function() {
                 contentType : 'application/json; charset=utf-8',
                 data : JSON.stringify(data)
         	}).done(function(result,success) {
-                 if(!returl){
-                      location.href = 'board/notice';
-                  }else{
-                      location.href = returl;
-                  }
-            })
-			.fail(function(error) {
-				console.log(error)
-				 alert(error.responseJSON.message);
-//			    alert( "로그인에 실패했습니다." );
-			})
+        		if(result.success){
+					if(!returl){
+						location.href = 'board/notice';
+					}else{
+						location.href = returl;
+					}
+				}else{
+        			alert(result.msg);
+				}
+            });
 
 		}
 	});

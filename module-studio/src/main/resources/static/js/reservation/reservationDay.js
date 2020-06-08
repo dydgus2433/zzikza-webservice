@@ -9,9 +9,6 @@ $(document).ready(function () {
             $("#popup").html('');
             $("#popup").html(result);
             $(".popup_book").show();
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
             console.log('DONE');
         });
@@ -30,9 +27,6 @@ $(document).ready(function () {
             $("#popup").html('');
             $("#popup").html(result);
             $(".popup_book").show();
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
             console.log('DONE');
         });

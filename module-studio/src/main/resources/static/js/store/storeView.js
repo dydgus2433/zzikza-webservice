@@ -50,8 +50,6 @@ $(document).ready(function () {
             } else {
                 alert('추가하려는 값을 다시 확인해주세요.')
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
         }).always(function () {
         });
     })
@@ -120,9 +118,9 @@ $(document).ready(function () {
 
                 if (data.success) {
                     $("#holiday li.active[value='" + value + "']").remove();
+                } else {
+                    alert(data.msg);
                 }
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
             }).always(function () {
             });
         }
@@ -436,11 +434,9 @@ function submitAction() {
         if (data.success) {
             alert('매장정보가 저장되었습니다.');
         } else {
-            alert('매장정보 저장 중 오류가 발생했습니다.')
+            alert(data.msg);
         }
 // location.reload();
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
     }).always(function () {
         // console.info('DONE');
     });
@@ -468,8 +464,6 @@ function deleteImageAction(e) {
             } else {
                 $(".upload-name").val("파일선택");
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
         }).always(function () {
             //console.info('DONE');
         });
@@ -508,8 +502,6 @@ function indexing() {
         if (b) {
             alert(a.msg)
         }
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
     }).always(function () {
         //console.info('DONE');
     });

@@ -5,8 +5,9 @@ import com.zzikza.springboot.web.annotaion.LoginStudio;
 import com.zzikza.springboot.web.domain.certification.Certification;
 import com.zzikza.springboot.web.domain.certification.CertificationRepository;
 import com.zzikza.springboot.web.domain.enums.ECertificationStatus;
+import com.zzikza.springboot.web.domain.enums.EStudioStatus;
+import com.zzikza.springboot.web.domain.enums.ETableStatus;
 import com.zzikza.springboot.web.domain.studio.Studio;
-import com.zzikza.springboot.web.domain.studio.StudioHolidayRepository;
 import com.zzikza.springboot.web.dto.*;
 import com.zzikza.springboot.web.result.CommonResult;
 import com.zzikza.springboot.web.result.ListResult;
@@ -20,11 +21,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,6 +38,9 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.zzikza.springboot.web.studio.LoginViewController.ID_WITHDRAWAL;
+import static com.zzikza.springboot.web.studio.LoginViewController.SESSION_VO;
 
 @RequiredArgsConstructor
 @RestController
@@ -50,14 +56,6 @@ public class StudioRestApiController {
      * @return
      */
 
-    //비밀번호
-    public static final String CRTF_PASSWORD = "S0";
-    //미인증
-    public static final String CRTF_NOT_ACCEPT = "S1";
-    //인증
-    public static final String CRTF_ACCEPT = "S2";
-    //거절
-    public static final String CRTF_REJECT = "S3";
     private final ResponseService responseService;
     private final StudioService studioService;
     private final ProductService productService;
@@ -66,8 +64,14 @@ public class StudioRestApiController {
     private final StorageServiceImpl storageService;
     private final ReservationService reservationService;
     private final StudioQuestionService studioQuestionService;
-    private final StudioHolidayRepository studioHolidayRepository;
     private final CertificationRepository certificationRepository;
+
+    private final MenuService menuService;
+
+    @ExceptionHandler(Exception.class)
+    public CommonResult exceptionResult(Exception ex) {
+        return responseService.getFailResult(ex);
+    }
 
     @PostMapping(value = "/api/studio-board")
     public SingleResult<StudioBoardResponseDto> insertStudioBoard(
@@ -537,7 +541,7 @@ public class StudioRestApiController {
     }
 
     @GetMapping("/api/location")
-    public Map<String, Object> getLocation(@RequestParam Map<String, Object> params) throws IllegalStateException, IOException, ParseException {
+    public CommonResult getLocation(@RequestParam Map<String, Object> params) throws IllegalStateException, IOException, ParseException {
         String query = (String) params.get("query");
         String clientId = "vi60zll466";// 애플리케이션 클라이언트 아이디값";
         String clientSecret = "EHv5vyvhMSXHv8zmDsGAfNWHEmckBUKQrvm96THs";// 애플리케이션 클라이언트 시크릿값";
@@ -569,64 +573,32 @@ public class StudioRestApiController {
         br.close();
         // convert JSON string to Map
         Map map = mapper.readValue(response.toString(), Map.class);
-        return map;
+        return responseService.getSingleResult(map);
     }
 
     @RequestMapping(value = {"/join"}, method = RequestMethod.POST)
-    public CommonResult insertStudio(
-            StudioSaveRequestDto dto,
-            @RequestParam("businessLicFile") MultipartFile file) throws Exception {
-        System.out.println(dto.toString());
-
-        try {
-            StudioRequestDto studioRequestDto = StudioRequestDto.builder().studioId(dto.getStudioId()).build();
-            StudioResponseDto response = studioService.findById(dto.getStudioId());
-
-        } catch (IllegalArgumentException e) {
-            if (!e.getMessage().equals("회원정보가 맞지 않습니다.")) {
-                throw new Exception("이미 존재하는 아이디입니다.");
-            }
-        }
-        try {
-            studioService.saveStudio(dto, file);
-            return responseService.getSuccessResult();
-        } catch (Exception e) {
-            throw new Exception("이미 존재하는 아이디입니다.");
-        }
+    public CommonResult insertStudio(StudioSaveRequestDto dto, @RequestParam("businessLicFile") MultipartFile file) throws Exception {
+        studioService.saveStudio(dto, file);
+        return responseService.getSuccessResult();
     }
 
     @SuppressWarnings("unchecked")
     @Transactional
     @PostMapping(value = "/api/secure-code")
-    public CommonResult sendSecureCodeApi(
-//            @RequestParam Map<String, Object>  params
-            CertificationRequestDto params
-    ) {
+    public CommonResult sendSecureCodeApi(CertificationRequestDto params) throws IOException, ParseException {
         //임시비밀번호랑 id로 비밀번호 update 후 전송
         String secureCode = RandomStringUtils.randomNumeric(6);
         params.setCertificationValue(secureCode);
         //존재하면 임시번호 전송
         params.setCertificationStatus(ECertificationStatus.S1);
-
-//        try {
-//
-        try {
-            Certification certification = params.toEntity();
-            certificationRepository.save(certification);
-            Map<String, Object> successMap = MessageUtil.sendSecureCode(params);
-            //{"result_code":"1","message":"success","msg_id":"58027717","success_cnt":1,"error_cnt":0,"msg_type":"SMS"}
-            if (successMap.get("result_code").equals("1")) {
-                return responseService.getSuccessResult();
-            } else {
-                CommonResult commonResult = responseService.getFailResult();
-                commonResult.setMsg("문제가 있을 경우 문의 부탁드립니다. 02-6205-3420");
-                return commonResult;
-            }
-        } catch (Exception e) {
-            //문자 전송
-            CommonResult commonResult = responseService.getFailResult();
-            commonResult.setMsg("문제가 있을 경우 문의 부탁드립니다. 02-6205-3420");
-            return commonResult;
+        Certification certification = params.toEntity();
+        certificationRepository.save(certification);
+        Map<String, Object> successMap = MessageUtil.sendSecureCode(params);
+        //{"result_code":"1","message":"success","msg_id":"58027717","success_cnt":1,"error_cnt":0,"msg_type":"SMS"}
+        if (successMap.get("result_code").equals("1")) {
+            return responseService.getSuccessResult();
+        } else {
+            throw new IllegalArgumentException("문제가 있을 경우 문의 부탁드립니다. 02-6205-3420");
         }
     }
 
@@ -640,10 +612,7 @@ public class StudioRestApiController {
      * @return
      */
     @PostMapping(value = "/api/secure-code/check")
-    public CommonResult checkSecureCodeApi(
-//            @RequestParam Map<String, Object>  params
-            CertificationRequestDto params
-    ) {
+    public CommonResult checkSecureCodeApi(CertificationRequestDto params) {
         try {
             String checkSecure = params.getCertificationValue();
             String managerTel = params.getManagerTel();
@@ -656,19 +625,13 @@ public class StudioRestApiController {
                 if (checkSecure.equals(crtfVal)) {
                     Studio studio = studioService.findByCertification(certification1);
                     //스튜디오 전화번호와 인증번호 같은지 비교
-
                     if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getManagerName().equals(studio.getManagerName())) {
-//                        successMap = messageMap(SUCCESS, "인증이 완료되었습니다.");
-//                        successMap.put("studioId", lists.get(0).get("studioId"));
-//                        CommonResult commonResult = responseService.getSuccessResult();
                         return responseService.getSingleResult(new StudioResponseDto(studio));
                     }
                 }
             }
         } catch (Exception e) {
-            CommonResult commonResult = responseService.getFailResult();
-            commonResult.setMsg("인증정보가 일치하지 않습니다.");
-            return commonResult;
+            throw new IllegalArgumentException("인증정보가 일치하지 않습니다.");
         }
         CommonResult commonResult = responseService.getFailResult();
         commonResult.setMsg("인증정보가 일치하지 않습니다.");
@@ -696,9 +659,9 @@ public class StudioRestApiController {
                     if (certification1.getManagerTel().equals(studio.getManagerTel()) && certification1.getStudioId().equals(studio.getStudioId())) {
                         //임시 비밀번호 만들어서 전송하고 메세지 보내야함
                         //임시비밀번호랑 id로 비밀번호 update 후 전송
-                        String tempPassword  = RandomStringUtils.randomAlphabetic(1) + RandomStringUtils.randomNumeric(8);
+                        String tempPassword = RandomStringUtils.randomAlphabetic(1) + RandomStringUtils.randomNumeric(8);
                         params.setCertificationValue(tempPassword);
-                        StudioInfoRequestDto entity = new  StudioInfoRequestDto();
+                        StudioInfoRequestDto entity = new StudioInfoRequestDto();
                         entity.setChangePassword(tempPassword);
                         studio.update(entity);
                         MessageUtil.sendPassword(params);
@@ -715,10 +678,22 @@ public class StudioRestApiController {
             commonResult.setMsg("인증정보가 일치하지 않습니다.");
             return commonResult;
         } catch (Exception e) {
-            CommonResult commonResult = responseService.getFailResult();
-            commonResult.setMsg("인증정보가 일치하지 않습니다.");
-            return commonResult;
+            throw new IllegalArgumentException("인증정보가 일치하지 않습니다.");
         }
 
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @PostMapping(value = "/loginProcess")
+    public CommonResult loginProcess(@RequestBody StudioRequestDto params, HttpSession session, HttpServletRequest request, ModelMap model) {
+        StudioResponseDto responseDto = studioService.findByStudioIdAndPassword(params);
+        if (EStudioStatus.N.equals(responseDto.getAccountStatus())) {
+            throw new IllegalArgumentException(ID_WITHDRAWAL);
+        }
+        session.setAttribute(SESSION_VO, responseDto);
+        List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNullAndUseStatusEquals(ETableStatus.valueOf("Y"));
+        session.setAttribute("menuList", menuList);
+        return responseService.getSingleResult(responseDto);
     }
 }

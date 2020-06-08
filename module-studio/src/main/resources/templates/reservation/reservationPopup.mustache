@@ -18,7 +18,8 @@
                     <tr>
                         <th>시작시간</th>
                         <td>
-                            <input type="text" class="date datepicker" id="reservationStartDate" name="reservationStartDate"
+                            <input type="text" class="date datepicker" id="reservationStartDate"
+                                   name="reservationStartDate"
                                    value="{{#detail}}{{reservationStartDate}}{{/detail}}">
                             <select id="reservationStartHour" name="reservationStartHour">
                                 {{#times}}
@@ -38,7 +39,7 @@
                     <tr>
                         <th>종료시간</th>
                         <td>
-                            <input type="text" class="date datepicker" id="rsrvEndDt" name="rsrvEndDt"
+                            <input type="text" class="date datepicker" id="reservationEndDate" name="reservationEndDate"
                                    value="{{#detail}}{{reservationEndDate}}{{/detail}}">
                             <select id="reservationEndHour" name="reservationEndHour">
                                 {{#times}}
@@ -76,7 +77,7 @@
                     </tr>
                     <tr>
                         <th>일정상세</th>
-                        <td><textarea class="w100" name="cstmReq"
+                        <td><textarea class="w100" name="customRequest"
                                       placeholder="일정상세를 입력해주세요.">{{#detail}}{{customRequest}}{{/detail}}</textarea>
                         </td>
                     </tr>
@@ -146,9 +147,6 @@
                 $("#popup").html('');
                 $("#popup").html(result);
                 $(".popup_book").show();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
             }).always(function () {
                 console.log('DONE');
             });
@@ -167,9 +165,6 @@
                 $("#popup").html('');
                 $("#popup").html(result);
                 $(".popup_book").show();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
             }).always(function () {
                 console.log('DONE');
             });
@@ -214,9 +209,6 @@
             }).done(function (result) {
                 alert('등록되었습니다.');
                 location.reload();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
             }).always(function () {
                 console.log('DONE');
             });
@@ -241,9 +233,6 @@
                 console.log(result);
                 alert('수정되었습니다.')
                 location.reload();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
             }).always(function () {
                 console.log('DONE');
             });
@@ -266,12 +255,13 @@
                 processData: false,
                 contentType: false,
             }).done(function (result) {
-                console.log(result);
-                alert('삭제되었습니다.')
-                location.reload();
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
+                if (result.success) {
+                    console.log(result);
+                    alert('삭제되었습니다.')
+                    location.reload();
+                } else {
+                    alert(result.msg);
+                }
             }).always(function () {
                 console.log('DONE');
             });
@@ -304,7 +294,7 @@
             }
         }
 
-        inputs = $("textarea[name='cstmReq']");
+        inputs = $("textarea[name='customRequest']");
         for (var i = 0; i < inputs.length; i++) {
             input = inputs[i];
             if ($(input).val() == "") {
@@ -315,7 +305,7 @@
         }
 
         var startDateTm = $("#reservationStartDate").val() + '-' + $("#reservationStartHour").val() + ':' + $("#reservationStartMinute").val();
-        var endDateTm = $("#rsrvEndDt").val() + '-' + $("#reservationEndHour").val() + ':' + $("#reservationEndMinute").val();
+        var endDateTm = $("#reservationEndDate").val() + '-' + $("#reservationEndHour").val() + ':' + $("#reservationEndMinute").val();
         startDateTm = startDateTm.replace(/-/gi, '/');
         endDateTm = endDateTm.replace(/-/gi, '/');
         if (new Date(startDateTm) >= new Date(endDateTm)) {

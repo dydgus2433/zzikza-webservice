@@ -1,10 +1,7 @@
 package com.zzikza.springboot.web.dto;
 
 
-import com.zzikza.springboot.web.domain.enums.EProductCategory;
 import com.zzikza.springboot.web.domain.enums.EReservationStatus;
-import com.zzikza.springboot.web.domain.enums.EShowStatus;
-import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.reservation.Reservation;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +19,7 @@ public class ReservationRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate reservationStartDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate rsrvEndDt;
+    LocalDate reservationEndDate;
     Integer reservationStartHour;
     Integer reservationStartMinute;
 
@@ -31,46 +28,54 @@ public class ReservationRequestDto {
     String userName;
     String tel;
     String scheduleName;
-    String cstmReq;
-    Integer price;
+    String customRequest;
+    Integer reservationPrice;
+    Integer productPrice;
     Integer peopleCnt;
     EReservationStatus rsrvStatCd;
+    String saleId;
+    String exhId;
 
-    public ReservationRequestDto(LocalDate reservationStartDate, Integer reservationStartHour, Integer reservationStartMinute, LocalDate rsrvEndDt, Integer reservationEndHour, Integer reservationEndMinute, String userName, String tel, String scheduleName, String cstmReq, Integer price, Integer peopleCnt, EReservationStatus rsrvStatCd) {
+    public ReservationRequestDto(String exhId, Integer productPrice, Integer reservationPrice, String saleCode, LocalDate reservationStartDate, Integer reservationStartHour, Integer reservationStartMinute, LocalDate reservationEndDate, Integer reservationEndHour, Integer reservationEndMinute, String userName, String tel, String scheduleName, String customRequest, Integer price, Integer peopleCnt, EReservationStatus rsrvStatCd) {
         this.id = id;
         this.reservationStartDate = reservationStartDate;
         this.reservationStartHour = reservationStartHour;
         this.reservationStartMinute = reservationStartMinute;
-        this.rsrvEndDt = rsrvEndDt;
+        this.reservationEndDate = reservationEndDate;
         this.reservationEndHour = reservationEndHour;
         this.reservationEndMinute = reservationEndMinute;
         this.userName = userName;
         this.tel = tel;
         this.scheduleName = scheduleName;
-        this.cstmReq = cstmReq;
-        this.price = price;
+        this.customRequest = customRequest;
+        this.productPrice = productPrice;
+        this.reservationPrice = reservationPrice;
         this.peopleCnt = peopleCnt;
         this.rsrvStatCd = rsrvStatCd;
+        this.saleId = saleCode;
+        this.exhId = exhId;
     }
 
     @Builder
-    public ReservationRequestDto(String id,Integer peopleCnt,  LocalDate reservationStartDate, Integer reservationStartHour, Integer reservationStartMinute, LocalDate rsrvEndDt, Integer reservationEndHour, Integer reservationEndMinute, String userName, String tel, String scheduleName, String cstmReq, Integer price, EReservationStatus rsrvStatCd) {
+    public ReservationRequestDto(String exhId, Integer productPrice, Integer reservationPrice, String saleCode, String id, Integer peopleCnt, LocalDate reservationStartDate, Integer reservationStartHour, Integer reservationStartMinute, LocalDate reservationEndDate, Integer reservationEndHour, Integer reservationEndMinute, String userName, String tel, String scheduleName, String customRequest, Integer price, EReservationStatus rsrvStatCd) {
         this.id = id;
         this.peopleCnt = peopleCnt;
         this.reservationStartDate = reservationStartDate;
         this.reservationStartHour = reservationStartHour;
         this.reservationStartMinute = reservationStartMinute;
-        this.rsrvEndDt = rsrvEndDt;
+        this.reservationEndDate = reservationEndDate;
         this.reservationEndHour = reservationEndHour;
         this.reservationEndMinute = reservationEndMinute;
         this.userName = userName;
         this.tel = tel;
         this.scheduleName = scheduleName;
-        this.cstmReq = cstmReq;
-        this.price = price;
+        this.customRequest = customRequest;
+        this.productPrice = productPrice;
+        this.reservationPrice = reservationPrice;
         this.rsrvStatCd = rsrvStatCd;
+        this.saleId = saleCode;
+        this.exhId = exhId;
     }
-
 
 
     public Reservation toEntity() {
@@ -81,14 +86,14 @@ public class ReservationRequestDto {
                 .reservationStartDate(reservationStartDate)
                 .reservationStartHour(reservationStartHour)
                 .reservationStartMinute(reservationStartMinute)
-                .reservationEndDate(rsrvEndDt)
+                .reservationEndDate(reservationEndDate)
                 .reservationEndHour(reservationEndHour)
                 .reservationEndMinute(reservationEndMinute)
                 .userName(userName)
                 .tel(tel)
                 .scheduleName(scheduleName)
-                .customRequest(cstmReq)
-                .inputPrice(price)
+                .customRequest(customRequest)
+                .inputPrice(reservationPrice)
                 .reservationStatus(rsrvStatCd)
                 .build();
     }

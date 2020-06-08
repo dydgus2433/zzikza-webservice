@@ -13,9 +13,6 @@ $(document).ready(function(){
             const day = list[i].dateValue;
             week.push(day);
         }
-    }).fail(function(jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function() {
     });
 

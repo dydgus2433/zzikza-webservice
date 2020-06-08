@@ -38,7 +38,6 @@ public class LoginViewController {
     private static final String JOIN_PAGE = "login/join";
     private static final String POLICY_VIEW_PAGE = "policy/policyView";
     private final StudioService studioService;
-    private final MenuService menuService;
     private final PolicyService policyService;
 
     @GetMapping(value = {"/", ""})
@@ -69,20 +68,6 @@ public class LoginViewController {
     }
 //
 
-    @SuppressWarnings("unchecked")
-//    @RequestMapping(value = "/loginProcess", method = { RequestMethod.POST }, produces = CONTENT_TYPE)
-    @PostMapping(value = "/loginProcess")
-    @ResponseBody
-    public StudioResponseDto loginProcess(@RequestBody StudioRequestDto params, HttpSession session, HttpServletRequest request, ModelMap model) {
-        StudioResponseDto responseDto = studioService.findByStudioIdAndPassword(params);
-        if (EStudioStatus.N.equals(responseDto.getAccountStatus())) {
-            throw new IllegalArgumentException(ID_WITHDRAWAL);
-        }
-        session.setAttribute(SESSION_VO, responseDto);
-        List<MenusListResponseDto> menuList = menuService.findAllByParentMenuIsNullAndUseStatusEquals(ETableStatus.valueOf("Y"));
-        session.setAttribute("menuList", menuList);
-        return responseDto;
-    }
 
     @GetMapping(value = "/logout")
     public String logout(HttpSession session, @RequestParam Map<String, Object> params) {

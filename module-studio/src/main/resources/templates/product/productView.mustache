@@ -2,7 +2,8 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="ko"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="ko"> <!--<![endif]-->
 {{>layout/head}}
 <body>
 {{>layout/header}}
@@ -48,13 +49,13 @@
                     </div>
                     <ul class="shop_img_list" id="sortable">
                         {{#files}}
-                                <li index="{{id}}" id="img_id_{{id}}">
-                                    <div class="img_area">
-                                        <button type="button" class="btn_del_img">삭제</button>
-                                        <img src="{{filePath}}" onerror="this.src='/images/common/no_img.gif'">
-                                    </div>
-                                    <div class="text">{{fileOrder}}</div>
-                                </li>
+                            <li index="{{id}}" id="img_id_{{id}}">
+                                <div class="img_area">
+                                    <button type="button" class="btn_del_img">삭제</button>
+                                    <img src="{{filePath}}" onerror="this.src='/images/common/no_img.gif'">
+                                </div>
+                                <div class="text">{{fileOrder}}</div>
+                            </li>
                         {{/files}}
                     </ul>
                 </div>
@@ -65,16 +66,16 @@
                            value="{{#product}}{{price}}{{/product}}" required="required">
                 </div>
 
-<!--                <div class="box_area full">-->
-<!--                    <h3 class="sub_stit">상품 할인 금액</h3>-->
-<!--                    <select id="productSalePriceSel">-->
-<!--                        <option value="N">비사용</option>-->
-<!--                        <option value="Y">사용</option>-->
-<!--                    </select>-->
-<!--                    <input type="number" id="productSalePrice" name="productSalePrice" class="form_goods number"-->
-<!--                           placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!salePrice}}{{!/product}}"-->
-<!--                           style="display: none;">-->
-<!--                </div>-->
+                <!--                <div class="box_area full">-->
+                <!--                    <h3 class="sub_stit">상품 할인 금액</h3>-->
+                <!--                    <select id="productSalePriceSel">-->
+                <!--                        <option value="N">비사용</option>-->
+                <!--                        <option value="Y">사용</option>-->
+                <!--                    </select>-->
+                <!--                    <input type="number" id="productSalePrice" name="productSalePrice" class="form_goods number"-->
+                <!--                           placeholder="상품 금액을 입력해 주세요." value="{{!#product}}{{!salePrice}}{{!/product}}"-->
+                <!--                           style="display: none;">-->
+                <!--                </div>-->
 
                 <!-- 				<div class="box_area full"> -->
                 <!-- 					<h3 class="sub_stit">할인 금액</h3> -->
@@ -391,9 +392,6 @@
                                 }else{
                                     $("#multiCheckCd").prop("checked", false)
                                 }
-                            }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
                             }).always(function() {
                                 console.log('DONE');
                             });
@@ -414,10 +412,7 @@
                                      var htmlText = "<li data-optn_id="+option.optnId+">"+option.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.append(htmlText);
                                 }
-                            }).fail(function(jqXHR) {
-                                    alert(jqXHR.responseJSON.message);
-
-                                }).always(function() {
+                            }).always(function() {
                                     console.log('DONE');
                                 });
                         }
@@ -440,10 +435,7 @@
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             $("ul#optionSort li").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -492,10 +484,7 @@
                                 }
 
 
-                            }).fail(function(jqXHR) {
-                                    alert(jqXHR.responseJSON.message);
-
-                                }).always(function() {
+                            }).always(function() {
                                     console.log('DONE');
                                 });
                         }else{
@@ -518,10 +507,7 @@
                             console.log('result', result);
                             $("li[data-optn_id='"+result.optnId+"']").remove();
                             smallOptionReset();
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -548,10 +534,7 @@
                             }else{
                                 $("#multiCheckCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR) {
-                                alert(jqXHR.responseJSON.message);
-
-                            }).always(function() {
+                        }).always(function() {
                                 console.log('DONE');
                             });
                     });
@@ -576,9 +559,6 @@
                                      var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                                      textInput.parent().after(htmlText);
                                      textInput.parent().remove();
-                                 }).fail(function(jqXHR) {
-                                     alert(jqXHR.responseJSON.message);
-
                                  }).always(function() {
                                      console.log('DONE');
                                  });
@@ -625,9 +605,6 @@
                             var  textInput = $("ul#optionSort");
                              var htmlText = "<li data-optn_id="+result.optnId+">"+result.optnNm+" <img class=\"cancel\" src=\"/resources/css/easyui/themes/icons/cancel.png\"></li>";
                              textInput.append(htmlText);
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -693,9 +670,6 @@
                             }else{
                                 $("#countCd").prop("checked", false)
                             }
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -744,9 +718,6 @@
                                     }
                                 }
                             }
-                        }).fail(function(jqXHR) {
-                            alert(jqXHR.responseJSON.message);
-
                         }).always(function() {
                             console.log('DONE');
                         });
@@ -854,7 +825,7 @@
     </div>
     <!--// left_area -->
 
-<!--     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <!--     <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/upload/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="/js/upload/jquery.iframe-transport.js"></script>

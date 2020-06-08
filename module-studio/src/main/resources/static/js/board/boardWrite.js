@@ -36,10 +36,10 @@ function selectLocalImage() {
         }).done(function (data) {
             if(data.success){
                 quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
+            }else{
+                alert(data.msg);
             }
 
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
         });
@@ -108,9 +108,9 @@ $(document).ready(function () {
         }).done(function (data) {
             if (data.success) {
                 location.href = '/board/' + brdCateCd;
+            }else{
+                alert(data.msg);
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
         });

@@ -36,16 +36,6 @@ public class LoginClientViewController {
     private final PolicyService policyService;
     private final ResponseService responseService;
 
-    @PostMapping(value = "/loginProcess")
-    @ResponseBody
-    public CommonResult loginProcess(UserRequestDto params, HttpSession session) {
-        UserResponseDto responseDto = userService.findByUserIdAndPassword(params);
-        if (EUserStatus.N.equals(responseDto.getUserStatus())) {
-            throw new IllegalArgumentException(ID_WITHDRAWAL);
-        }
-        session.setAttribute(SESSION_VO, responseDto);
-        return responseService.getSingleResult(responseDto);
-    }
 
     @GetMapping(value = "/logout")
     public String logout(HttpSession session, @RequestParam Map<String, Object> params) {

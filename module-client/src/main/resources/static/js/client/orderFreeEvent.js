@@ -4,12 +4,12 @@ $( document ).ready(function() {
 	$(".datepicker").datepicker({
     	dateFormat: 'yy-mm-dd'
     });  
-	$("#rsrvStrtDt").datepicker( "setDate", new Date());
+	$("#reservationStartDate").datepicker( "setDate", new Date());
     $(".timepicker").timepicker({
     }); 
     valid();
     //전체 동의 체크시 모두 체크
-    $("#rsrvStrtDt").change(function(){
+    $("#reservationStartDate").change(function(){
     	valid();
     })
     $("#allCheck").off('click').on('click', function(){
@@ -40,17 +40,17 @@ $( document ).ready(function() {
     });
     
     //시작시간 입력하면 종료시간 입력
-    //rsrvEndDt rsrvEndTime
+    //reservationEndDate rsrvEndTime
     $("#rsrvStrtTime").change(function(){
     	// if time 검사
-    	var date = new Date($("#rsrvStrtDt").val() + "T"+$("#rsrvStrtTime").val());
+    	var date = new Date($("#reservationStartDate").val() + "T"+$("#rsrvStrtTime").val());
     	console.log(date);
     	date.setHours(date.getHours() + prdHour);
     	date.setMinutes(date.getMinutes() + prdMin);
     	$("#rsrvEndTime").val(((date.getHours()+"").padStart(2,'0')+":"+(date.getMinutes()+"").padStart(2,'0')) );
     	
-    	if($("#rsrvStrtDt").val() != ""){
-	    	$("#rsrvEndDt").val(date.getFullYear()+"-"+(date.getMonth()+1+"").padStart(2,'0')+"-"+(date.getDate()+"").padStart(2,'0'));
+    	if($("#reservationStartDate").val() != ""){
+	    	$("#reservationEndDate").val(date.getFullYear()+"-"+(date.getMonth()+1+"").padStart(2,'0')+"-"+(date.getDate()+"").padStart(2,'0'));
     	}
     });
     
@@ -92,11 +92,11 @@ function valid(){
 		
      },
 		rules: {
-	        rsrvStrtDt : {
+	        reservationStartDate : {
 	        	required: true,
 	        	date : true,
 	        	limitDate : true,
-	        	remote :{type:"GET",url:"/api/selectPossibleDay", dataType : "json" , 
+	        	remote :{type:"GET",url:"/api/possible-day", dataType : "json" ,
 	        		data : {
 	        			studioId : $("#studioId").val(),
 	        			prdHour : $("#prdHour").val(),
@@ -109,37 +109,34 @@ function valid(){
 	        rsrvStrtTime : {
 	        	required: true,
 	        	limitTime : true,
-	        	remote :{type:"GET",url:"/api/selectPossibleTime",
+	        	remote :{type:"GET",url:"/api/possible-time",
 	        		data : {
 	        			studioId : $("#studioId").val(),
 	        			prdHour : $("#prdHour").val()
 	        		},
 	        		dataType : "json" , 
 	        		dataFilter : function(responseData){
-	        			console.log('$("#rsrvStrtDt").val()',$("#rsrvStrtDt").val());
+	        			console.log('$("#reservationStartDate").val()',$("#reservationStartDate").val());
 	        			//주말이라면?
 	        			// 주말 ajax 탄다. 
-	        			var weekend = new Date($("#rsrvStrtDt").val()).getDay();
+	        			var weekend = new Date($("#reservationStartDate").val()).getDay();
 	        			
 	        			if(weekend == 0 || weekend == 6){
 		        			$.ajax({
 		        				type:"GET",
-		        				url:"/api/selectPossibleTimeAtWeekend", 
+		        				url:"/api/possible-time-weekend",
 		        				dataType : "json" , 
 		        				async : false,
 		    	        		data : {
 		    	        			studioId : $("#studioId").val(),
-		    	        			rsrvStrtDt : $("#rsrvStrtDt").val(),
+		    	        			reservationStartDate : $("#reservationStartDate").val(),
 		    	        			rsrvStrtTime : $("#rsrvStrtTime").val(),
 		    	        			prdHour : $("#prdHour").val()
 		    	        		}
 		        			}).done(function(data) {
 		                		console.log(data);
 		                		responseData = data
-		                	}).fail(function(jqXHR) {
-		                    	alert(jqXHR.responseJSON.message);
-
-		                    })
+		                	})
 		                    
 	        			}
 	                    
@@ -147,7 +144,7 @@ function valid(){
 	        		}
 	        	}
 	        },
-	        rsrvEndDt : {
+	        reservationEndDate : {
 	        	required: true,
 	        	date : true
 	        },
@@ -157,10 +154,10 @@ function valid(){
 	        userName : {
 	        	required: true
 	        },
-	        ppCnt : {
+	        peopleCnt : {
 	        	required: true
 	        },
-// 	        cstmReq : {
+// 	        customRequest : {
 // 	        	required: true
 // 	        },
 	        tel: {
@@ -177,7 +174,7 @@ function valid(){
 	        }	        
 	    },
 	    messages:{/* validate 메세지 */
-	    	rsrvStrtDt:{
+	    	reservationStartDate:{
   	    		remote: "{0} 는 예약할 수 없는 날짜 및 요일입니다."
 	  	    },
 	  	    rsrvStrtTime:{

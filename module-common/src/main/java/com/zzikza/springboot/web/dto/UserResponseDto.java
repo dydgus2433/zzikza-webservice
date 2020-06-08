@@ -14,6 +14,7 @@ public class UserResponseDto {
     String userId;
     EUserStatus userStatus;
     ESnsType snsType;
+    String returl;
 
     public UserResponseDto(User user) {
         this.id = user.getId();

@@ -58,9 +58,11 @@ function selectLocalImage() {
 //						 xhr.setRequestHeader($("#_csrf_header").val(), $("#_csrf").val());
 //					 },
         }).done(function (data) {
-            quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
+            if(data.success) {
+                quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
+            }else{
+                alert(data.msg);
+            }
         }).always(function () {
         });
     }
@@ -285,15 +287,17 @@ function deleteImageAction(e) {
             data: {index: indexStr, flNm: src, id: id},
             type: "DELETE",
         }).done(function (a, b, c) {
-            $(target).remove();
-            indexing();
-            if ($("#sortable div.text").length > 0) {
-                $(".upload-name").val($("#sortable div.text").length + "개의 파일");
-            } else {
-                $(".upload-name").val("파일선택");
+            if(a.success) {
+                $(target).remove();
+                indexing();
+                if ($("#sortable div.text").length > 0) {
+                    $(".upload-name").val($("#sortable div.text").length + "개의 파일");
+                } else {
+                    $(".upload-name").val("파일선택");
+                }
+            }else{
+                alert(a.msg);
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
         }).always(function () {
             console.log('DONE');
         });
@@ -330,8 +334,6 @@ function indexing() {
         type: "PUT"
     }).done(function (a, b, c) {
         console.log("success", a, b, c)
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
     }).always(function () {
         console.log('DONE');
     });
@@ -418,11 +420,9 @@ function submitAction() {
             alert('요청상품이 등록되었습니다.');
             location.href = '/request/product/list';
         } else {
-            alert('요청상품등록이 실패했습니다. 입력값을 확인해주세요.');
+            alert(data.msg);
         }
 
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
     }).always(function () {
         //console.info('DONE');
     });

@@ -42,7 +42,7 @@ public class Reservation  extends BaseTimeEntity {
     String userName;
 
     String tel;
-    @Column(name = "ppCnt")
+    @Column(name = "PP_CNT")
     Integer peopleCnt;
     @Column(name = "PRD_PRC")
     Integer inputPrice;
@@ -50,12 +50,12 @@ public class Reservation  extends BaseTimeEntity {
     @Column(name = "RSRV_STRT_DT")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate reservationStartDate;
-    @Column(name = "RSRV_END_DT")@DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate reservationEndDate;
     @Column(name = "RSRV_STRT_HOUR")
     Integer reservationStartHour;
     @Column(name = "RSRV_STRT_MIN")
     Integer reservationStartMinute;
+    @Column(name = "RSRV_END_DT")@DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate reservationEndDate;
     @Column(name = "RSRV_END_HOUR")
     Integer reservationEndHour;
     @Column(name = "RSRV_END_MIN")
@@ -121,14 +121,14 @@ public class Reservation  extends BaseTimeEntity {
         this.userName = dto.getUserName();
         this.tel = dto.getTel();
         this.peopleCnt = dto.getPeopleCnt();
-        this.inputPrice = dto.getPrice();
+        this.inputPrice = dto.getReservationPrice();
         this.reservationStartDate = dto.getReservationStartDate();
-        this.reservationEndDate = dto.getRsrvEndDt();
+        this.reservationEndDate = dto.getReservationEndDate();
         this.reservationStartHour = dto.getReservationStartHour();
         this.reservationStartMinute = dto.getReservationStartMinute();
         this.reservationEndHour = dto.getReservationEndHour();
         this.reservationEndMinute = dto.getReservationEndMinute();
-        this.customRequest = dto.getCstmReq();
+        this.customRequest = dto.getCustomRequest();
         this.reservationStatus = dto.getRsrvStatCd();
         this.userName = dto.getUserName();
         this.scheduleName = dto.getScheduleName();

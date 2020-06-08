@@ -51,12 +51,10 @@ $(document).ready(function() {
         				alert('수정이 완료 되었습니다.');
 //        				location.href = '/';
         		}else{
-        			alert('수정실패 했습니다. 다시 시도해주세요.');
+        			alert(data.msg);
         		}
         		
-        	}).fail(function(jqXHR) {
-            	alert(jqXHR.responseJSON.message);
-            }).always(function() {
+        	}).always(function() {
             	console.log('DONE');
             });
         } ,

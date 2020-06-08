@@ -141,9 +141,7 @@ function saveForm(formSelector, validator) {
 		} else {
 			location.reload();
 		}
-	}).fail(function(jqXHR) {
-    	alert(jqXHR.responseJSON.message);
-    }).always(function() {
+	}).always(function() {
     	//console.info('DONE');
     });
 }

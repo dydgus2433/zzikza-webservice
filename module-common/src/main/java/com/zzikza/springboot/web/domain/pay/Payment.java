@@ -1,11 +1,6 @@
 package com.zzikza.springboot.web.domain.pay;
 
-import com.zzikza.springboot.web.domain.reservation.Reservation;
-import com.zzikza.springboot.web.domain.sale.Sale;
 import com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator;
-import com.zzikza.springboot.web.domain.studio.Studio;
-import com.zzikza.springboot.web.domain.studio.StudioDetail;
-import com.zzikza.springboot.web.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +14,7 @@ import javax.persistence.*;
 public class Payment {
     @Id
     @Column(name = "PAY_ID", length = 15)
-    @GeneratedValue(strategy= GenerationType.TABLE, generator = "string_prefix_generator")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "string_prefix_generator")
     @GenericGenerator(name = "string_prefix_generator", strategy = "com.zzikza.springboot.web.domain.sequence.CustomPrefixTableSequnceGenerator", parameters = {
             @org.hibernate.annotations.Parameter(name = "table_name", value = "sequences"),
             @org.hibernate.annotations.Parameter(name = "value_column_name", value = "currval"),
@@ -29,16 +24,11 @@ public class Payment {
             @org.hibernate.annotations.Parameter(name = CustomPrefixTableSequnceGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")})
     String id;
 
-    @Column
+    @Column(name = "NAME")
     String name;
 
-//    @ManyToOne
-//    @JoinColumn(name = "USER_SEQ")
-//    User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "STDO_SEQ")
-//    Studio studio;
+    @Column(name = "merchant_uid")
+    String merchantUid;
 
     @OneToOne
     @JoinColumn(name = "FNL_PAY_ID", nullable = false)
@@ -50,7 +40,7 @@ public class Payment {
         this.finalPaymentPrice = finalPaymentPrice;
     }
 
-    public int getRealPrice(){
+    public int getRealPrice() {
         return finalPaymentPrice.getFinalPrice();
     }
 }

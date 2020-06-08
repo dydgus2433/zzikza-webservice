@@ -38,7 +38,10 @@ public class ProductResponseDto {
     Double lttd;
     Double lgtd;
     Exhibition exhibition;
+    boolean isWish = false;
     private DecimalFormat format;
+    private double grade;
+
     public ProductResponseDto(Product dto) {
         this.id = dto.getId();
         this.title = dto.getTitle();
@@ -72,5 +75,17 @@ public class ProductResponseDto {
             return format.format(price);
         }
         return price.toString();
+    }
+
+    public void isContains() {
+        this.isWish = true;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public double getGrade() {
+        return grade;
     }
 }

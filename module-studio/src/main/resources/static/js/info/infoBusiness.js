@@ -36,12 +36,9 @@ $(document).ready(function () {
             }).done(function (data) {
                 if (data.success) {
                     alert('회원정보가 수정 되었습니다.');
-                } else {
-                    alert('수정이 실패했습니다. 다시 시도해주세요.');
+                } else{
+                    alert(data.msg);
                 }
-
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
             }).always(function () {
                 console.log('DONE');
             });

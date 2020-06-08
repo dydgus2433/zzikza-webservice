@@ -163,20 +163,18 @@ if (typeof Object.assign != 'function') {
 //찜하기
 function wish(a){
 	$.ajax({
-	      url: "/api/insertProductWish",
+	      url: "/api/product-wish",
 	      type: "POST",
 	      data: {
-	    	  "prdId" : $(a.currentTarget).data("prd-id")
+	    	  "id" : $(a.currentTarget).data("prd-id")
 	      },
 	      dataType: "json",
 	      success : function(data,b,c){
-	    	  	if(data.rows){
-					if(data.rows == '1'){
-						//alert('임시비밀번호가 발송 되었습니다.');
-						//좋아요 처리됨
+	    	  	if(data.success){
+					if(data.data === 1){
 						//♡
 						$(a.currentTarget).text("♥ 찜하기");
-					} else if(data.rows == '2'){
+					} else if(data.data === 2){
 						//싫어요 
 						$(a.currentTarget).text("♡ 찜하기");
 					} 

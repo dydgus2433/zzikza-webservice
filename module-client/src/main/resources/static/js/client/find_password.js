@@ -83,39 +83,7 @@ $(document).ready(function(){
 	    }
 	});
 	
-	///api/findPassword
-// 	$("#findBtn").on('click', function(){
-// 		console.log("#findBtn click");
-//
-// 		if(!$("#findFrm").valid()){
-// 			return false;
-// 		}
-//
-// 		$.ajax({
-// 			url: '/api/findPassword',
-// 			data : $("#findFrm").serializeArray(),
-// 			type: 'post'
-//
-// 		}).done(function(data) {
-// 			console.log(data);
-// 			if(data.success){
-// 				if(data.success){
-// 					alert('임시비밀번호가 발송 되었습니다.');
-// //					location.href = '/';
-// 				} else{
-// 					alert(data.msg);
-// 				}
-// 			}else{
-// 				alert('발송이 실패 했습니다. 다시 시도해주세요.');
-// 			}
-//
-// 		}).fail(function(jqXHR) {
-// 	    	alert(jqXHR.responseJSON.message);
-// 	    }).always(function() {
-// 	    	console.log('DONE');
-// 	    });
-// 	});
-	
+
 	$("#secureBtn").on('click', function(){
 		//show 인증번호 인증타이머 인증버튼 
 		console.log("인증버튼");
@@ -142,8 +110,6 @@ $(document).ready(function(){
 			//타이머 보여주기
 			startTimer();
 			
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});		
@@ -171,8 +137,6 @@ $(document).ready(function(){
 			}else{
 				alert(data.msg);
 			}
-		}).fail(function(jqXHR) {
-			alert(jqXHR.responseJSON.message);
 		}).always(function() {
 			console.log('DONE');
 		});

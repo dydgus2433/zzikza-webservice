@@ -32,7 +32,7 @@ function limitDate(str, obj){
 
 function limitTime(str, obj){
 	var rsrvStrtTime = $("#rsrvStrtTime").val();
-	var date = new Date($("#rsrvStrtDt").val());
+	var date = new Date($("#reservationStartDate").val());
 	date.setHours(rsrvStrtTime.split(":")[0], rsrvStrtTime.split(":")[1], 0);
 //	date.setHours(rsrvStrtTime);
 	console.log(date);

@@ -59,9 +59,6 @@ function selectLocalImage() {
 //					 },
         }).done(function (data) {
             quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
         });
     }
@@ -293,9 +290,6 @@ function deleteImageAction(e) {
             } else {
                 $(".upload-name").val("파일선택");
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
             console.log('DONE');
         });
@@ -332,9 +326,6 @@ function indexing() {
         type: "PUT"
     }).done(function (a, b, c) {
         console.log("success", a, b, c)
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
         console.log('DONE');
     });
@@ -421,13 +412,9 @@ function submitAction() {
         if (data.success) {
             alert('요청상품이 등록되었습니다.');
             location.href = '/request/product/list';
-        } else {
-            alert('요청상품등록이 실패했습니다. 입력값을 확인해주세요.');
+        } else{
+            alert(data.msg);
         }
-
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
         //console.info('DONE');
     });

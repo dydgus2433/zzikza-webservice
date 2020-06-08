@@ -73,10 +73,11 @@ function selectLocalImage() {
 //						 xhr.setRequestHeader($("#_csrf_header").val(), $("#_csrf").val());
 //					 },
         }).done(function (data) {
-            quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
+            if (data.success) {
+                quill.insertEmbed(quill.getLength(), 'image', data.data.filePath);
+            } else {
+                alert(data.msg);
+            }
         }).always(function () {
         });
     }
@@ -213,10 +214,11 @@ $(document).ready(function () {
                 type: "DELETE",
                 data: {id: id},
             }).done(function (data) {
-                location.href = '/product/list';
-            }).fail(function (jqXHR) {
-                alert(jqXHR.responseJSON.message);
-
+                if (data.success) {
+                    location.href = '/product/list';
+                } else {
+                    alert(data.msg);
+                }
             }).always(function () {
             });
         }
@@ -264,7 +266,7 @@ function fileUploadSetting() {
     const url = '/api/product-file';  // 사용
     const upload = $('#detailFiles').fileupload({
         url: url,
-        type : 'POST',
+        type: 'POST',
         sequentialUploads: true,
         dataType: 'json',
         formData: {
@@ -301,14 +303,14 @@ function fileUploadSetting() {
         done: function (e, data) {
 //	    	indexes.splice(index,1);
             //삭제하면서 progressBar 없애줘
-            const result =  data.result.data;
+            const result = data.result.data;
             const id = "img_id_" + result.id;
             $("#sortable li:last").remove();
 
             const html = "<li index=\"" + result.id + "\" id=\"" + id + "\">"
                 + "<div class=\"img_area\" >"
                 + "<button type=\"button\" class=\"btn_del_img\">삭제</button>"
-                + "<img src=\"" +  result.filePath + "\" data-file='" + result.fileName + "'  onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
+                + "<img src=\"" + result.filePath + "\" data-file='" + result.fileName + "'  onerror=\"this.src='" + "/images/common/no_img.gif'\" >"
                 + "</div>"
                 + "<div class=\"text\">0</div>"
                 + "</li>";
@@ -329,7 +331,7 @@ function fileUploadSetting() {
                 var html = "<li index=\"\" id=\"" + id + "\">"
                     + "<div class=\"img_area\" >"
                     + "<button type=\"button\" class=\"btn_del_img\">삭제</button>"
-                    + "<img src=\"" +  "/images/common/no_img.gif" + "\" alt=\"\">"
+                    + "<img src=\"" + "/images/common/no_img.gif" + "\" alt=\"\">"
                     + "</div>"
                     + "<div class=\"text\">∞</div>"
                     + "</li>";
@@ -463,11 +465,8 @@ function submitAction() {
             alert('상품이 수정되었습니다.');
             location.href = '/product/list';
         } else {
-            alert('상품등록이 실패했습니다. 입력값을 확인해주세요.');
+            alert(data.msg);
         }
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
         //console.info('DONE');
     });
@@ -484,22 +483,23 @@ function deleteImageAction(e) {
         // 이거로 파일 삭제해야함
 
         $.ajax({
-            url:  "/api/product-file",
-            data: {id : id, index: indexStr, flNm: src},
+            url: "/api/product-file",
+            data: {id: id, index: indexStr, flNm: src},
             type: "DELETE"
         }).done(function (a, b, c) {
-            $(target).remove();
-            indexing();
-            const textLength = $("#sortable div.text").length;
-            const $uploadName = $(".upload-name");
-            if (textLength > 0) {
-                $uploadName.val(textLength + "개의 파일");
+            if (a.success) {
+                $(target).remove();
+                indexing();
+                const textLength = $("#sortable div.text").length;
+                const $uploadName = $(".upload-name");
+                if (textLength > 0) {
+                    $uploadName.val(textLength + "개의 파일");
+                } else {
+                    $uploadName.val("파일선택");
+                }
             } else {
-                $uploadName.val("파일선택");
+                alert(data.msg);
             }
-        }).fail(function (jqXHR) {
-            alert(jqXHR.responseJSON.message);
-
         }).always(function () {
         });
     } else {
@@ -522,9 +522,11 @@ function updateAndOrderOption(options) {
         data: {optnIds: indexes.join(","), id: id},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
+        if (a.success) {
 
+        } else {
+            alert(a.msg);
+        }
     }).always(function () {
     });
 }
@@ -538,26 +540,6 @@ function smallOptionIndexing() {
 function bigOptionIndexing() {
     const options = $("#bigOption li").not(":last");
     updateAndOrderOption(options);
-    // if(options.length < 1){
-    // 	return;
-    // }
-    // var indexes = [];
-    // for(var i = 0; i < options.length; i++){
-    // 	var option = $(options[i]);
-    //
-    // 	indexes.push($(option).data("optn_id"));
-    // }
-    //
-    // $.ajax({
-    // 	url:  "/api/updateOptionOrder",
-    // 	data : {optnIds : indexes.join(",")},
-    // 	type: "post"
-    // }).done(function(a,b,c){
-    // }).fail(function(jqXHR) {
-    // 	alert(jqXHR.responseJSON.message);
-    //
-    // }).always(function() {
-    // });
 }
 
 //인덱싱
@@ -587,9 +569,6 @@ function indexing() {
         data: {index: indexes.join(","), id: id},
         type: "PUT"
     }).done(function (a, b, c) {
-    }).fail(function (jqXHR) {
-        alert(jqXHR.responseJSON.message);
-
     }).always(function () {
     });
 }

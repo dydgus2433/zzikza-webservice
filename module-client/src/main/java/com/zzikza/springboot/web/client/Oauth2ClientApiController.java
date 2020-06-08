@@ -1,6 +1,5 @@
 package com.zzikza.springboot.web.client;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.zzikza.springboot.web.domain.enums.ESnsType;
 import com.zzikza.springboot.web.domain.enums.EUserStatus;
 import com.zzikza.springboot.web.domain.user.User;
@@ -10,7 +9,6 @@ import com.zzikza.springboot.web.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.ParseException;
-import org.springframework.boot.json.JsonParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,10 +19,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -33,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.zzikza.springboot.web.client.ClinetRestApiController.RETURN_URL;
+import static com.zzikza.springboot.web.client.ClientRestApiController.RETURN_URL;
 import static com.zzikza.springboot.web.client.LoginClientViewController.REDIRECT;
-import static com.zzikza.springboot.web.util.JsonUtil.jsonStringToMap;
+import static com.zzikza.springboot.web.util.URLConnectUtil.getUrlResultMap;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -539,36 +535,5 @@ public class Oauth2ClientApiController {
         return optionalUser.isPresent();
     }
 
-
-    /**
-     * get URL 전송 후 결과값 얻는 메소드
-     *
-     * @param con 원하는 URL을 가지고 있는 커텍션
-     * @return 결과값
-     * @throws IOException
-     * @throws ParseException
-     * @throws JsonParseException
-     * @throws JsonMappingException
-     */
-    protected Map<String, Object> getUrlResultMap(HttpURLConnection con) throws IOException, ParseException, JsonParseException, JsonMappingException {
-        int responseCode = con.getResponseCode();
-        BufferedReader br = null;
-        if (responseCode == 200) {
-            // 정상 호출
-            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        } else {
-            // 에러 발생
-            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-        }
-        String inputLine = null;
-        StringBuilder response = new StringBuilder();
-        while ((inputLine = br.readLine()) != null) {
-            response.append(inputLine);
-        }
-        br.close();
-        // JSON string 을 Map으로 변환
-        Map<String, Object> map = jsonStringToMap(response.toString());
-        return map;
-    }
 
 }

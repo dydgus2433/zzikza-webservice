@@ -117,22 +117,22 @@ select{
                         </tr>
                         <tr>
                             <th>예약금</th>
-                            <td><span class="now"><strong  class="reservPrice">{{reservationFee}}</strong>원</span></td>
+                            <td><span class="now"><strong  class="reservationPrice">{{reservationFee}}</strong>원</span></td>
                         </tr>
                     </table>
                     
                     <div class="time">촬영시간 : <strong><c:if test="${not empty  product.productHour}"><c:out value="${product.productHour }시간 "></c:out></c:if><c:if test="${not empty  product.productMinute}">${product.productMinute }분</c:if></strong>
                     	<form id="payFrm" name="payFrm" class="payFrm" action="/goods/order/${prdId}" method="post">
                     		<c:if test="${not empty product.exhId}">
-                    			<select class="saleCd" name="saleCd" id="saleCd">
+                    			<select class="saleCode" name="saleCode" id="saleCode">
 		                    	 <option value="">할인대상선택</option>
 		                    	 <c:forEach items="${saleCodes}" var="item">
-		                   			 <option value="${item.saleCd}" data-price="{{saleVal}}" data-calc-cd="{{calcCd}}">{{saleNm}}</option>
+		                   			 <option value="${item.saleCode}" data-price="{{saleVal}}" data-calc-cd="{{calcCd}}">{{saleNm}}</option>
 		                    	 </c:forEach>
 		                   		</select> 
                     		</c:if>
 		                    <input type="hidden" name="exhId" id="exhId" value="${product.exhId }"/>
-		                    <input type="hidden" name="reservPrice" id="reservPrice"/>
+		                    <input type="hidden" name="reservationPrice" id="reservationPrice"/>
 		                    <input type="hidden" name="price" id="price"/>
                     	</form>
                     </div>
@@ -148,7 +148,7 @@ select{
                     		</c:otherwise>
                     	</c:choose>
                     	
-                  		 결제금액 <span class="now"><strong  class="reservPrice">{{reservationFee}}</strong>원</span></div>
+                  		 결제금액 <span class="now"><strong  class="reservationPrice">{{reservationFee}}</strong>원</span></div>
                     <div class="btns">
                         <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
                         <a href="#" class="btn_type_y"><img src="$/preview/img/ico_question.png" alt="">문의하기</a>
@@ -224,7 +224,7 @@ select{
                 <!-- s:20190923 div.web_minSize 추가 -->
             	<div class="web_minSize">
                 <div class="info">
-                       <strong>${product.title}</strong>결제금액 <span  class="reservPrice">{{reservationFee}}</span>원
+                       <strong>${product.title}</strong>결제금액 <span  class="reservationPrice">{{reservationFee}}</span>원
                 </div>
                 <div class="btns">
                     <a href="#" class="btn_type_y"><img src="$/preview/img/ico_share.png" alt="">공유하기</a>
