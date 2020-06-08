@@ -3,6 +3,8 @@ package com.zzikza.springboot.web.client;
 import com.zzikza.springboot.web.client.annotation.LoginUser;
 import com.zzikza.springboot.web.domain.certification.Certification;
 import com.zzikza.springboot.web.domain.certification.CertificationRepository;
+import com.zzikza.springboot.web.domain.crawling.Company;
+import com.zzikza.springboot.web.domain.crawling.CompanyRepository;
 import com.zzikza.springboot.web.domain.enums.*;
 import com.zzikza.springboot.web.domain.product.Product;
 import com.zzikza.springboot.web.domain.product.ProductRepository;
@@ -23,6 +25,10 @@ import com.zzikza.springboot.web.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.client.ClientProtocolException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +55,7 @@ public class ClientRestApiController {
     final StudioHolidayRepository studioHolidayRepository;
     final ProductRepository productRepository;
     final UserWishProductRepository userWishProductRepository;
+    final CompanyRepository companyRepository;
     private final ResponseService responseService;
     private final CertificationRepository certificationRepository;
     private final UserRepository userRepository;
@@ -74,17 +81,6 @@ public class ClientRestApiController {
         }
         return responseService.getListResult(mapList);
     }
-
-    /**
-     * UserId 존재여부 검사
-     *
-     * @param userId
-     * @return
-     */
-    @GetMapping(value = {"/api/user-id"})
-    public boolean selectUserId(String userId) {
-        return !userRepository.findByUserId(userId).isPresent();
-    }
     /*@PostMapping(value = "/api/search-keywords")
     public ListResult<Map<String, Object>> findSearchKeywords(
     ) throws Exception {
@@ -98,6 +94,17 @@ public class ClientRestApiController {
         }
         return responseService.getListResult(showCodes);
     }*/
+
+    /**
+     * UserId 존재여부 검사
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping(value = {"/api/user-id"})
+    public boolean selectUserId(String userId) {
+        return !userRepository.findByUserId(userId).isPresent();
+    }
 
     /**
      * 인증번호 발송 API 휴대폰 인증 후 본인이름과 같은지 확인 같으면 성공 메시지 전송 (임시비밀번호 변경 후 문자 발송) 다르면 오류
@@ -383,46 +390,6 @@ public class ClientRestApiController {
         return holiday.isPresent();
     }
 
-    /**
-     * 찜하기
-     *
-     * @param params
-     * @return
-     * @throws ClientProtocolException
-     * @throws IOException
-     * @throws ParseException
-     */
-//    /api/product-wish -> /api/product-wish
-    @PostMapping(value = "/api/product-wish")
-    public CommonResult insertProductWish(@LoginUser UserResponseDto user, ProductRequestDto params){
-
-        if (user != null) {
-            if (!"".equals(user.getId())) {
-                Optional<Product> oProduct = productRepository.findById(params.getId());
-                Optional<User> oUser = userRepository.findById(user.getId());
-                if (oProduct.isPresent() && oUser.isPresent()) {
-                    Optional<UserWishProduct> optionalUserWishProduct = userWishProductRepository.findByUserAndProduct(oUser.get(), oProduct.get());
-
-                    if (optionalUserWishProduct.isPresent()) {
-                        userWishProductRepository.delete(optionalUserWishProduct.get());
-                        return responseService.getSingleResult(2);
-                    } else {
-                        UserWishProduct userWishProduct = UserWishProduct.builder()
-                                .user(oUser.get())
-                                .product(oProduct.get())
-                                .build();
-                        userWishProductRepository.save(userWishProduct);
-                        return responseService.getSingleResult(1);
-                    }
-
-                }
-            }
-        }else{
-            throw new IllegalArgumentException("로그인 해주세요.");
-        }
-        return responseService.getSuccessResult();
-    }
-
 
 //    /**
 //     * 영업가능 시간여부(평일)
@@ -468,4 +435,154 @@ public class ClientRestApiController {
 //        return holiday.isPresent();
 //    }
 
+    /**
+     * 찜하기
+     *
+     * @param params
+     * @return
+     * @throws ClientProtocolException
+     * @throws IOException
+     * @throws ParseException
+     */
+//    /api/product-wish -> /api/product-wish
+    @PostMapping(value = "/api/product-wish")
+    public CommonResult insertProductWish(@LoginUser UserResponseDto user, ProductRequestDto params) {
+
+        if (user != null) {
+            if (!"".equals(user.getId())) {
+                Optional<Product> oProduct = productRepository.findById(params.getId());
+                Optional<User> oUser = userRepository.findById(user.getId());
+                if (oProduct.isPresent() && oUser.isPresent()) {
+                    Optional<UserWishProduct> optionalUserWishProduct = userWishProductRepository.findByUserAndProduct(oUser.get(), oProduct.get());
+
+                    if (optionalUserWishProduct.isPresent()) {
+                        userWishProductRepository.delete(optionalUserWishProduct.get());
+                        return responseService.getSingleResult(2);
+                    } else {
+                        UserWishProduct userWishProduct = UserWishProduct.builder()
+                                .user(oUser.get())
+                                .product(oProduct.get())
+                                .build();
+                        userWishProductRepository.save(userWishProduct);
+                        return responseService.getSingleResult(1);
+                    }
+
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("로그인 해주세요.");
+        }
+        return responseService.getSuccessResult();
+    }
+
+    @GetMapping(value = "/api/crawling")
+    public void 크롤링(@RequestParam Map<String, String> params) throws IOException {
+        String query = params.get("query");
+        //#fix_wrap #wrap #container #content div ol li div a.lnk_tit
+        //#fix_wrap #wrap #container #content div ol li div div a.url
+        //#fix_wrap #wrap #container #content div ol li div p.ad_dsc_inner
+        //https://ad.search.naver.com/search.naver?where=ad&sm=svc_nrs&query=%EB%A8%B8%EC%8B%A0%EB%B9%84%EC%A0%84&referenceId=&pagingIndex=2
+
+        int paginIndex = 1;
+        int endIndex = 100;
+        if (params.get("pagingIndex") != null && !"".equals(params.get("pagingIndex"))) {
+            paginIndex = Integer.parseInt(params.get("pagingIndex"));
+
+        }
+        List<Company> companyIterator = new ArrayList<>();
+        for (int i = paginIndex; i < endIndex; i++) {
+            String urlPath = "https://ad.search.naver.com/search.naver?where=ad&sm=svc_nrs&query=" + query + "&referenceId=&pagingIndex=" + i;
+            Document doc1 = Jsoup.connect(urlPath).get();
+//            System.out.println(doc1.text());
+//            System.out.println(doc1.html());
+            //건수 0건이면 break 하자
+//#fix_wrap #wrap div.search_result div.result_wrap div.inner span.num_result
+            List<String> titles = new ArrayList<>();
+            List<String> urls = new ArrayList<>();
+            List<String> descs = new ArrayList<>();
+
+            if (isSearchEnd(doc1)) {
+                break;
+            } else {
+                Elements elements = doc1.select("#fix_wrap #wrap #container #content div ol li div");
+                for (Element e : elements.select("a.lnk_tit")) {
+                    //a.lnk_tit
+                    //div a.url
+                    //p.ad_dsc_inner
+                    if (e.className().equals("lnk_tit")) {
+//                        System.out.println("제목 : "+e.text());
+                        titles.add(e.text());
+                    }
+                }
+
+                for (Element e : elements.select("div a.url")) {
+                    if (e.className().equals("url")) {
+//                        System.out.println("url : "+e.text());
+                        urls.add(e.text());
+                    }
+                }
+
+                for (Element e : elements.select("p.ad_dsc_inner")) {
+                    if (e.className().equals("ad_dsc_inner")) {
+//                        System.out.println("간단설명 : "+e.text());
+                        descs.add(e.text());
+                    }
+                }
+            }
+
+
+            if (titles.size() == descs.size() && descs.size() == urls.size()) {
+                for (int j = 0; j < titles.size(); j++) {
+                    System.out.println(titles.get(j) + "/" + urls.get(j) + "/" + descs.get(j));
+                    Company company = Company.builder()
+                            .title(titles.get(j))
+                            .url(urls.get(j))
+                            .description(descs.get(j))
+                            .query(query)
+                            .build();
+                    companyIterator.add(company);
+                    System.out.println(company.toString());
+                    try {
+                        companyRepository.save(company);
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+            }
+        }
+//        System.out.println(companyIterator.toString());
+//        companyRepository.saveAll(companyIterator);
+    }
+
+    private boolean isSearchEnd(Document doc1) {
+        Elements elem = doc1.select("#fix_wrap #wrap div.search_result div.result_wrap div.inner span.num_result");
+        for (Element e : elem.select("span.num_result")) {
+            if (e.className().equals("num_result")) {
+                System.out.println("건수가 0이면 끌거야" + e.text());
+                String xx = e.text();
+                String[] xxx = xx.split("/");
+                if (xxx.length == 2) {
+                    String xxxx = xxx[1].replace("건", "");
+                    System.out.println(xxxx);
+                    xxxx = xxxx.replace(" ", "");
+                    System.out.println(xxxx);
+                    if (xxxx.equals("0")) {
+                        return true;
+                    }
+
+                    String[] firstNumbers = xxx[0].split("-");
+                    if (firstNumbers.length == 2) {
+                        int totalCount = Integer.parseInt(xxxx);
+                        int firstNumber = Integer.parseInt(firstNumbers[1].replace(" ", ""));
+                        if (firstNumber >= totalCount) {
+                            return true;
+                        }
+                    }
+                }
+
+            }
+        }
+        return false;
+    }
 }
